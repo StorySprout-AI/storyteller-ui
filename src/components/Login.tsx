@@ -2,6 +2,8 @@ import React from 'react'
 import { Button, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import GoogleOauth from './shared/GoogleOauth'
+import axios from 'axios'
+import CryptoJS from 'crypto-js'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -23,8 +25,24 @@ const StyledButton = styled(Button)`
 const Login = () => {
   const handleLoginSuccess = (credentialResponse: any) => {
     console.log('Google login successful')
-    console.log(credentialResponse)
-    // Add your logic here for handling successful login with Google
+
+    const data = {
+      credential: credentialResponse.credential,
+      client_id: process.env.REACT_APP_CLIENT_ID,
+      client_secret: process.env.REACT_APP_CLIENT_SECRET
+    }
+    axios
+      .post(`${process.env.REACT_APP_API_ENDPOINT}/api/oauth/google`, data)
+      .then((res) => {
+        const token = res.data.token
+        const user = res.data.user
+        const encryptedToken = CryptoJS.AES.encrypt(token, process.env.REACT_APP_ENCRYPTION_KEY as string).toString()
+        localStorage.setItem('token', encryptedToken)
+        localStorage.setItem('user', JSON.stringify(user))
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const handleLoginError = () => {
