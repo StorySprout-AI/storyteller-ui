@@ -145,9 +145,6 @@ const StoryGenerator: React.FC = () => {
           value={place}
           onChange={(e) => setPlace(e.target.value as string)}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           {places.map((name, index) => (
             <MenuItem key={index} value={name}>
               {name}
