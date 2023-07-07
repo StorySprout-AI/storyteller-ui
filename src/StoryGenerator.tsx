@@ -64,7 +64,7 @@ const StoryGenerator: React.FC = () => {
   const generateStory = async () => {
     setLoading(true)
 
-    const prompt = `Write a 10 page story about ${subject} with a hero named ${hero}, set in a place called ${place}, featuring a secondary character named ${character}, and a significant object referred to as ${object}. The story must be age-appropriate for kids between ${age} years old. Split your response into 10 pages, with each page containing 500 characters start each with "Page 1", "Page 2", etc. And mark the end of the story with "The End".`
+    const prompt = `Write a 10 page story about ${subject} with a hero named ${hero}, set in a place called ${place}, featuring a ${character} which you need to name, and a significant object referred to as ${object}. The story must be age-appropriate for kids between ${age} years old. Split your response into 10 pages, with each page containing 500 characters start each with "Page 1", "Page 2", etc. And mark the end of the story with "The End".`
     const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY
 
     setPrompt(prompt)
