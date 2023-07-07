@@ -106,7 +106,7 @@ const StoryGenerator: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#f8f8f8',
+        backgroundColor: '#f5f5f5',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
