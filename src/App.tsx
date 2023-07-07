@@ -1,14 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import StoryGenerator from './StoryGenerator';
+import React from 'react'
+import './App.css'
+import StoryGenerator from './StoryGenerator'
 
 function App() {
   return (
     <div className="App">
-        <StoryGenerator />
+      <StoryGenerator />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
