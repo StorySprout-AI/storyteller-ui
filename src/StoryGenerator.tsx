@@ -39,7 +39,7 @@ const StoryGenerator: React.FC = () => {
   const generateStory = async () => {
     setLoading(true);
 
-    const newPrompt = `Write a 20 page story about ${subject} with a hero named ${hero}, set in a place called ${place}, featuring a secondary character named ${character}, and a significant object referred to as ${object}. The story must be age-appropriate for kids between ${age} years old. Split your response into 20 pages, with each page containing 1000 characters start each with "Page 1", "Page 2", etc. And mark the end of the story with "The End".`;
+    const newPrompt = `Write a 10 page story about ${subject} with a hero named ${hero}, set in a place called ${place}, featuring a secondary character named ${character}, and a significant object referred to as ${object}. The story must be age-appropriate for kids between ${age} years old. Split your response into 10 pages, with each page containing 500 characters start each with "Page 1", "Page 2", etc. And mark the end of the story with "The End".`;
     const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
     setPrompt(newPrompt);
@@ -50,7 +50,7 @@ const StoryGenerator: React.FC = () => {
         {
           model: 'gpt-3.5-turbo',
           messages: [{ role: 'user', content: newPrompt }],
-          temperature: 0.8,
+          temperature: 0.7,
         },
         {
           headers: {
@@ -81,13 +81,48 @@ const StoryGenerator: React.FC = () => {
   return (
     <Box
       sx={{
+        backgroundColor: '#f8f8f8',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 2,
-        m: 2,
+        padding: '40px',
       }}
     >
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 2,
+          width: '100%',
+          maxWidth: '800px',
+          backgroundColor: '#fff',
+          padding: '20px',
+        }}
+      >
+        <Box
+          sx={{
+            gridColumn: '1 / span 3',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: '20px' }}>
+            Welcome to StorySprout
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            gridColumn: '1 / span 3',
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '20px',
+          }}
+        >
+          <Typography variant="body1" sx={{ textAlign: 'center', color: '#808080' }}>
+            Create amazing stories with just a few clicks! Simply select the options below and click "Generate Story" to get started.
+          </Typography>
+        </Box>
       <FormControl variant="outlined">
         <InputLabel id="hero-label">Hero's Name</InputLabel>
         <Select
@@ -95,7 +130,6 @@ const StoryGenerator: React.FC = () => {
           value={hero}
           onChange={(e) => setHero(e.target.value as string)}
           label="Hero's Name"
-          style={{ minWidth: '200px' }}
         >
           {heroes.map((name, index) => (
             <MenuItem key={index} value={name}>
@@ -110,7 +144,6 @@ const StoryGenerator: React.FC = () => {
           labelId="place-label"
           value={place}
           onChange={(e) => setPlace(e.target.value as string)}
-          style={{ minWidth: '200px' }}
         >
           <MenuItem value="">
             <em>None</em>
@@ -129,7 +162,6 @@ const StoryGenerator: React.FC = () => {
           value={character}
           onChange={(e) => setCharacter(e.target.value as string)}
           label="Secondary Character"
-          style={{ minWidth: '200px' }}
         >
           {characters.map((name, index) => (
             <MenuItem key={index} value={name}>
@@ -145,7 +177,6 @@ const StoryGenerator: React.FC = () => {
           value={object}
           onChange={(e) => setObject(e.target.value as string)}
           label="Object"
-          style={{ minWidth: '200px' }}
         >
           {objects.map((name, index) => (
             <MenuItem key={index} value={name}>
@@ -161,7 +192,6 @@ const StoryGenerator: React.FC = () => {
           value={age}
           onChange={(e) => setAge(e.target.value as string)}
           label="Age"
-          style={{ minWidth: '200px' }}
         >
           {ages.map((name, index) => (
             <MenuItem key={index} value={name}>
@@ -177,53 +207,78 @@ const StoryGenerator: React.FC = () => {
           value={subject}
           onChange={(e) => setSubject(e.target.value as string)}
           label="Subject"
-          style={{ minWidth: '200px' }}
         >
           {subjects.map((name, index) => (
-            <MenuItem key={index}value={name}>{name}</MenuItem>
+            <MenuItem key={index} value={name}>
+              {name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
-      <Button variant="contained" onClick={generateStory} disabled={loading}>
-        {loading ? <CircularProgress size={24} /> : 'Generate Story'}
-      </Button>
+      <Box
+        sx={{
+          gridColumn: '2',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Button variant="contained" onClick={generateStory} disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : 'Generate Story'}
+        </Button>
+      </Box>
       {storyPages.length > 0 && (
+        <Box
+        sx={{
+          gridColumn: '1 / span 3',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 2,
+          m: 2,
+          p: 2,
+          border: '1px solid black',
+          borderRadius: '5px',
+          bgcolor: 'background.paper',
+        }}
+      >
+        <Typography variant="h4" sx={{ textAlign: 'center' }}>
+          Your Generated Story:
+        </Typography>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             gap: 2,
-            m: 2,
-            p: 2,
-            border: '1px solid black',
-            borderRadius: '5px',
-            bgcolor: 'background.paper',
+            width: '100%',
+            maxWidth: 600,
           }}
         >
-          <Typography variant="h4">Your Generated Story:</Typography>
-          <Typography>{storyPages[currentStoryPage]}</Typography>
-
-          <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
-            <Button
-              variant="contained"
-              onClick={goToPreviousPage}
-              disabled={currentStoryPage === 0}
-            >
-              Previous Page
-            </Button>
-            <Button
-              variant="contained"
-              onClick={goToNextPage}
-              disabled={currentStoryPage === storyPages.length - 1}
-            >
-              Next Page
-            </Button>
-          </Box>
+          <Typography sx={{ whiteSpace: 'pre-line' }}>{storyPages[currentStoryPage]}</Typography>
         </Box>
-      )}
-    </Box>
-  );
+    
+        <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
+          <Button
+            variant="contained"
+            onClick={goToPreviousPage}
+            disabled={currentStoryPage === 0}
+          >
+            Previous Page
+          </Button>
+          <Button
+            variant="contained"
+            onClick={goToNextPage}
+            disabled={currentStoryPage === storyPages.length - 1}
+          >
+            Next Page
+          </Button>
+        </Box>
+      </Box>
+    )}
+  </Box>
+</Box>
+);
 };
 
 export default StoryGenerator;
