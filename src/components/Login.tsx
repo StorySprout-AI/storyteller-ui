@@ -34,11 +34,19 @@ const Login = () => {
     axios
       .post(`${process.env.REACT_APP_API_ENDPOINT}/api/oauth/google`, data)
       .then((res) => {
-        const token = res.data.token
+        const token = res.data.access_token
         const user = res.data.user
         const encryptedToken = CryptoJS.AES.encrypt(token, process.env.REACT_APP_ENCRYPTION_KEY as string).toString()
+        const encryptedRefreshToken = CryptoJS.AES.encrypt(
+          res.data.refresh_token,
+          process.env.REACT_APP_ENCRYPTION_KEY as string
+        ).toString()
+
+        localStorage.setItem('refreshToken', encryptedRefreshToken)
         localStorage.setItem('token', encryptedToken)
         localStorage.setItem('user', JSON.stringify(user))
+
+        window.location.reload()
       })
       .catch((err) => {
         console.log(err)
