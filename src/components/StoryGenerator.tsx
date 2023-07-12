@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
+import useUser from '../hooks/useUser'
 
 const StoryGenerator: React.FC = () => {
   const [hero, setHero] = useState('')
@@ -13,6 +14,7 @@ const StoryGenerator: React.FC = () => {
   const [prompt, setPrompt] = useState('')
   const [loading, setLoading] = useState(false)
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
+  const { user } = useUser()
 
   const heroes = ['Alice', 'Bob', 'Charlie', 'David', 'Eva', 'Frank', 'Grace', 'Harry', 'Ivy', 'Jack']
   const places = [
@@ -103,6 +105,13 @@ const StoryGenerator: React.FC = () => {
     setCurrentStoryPage((prevPage) => prevPage - 1)
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('user')
+    window.location.reload()
+  }
+
   return (
     <Box
       sx={{
@@ -114,6 +123,10 @@ const StoryGenerator: React.FC = () => {
         padding: '40px'
       }}
     >
+      <Button variant="contained" onClick={handleLogout}>
+        Logout
+      </Button>
+      <br />
       <Box
         sx={{
           display: 'grid',
@@ -133,7 +146,7 @@ const StoryGenerator: React.FC = () => {
           }}
         >
           <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: '20px' }}>
-            Welcome to StorySprout
+            Welcome {user?.name} to StorySprout!
           </Typography>
         </Box>
         <Box

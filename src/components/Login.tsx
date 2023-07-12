@@ -41,10 +41,14 @@ const Login = () => {
           res.data.refresh_token,
           process.env.REACT_APP_ENCRYPTION_KEY as string
         ).toString()
+        const encryptedUser = CryptoJS.AES.encrypt(
+          JSON.stringify(user),
+          process.env.REACT_APP_ENCRYPTION_KEY as string
+        ).toString()
 
         localStorage.setItem('refreshToken', encryptedRefreshToken)
         localStorage.setItem('token', encryptedToken)
-        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('user', encryptedUser)
 
         window.location.reload()
       })
