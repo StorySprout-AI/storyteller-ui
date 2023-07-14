@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
 import useUser from '../hooks/useUser'
+import NavBar from './shared/NavBar'
 
 const StoryGenerator: React.FC = () => {
   const [hero, setHero] = useState('')
@@ -123,9 +124,7 @@ const StoryGenerator: React.FC = () => {
         padding: '40px'
       }}
     >
-      <Button variant="contained" onClick={handleLogout}>
-        Logout
-      </Button>
+      <NavBar handleLogout={handleLogout} />
       <br />
       <Box
         sx={{
@@ -146,7 +145,7 @@ const StoryGenerator: React.FC = () => {
           }}
         >
           <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: '20px' }}>
-            Welcome {user?.name} to StorySprout!
+            Hello {user?.name}!
           </Typography>
         </Box>
         <Box
