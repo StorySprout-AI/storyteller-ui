@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
 import useUser from '../hooks/useUser'
 import NavBar from './shared/NavBar'
+import { heroes, places, characters, subjects, objects, ages, writingStyles } from '../data/prompts'
 
 const StoryGenerator: React.FC = () => {
   const [hero, setHero] = useState('')
@@ -16,47 +17,6 @@ const StoryGenerator: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
   const { user } = useUser()
-
-  const heroes = ['Alice', 'Bob', 'Charlie', 'David', 'Eva', 'Frank', 'Grace', 'Harry', 'Ivy', 'Jack']
-  const places = [
-    'Wonderland',
-    'Neverland',
-    'Hogwarts',
-    'Narnia',
-    'Middle Earth',
-    'Camelot',
-    'Atlantis',
-    'Oz',
-    'Underworld',
-    'Heaven'
-  ]
-  const characters = ['Rabbit', 'Fairy', 'Wizard', 'Lion', 'Elf', 'Knight', 'Mermaid', 'Witch', 'Ghost', 'Angel']
-  const objects = ['Mirror', 'Lamp', 'Ring', 'Sword', 'Map', 'Key', 'Book', 'Crystal Ball', 'Potion', 'Treasure Chest']
-  const subjects = [
-    'Friendship',
-    'Adventure',
-    'Courage',
-    'Kindness',
-    'Exploration',
-    'Magic',
-    'Nature',
-    'Dreams',
-    'Discovery',
-    'Love'
-  ]
-  const ages = ['3-4', '5-6', '7-8', '9-10', '11-12', '13-14', '15-16', '17-18']
-  const writingStyles = [
-    'Humorous',
-    'Serious',
-    'Poetic',
-    'Mysterious',
-    'Whimsical',
-    'Suspenseful',
-    'Adventurous',
-    'Magical',
-    'Thought-provoking',
-    'Epic'
-  ]
 
   useEffect(() => {
     if (storyPages.length > 0) {
