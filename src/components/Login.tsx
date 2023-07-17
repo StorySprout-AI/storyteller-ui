@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import GoogleOauth from './shared/GoogleOauth'
 import axios from 'axios'
@@ -16,10 +16,6 @@ const StyledFormContainer = styled(Grid)`
   align-items: center;
   justify-content: center;
   padding: 16px;
-`
-
-const StyledButton = styled(Button)`
-  margin-top: 16px;
 `
 
 const Login = () => {

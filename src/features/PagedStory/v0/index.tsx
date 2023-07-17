@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import axios from 'axios'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
-import NavBar from './shared/NavBar'
-import { heroes, places, characters, subjects, objects, ages, writingStyles } from '../lib/prompts'
-import { useUser, useStoryPrompt } from 'hooks'
+import NavBar from 'components/shared/NavBar'
+import { heroes, places, characters, subjects, objects, ages, writingStyles } from 'lib/prompts'
+import { useUser, useStoryPrompt, useGenerateStory } from 'hooks'
 
-const StoryGenerator: React.FC = () => {
+const PagedStoryV0: React.FC = () => {
   const { 
     hero, setHero, 
     place, setPlace, 
@@ -15,10 +14,9 @@ const StoryGenerator: React.FC = () => {
     subject, setSubject, 
     prompt 
   } = useStoryPrompt()
-  const [storyPages, setStoryPages] = useState<string[]>([])
-  const [loading, setLoading] = useState(false)
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
   const { user } = useUser()
+  const { loading, storyPages, requestStory } = useGenerateStory()
 
   useEffect(() => {
     if (storyPages.length > 0) {
@@ -27,36 +25,8 @@ const StoryGenerator: React.FC = () => {
   }, [storyPages])
 
   const generateStory = useCallback(async () => {
-    setLoading(true)
-
-    // const prompt = composePrompt()
-    const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY
-
-    try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.7
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${openaiApiKey}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-      const generatedStory = response.data.choices[0].message.content
-      const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
-
-      setStoryPages(pages)
-    } catch (error) {
-      console.error('Error generating story:', error)
-    } finally {
-      setLoading(false)
-    }
-  }, [prompt])
+    await requestStory(prompt)
+  }, [prompt, requestStory])
 
   const goToNextPage = () => {
     setCurrentStoryPage((prevPage) => prevPage + 1)
@@ -270,4 +240,4 @@ const StoryGenerator: React.FC = () => {
   )
 }
 
-export default StoryGenerator
+export default PagedStoryV0

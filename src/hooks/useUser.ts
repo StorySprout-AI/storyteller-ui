@@ -139,6 +139,7 @@ const useUser = () => {
       setIsLoggedIn(false)
       clearCredentials()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return { user, isLoggedIn }

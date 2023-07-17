@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 export default function useStoryPrompt() {
   const [hero, setHero] = useState('')
@@ -7,6 +7,7 @@ export default function useStoryPrompt() {
   const [object, setObject] = useState('')
   const [age, setAge] = useState('')
   const [subject, setSubject] = useState('')
+  const [prompt, setPrompt] = useState('')
   const composePrompt = useCallback(() => {
     return `Write a 10 page story about ${subject} with a hero named ${hero}, \
     set in a place called ${place}, featuring a ${character} which you need to name, \
@@ -15,6 +16,10 @@ export default function useStoryPrompt() {
     containing 500 characters start each with "Page 1", "Page 2", etc. And mark the end of \
     the story with "The End".`
   }, [age, character, hero, object, place, subject])
+
+  useEffect(() => {
+    setPrompt(composePrompt())
+  }, [composePrompt])
 
   return {
     subject,
@@ -29,6 +34,6 @@ export default function useStoryPrompt() {
     setObject,
     age,
     setAge,
-    composePrompt
+    prompt
   }
 }
