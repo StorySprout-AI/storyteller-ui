@@ -4,16 +4,19 @@ import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, Cir
 import useUser from '../hooks/useUser'
 import NavBar from './shared/NavBar'
 import { heroes, places, characters, subjects, objects, ages, writingStyles } from '../data/prompts'
+import { useStoryPrompt } from 'hooks'
 
 const StoryGenerator: React.FC = () => {
-  const [hero, setHero] = useState('')
-  const [place, setPlace] = useState('')
-  const [character, setCharacter] = useState('')
-  const [object, setObject] = useState('')
+  const { 
+    hero, setHero, 
+    place, setPlace, 
+    character, setCharacter, 
+    object, setObject, 
+    age, setAge, 
+    subject, setSubject, 
+    composePrompt 
+  } = useStoryPrompt()
   const [storyPages, setStoryPages] = useState<string[]>([])
-  const [age, setAge] = useState('')
-  const [subject, setSubject] = useState('')
-  const [prompt, setPrompt] = useState('')
   const [loading, setLoading] = useState(false)
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
   const { user } = useUser()
@@ -27,10 +30,8 @@ const StoryGenerator: React.FC = () => {
   const generateStory = async () => {
     setLoading(true)
 
-    const prompt = `Write a 10 page story about ${subject} with a hero named ${hero}, set in a place called ${place}, featuring a ${character} which you need to name, and a significant object referred to as ${object}. The story must be age-appropriate for kids between ${age} years old. Split your response into 10 pages, with each page containing 500 characters start each with "Page 1", "Page 2", etc. And mark the end of the story with "The End".`
+    const prompt = composePrompt()
     const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY
-
-    setPrompt(prompt)
 
     try {
       const response = await axios.post(

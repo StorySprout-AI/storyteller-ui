@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 
-export default function useGenerateStory(prompt: string) {
+export default function useGenerateStory() {
   const [loading, setLoading] = useState(false)
   const [storyPages, setStoryPages] = useState<string[]>([])
 
-  const generateStory = useCallback(async () => {
+  const generateStory = useCallback(async (prompt: string) => {
     setLoading(true)
 
     const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY
@@ -34,7 +34,7 @@ export default function useGenerateStory(prompt: string) {
     } finally {
       setLoading(false)
     }
-  }, [prompt])
+  }, [])
 
   return { 
     loading, 
