@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
-import useUser from '../hooks/useUser'
 import NavBar from './shared/NavBar'
 import { heroes, places, characters, subjects, objects, ages, writingStyles } from '../data/prompts'
-import { useStoryPrompt } from 'hooks'
+import { useUser, useStoryPrompt } from 'hooks'
 
 const StoryGenerator: React.FC = () => {
   const { 
