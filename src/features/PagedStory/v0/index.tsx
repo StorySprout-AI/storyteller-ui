@@ -12,7 +12,7 @@ const PagedStoryV0: React.FC = () => {
     object, setObject, 
     age, setAge, 
     subject, setSubject, 
-    prompt 
+    composePrompt
   } = useStoryPrompt()
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
   const { user } = useUser()
@@ -25,8 +25,9 @@ const PagedStoryV0: React.FC = () => {
   }, [storyPages])
 
   const generateStory = useCallback(async () => {
+    const prompt = composePrompt()
     await requestStory(prompt)
-  }, [prompt, requestStory])
+  }, [composePrompt, requestStory])
 
   const goToNextPage = () => {
     setCurrentStoryPage((prevPage) => prevPage + 1)

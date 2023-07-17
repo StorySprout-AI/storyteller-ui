@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import StoryGenerator from './components/StoryGenerator'
+import StoryGenerator from './features/PagedStory/v0'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import Login from './components/Login'
 import useUser from './hooks/useUser'
