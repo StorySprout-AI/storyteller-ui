@@ -24,3 +24,8 @@ yarn-error.log*
 
 # Environtment variables
 .envrc
+
+# IDE config
+*.code-workspace
+/.vscode/*
+!/.vscode/settings.json
