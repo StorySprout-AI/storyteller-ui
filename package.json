@@ -36,7 +36,23 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!axios)"
-    ]
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*.{spec,test}.{ts,tsx}"
+    ],
+    "collectCoverageFrom": [
+      "./src/**/*.{ts,tsx}",
+      "!**/*.d.ts",
+      "!**/node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 75,
+        "lines": 75,
+        "functions": 95,
+        "statements": -10
+      }
+    }
   },
   "eslintConfig": {
     "extends": [
