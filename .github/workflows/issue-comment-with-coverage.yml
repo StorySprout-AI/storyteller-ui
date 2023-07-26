@@ -1,11 +1,12 @@
 name: CI / "Storyteller UI" app
 on:
+  # Doc on issue_comment event: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment-on-issues-only-or-pull-requests-only
   issue_comment:
     types: [created, edited]
 jobs:
   test_and_build:
     name: Test, lint and build
-    if: contains(github.event.comment.html_url, '/pull/')
+    if: ${{ github.event.issue.pull_request }}
     strategy:
       matrix:
         node: ["18"]
