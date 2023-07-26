@@ -1,4 +1,4 @@
-name: Test, lint and build "Storyteller UI" app
+name: CI / "Storyteller UI" app
 on: pull_request
 jobs:
   test_and_build:
