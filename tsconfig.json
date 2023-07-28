@@ -6,6 +6,11 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": [
+      "jest",
+      "node"
+    ],
+    "baseUrl": "./src",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,7 +25,27 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "paths": {
+    "*": [
+      "*"
+    ],
+    "features/*": [
+      "features/*"
+    ],
+    "components/*": [
+      "components/*"
+    ],
+    "hooks/*": [
+      "hooks/*"
+    ],
+    "lib/*": [
+      "lib/*"
+    ]
+  },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

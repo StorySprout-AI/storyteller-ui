@@ -11,6 +11,13 @@ const useUser = () => {
   const [user, setUser] = useState<User | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // Remove the token and user from localStorage
+  const clearCredentials = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+  }
+
+  // TODO: break down as useRefreshAccessToken hook
   const refreshAccessToken = async () => {
     // Retrieve the refresh token from localStorage
     const token = localStorage.getItem('refreshToken')
@@ -40,13 +47,11 @@ const useUser = () => {
       // No token found, clear user and login status
       setUser(null)
       setIsLoggedIn(false)
-
-      // Remove the token and user from localStorage
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
+      clearCredentials()
     }
   }
 
+  // TODO: break down as function in useTokenHelpers hook
   // Helper function to check if the token is valid
   const isTokenValid = (token: string) => {
     // Check if token is not expired
@@ -57,6 +62,10 @@ const useUser = () => {
       const refreshToken = localStorage.getItem('refreshToken')
 
       if (refreshToken) {
+        /** 
+         * TODO: look into the effect of calling isTokenValid in a synchronous context 
+         *   with async refreshAccessToken implemented here
+         */
         // Refresh the access token
         refreshAccessToken()
 
@@ -96,10 +105,7 @@ const useUser = () => {
         // Token is expired or invalid, clear user and login status
         setUser(null)
         setIsLoggedIn(false)
-
-        // Remove the token and user from localStorage
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
+        clearCredentials()
       }
     } else {
       // No token found, try refreshing the token
@@ -124,20 +130,16 @@ const useUser = () => {
           setUser(null)
           setIsLoggedIn(false)
 
-          // Remove the token and user from localStorage
-          localStorage.removeItem('token')
-          localStorage.removeItem('user')
+          clearCredentials()
         }
       }
 
       // No token found, clear user and login status
       setUser(null)
       setIsLoggedIn(false)
-
-      // Remove the token and user from localStorage
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
+      clearCredentials()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return { user, isLoggedIn }

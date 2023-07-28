@@ -1,62 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
-import useUser from '../hooks/useUser'
-import NavBar from './shared/NavBar'
+import NavBar from 'components/shared/NavBar'
+import { heroes, places, characters, subjects, objects, ages, writingStyles } from 'lib/prompts'
+import { useUser, useStoryPrompt, useGenerateStory } from 'hooks'
 
-const StoryGenerator: React.FC = () => {
-  const [hero, setHero] = useState('')
-  const [place, setPlace] = useState('')
-  const [character, setCharacter] = useState('')
-  const [object, setObject] = useState('')
-  const [storyPages, setStoryPages] = useState<string[]>([])
-  const [age, setAge] = useState('')
-  const [subject, setSubject] = useState('')
-  const [prompt, setPrompt] = useState('')
-  const [loading, setLoading] = useState(false)
+const PagedStoryV0: React.FC = () => {
+  const { 
+    hero, setHero, 
+    place, setPlace, 
+    character, setCharacter, 
+    object, setObject, 
+    age, setAge, 
+    subject, setSubject, 
+    composePrompt
+  } = useStoryPrompt()
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
   const { user } = useUser()
-
-  const heroes = ['Alice', 'Bob', 'Charlie', 'David', 'Eva', 'Frank', 'Grace', 'Harry', 'Ivy', 'Jack']
-  const places = [
-    'Wonderland',
-    'Neverland',
-    'Hogwarts',
-    'Narnia',
-    'Middle Earth',
-    'Camelot',
-    'Atlantis',
-    'Oz',
-    'Underworld',
-    'Heaven'
-  ]
-  const characters = ['Rabbit', 'Fairy', 'Wizard', 'Lion', 'Elf', 'Knight', 'Mermaid', 'Witch', 'Ghost', 'Angel']
-  const objects = ['Mirror', 'Lamp', 'Ring', 'Sword', 'Map', 'Key', 'Book', 'Crystal Ball', 'Potion', 'Treasure Chest']
-  const subjects = [
-    'Friendship',
-    'Adventure',
-    'Courage',
-    'Kindness',
-    'Exploration',
-    'Magic',
-    'Nature',
-    'Dreams',
-    'Discovery',
-    'Love'
-  ]
-  const ages = ['3-4', '5-6', '7-8', '9-10', '11-12', '13-14', '15-16', '17-18']
-  const writingStyles = [
-    'Humorous',
-    'Serious',
-    'Poetic',
-    'Mysterious',
-    'Whimsical',
-    'Suspenseful',
-    'Adventurous',
-    'Magical',
-    'Thought-provoking',
-    'Epic'
-  ]
+  const { loading, storyPages, requestStory } = useGenerateStory()
 
   useEffect(() => {
     if (storyPages.length > 0) {
@@ -64,39 +24,10 @@ const StoryGenerator: React.FC = () => {
     }
   }, [storyPages])
 
-  const generateStory = async () => {
-    setLoading(true)
-
-    const prompt = `Write a 10 page story about ${subject} with a hero named ${hero}, set in a place called ${place}, featuring a ${character} which you need to name, and a significant object referred to as ${object}. The story must be age-appropriate for kids between ${age} years old. Split your response into 10 pages, with each page containing 500 characters start each with "Page 1", "Page 2", etc. And mark the end of the story with "The End".`
-    const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY
-
-    setPrompt(prompt)
-
-    try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.7
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${openaiApiKey}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-      const generatedStory = response.data.choices[0].message.content
-      const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
-
-      setStoryPages(pages)
-    } catch (error) {
-      console.error('Error generating story:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const generateStory = useCallback(async () => {
+    const prompt = composePrompt()
+    await requestStory(prompt)
+  }, [composePrompt, requestStory])
 
   const goToNextPage = () => {
     setCurrentStoryPage((prevPage) => prevPage + 1)
@@ -310,4 +241,4 @@ const StoryGenerator: React.FC = () => {
   )
 }
 
-export default StoryGenerator
+export default PagedStoryV0
