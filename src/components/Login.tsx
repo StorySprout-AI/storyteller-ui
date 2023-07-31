@@ -4,6 +4,7 @@ import { styled } from '@mui/system'
 import GoogleOauth from './shared/GoogleOauth'
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
+import AppleOauth from './shared/AppleOauth'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -58,6 +59,14 @@ const Login = () => {
     // Add your logic here for handling login errors
   }
 
+  function handleAppleSuccess() {
+    console.debug({ response: arguments[0] })
+  }
+
+  function handleAppleError() {
+    console.error({ response: arguments[0] })
+  }
+
   return (
     <StyledContainer container justifyContent="center" alignItems="center">
       <StyledFormContainer item xs={12} sm={6} md={4}>
@@ -68,6 +77,7 @@ const Login = () => {
           Login to continue
         </Typography>
         <GoogleOauth onSuccess={handleLoginSuccess} onError={handleLoginError} />
+        <AppleOauth onSuccess={handleAppleSuccess} onError={handleAppleError} />
       </StyledFormContainer>
     </StyledContainer>
   )
