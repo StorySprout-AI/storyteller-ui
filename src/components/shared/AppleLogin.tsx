@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import MetaTag from './MetaTag'
 import ScriptTag from './ScriptTag'
 
@@ -12,6 +12,23 @@ interface AppleLoginProps {
 }
 
 export default function AppleLogin({ clientId, scope = "name email", state, nonce, redirectURI, usePopup = true }: AppleLoginProps) {
+  const onSuccess = useCallback((event: any) => {
+    console.debug(event)
+  }, [])
+  const onError = useCallback((event: any) => {
+    console.error(event)
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('AppleIDSignInOnSuccess', onSuccess)
+    document.addEventListener('AppleIDSignInOnFailure', onError)
+
+    return () => {
+      document.removeEventListener('AppleIDSignInOnSuccess', onSuccess)
+      document.removeEventListener('AppleIDSignInOnFailure', onError)
+    }
+  })
+
   return (
     <>
       {clientId && <MetaTag name="appleid-signin-client-id" content={clientId} />}
