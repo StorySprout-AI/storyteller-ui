@@ -38,7 +38,15 @@ export default function AppleLogin({ clientId, scope = "name email", state, nonc
       {nonce && <MetaTag name="appleid-signin-nonce" content={nonce} />}
       <MetaTag name="appleid-signin-use-popup" content={usePopup ? "true" : "false"} />
       <ScriptTag id="apple-js" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" />
-      <div id="appleid-signin" data-color="black" data-border="false" data-type="sign in" style={{ width: 180, height: 40, marginTop: 10 }}></div>
+      {/* Doc on the button: https://appleid.apple.com/signinwithapple/button */}
+      <div id="appleid-signin" 
+        data-color="black" 
+        data-border="false" 
+        data-type="continue"
+        data-width="180"
+        data-height="40"
+        data-border-radius="10"
+        style={{ marginTop: 10 }}></div>
     </>
   )
 }
