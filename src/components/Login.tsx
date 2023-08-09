@@ -59,12 +59,8 @@ const Login = () => {
     // Add your logic here for handling login errors
   }
 
-  function handleAppleSuccess() {
+  function handleAppleOauthCallback() {
     console.debug({ response: arguments[0] })
-  }
-
-  function handleAppleError() {
-    console.error({ response: arguments[0] })
   }
 
   return (
@@ -77,7 +73,7 @@ const Login = () => {
           Login to continue
         </Typography>
         <GoogleOauth onSuccess={handleLoginSuccess} onError={handleLoginError} />
-        <AppleOauth onSuccess={handleAppleSuccess} onError={handleAppleError} />
+        <AppleOauth onSuccess={handleAppleOauthCallback} onError={handleAppleOauthCallback} />
       </StyledFormContainer>
     </StyledContainer>
   )
