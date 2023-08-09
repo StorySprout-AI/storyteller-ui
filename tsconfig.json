@@ -6,10 +6,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "types": [
-      "jest",
-      "node"
-    ],
     "baseUrl": "./src",
     "allowJs": true,
     "skipLibCheck": true,

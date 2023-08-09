@@ -4,9 +4,10 @@ interface ScriptTagProps {
   id: string
   src: string
   async?: boolean
+  children?: React.ReactNode
 }
 
-export default function ScriptTag({ id, src, async = false }: ScriptTagProps) {
+export default function ScriptTag({ id, src, async = false, children }: ScriptTagProps) {
   useEffect(() => {
     const resource = document.createElement('script')
     resource.src = src
@@ -20,5 +21,5 @@ export default function ScriptTag({ id, src, async = false }: ScriptTagProps) {
     }
   })
 
-  return <></>
+  return <>{children}</>
 }

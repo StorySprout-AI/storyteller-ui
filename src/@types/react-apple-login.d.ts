@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+// import React, { ComponentProps } from 'react'
 
 declare module 'react-apple-login' {
   export interface ClientConfigI {
@@ -60,6 +60,14 @@ declare module 'react-apple-login' {
     callback?: (response: SignInResponseI|SignInErrorI) => void
   }
 
-  // Adding custom props: https://www.credera.com/insights/typescript-adding-custom-type-definitions-for-existing-libraries
-  export default interface ReactAppleLogin extends React.Component<ReactAppleLoginProps & ComponentProps> {}
+  // TODO: Figure out how to add type definitions for React libraries
+  // // Adding custom props: https://www.credera.com/insights/typescript-adding-custom-type-definitions-for-existing-libraries
+  // export default interface ReactAppleLogin extends React.Component<ReactAppleLoginProps & ComponentProps> {}
+}
+
+// TODO: Not sure if this is the right way to do this
+declare global {
+  interface Window {
+    AppleID: AppleID
+  }
 }
