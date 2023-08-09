@@ -19,7 +19,6 @@
     "crypto-js": "^4.1.1",
     "jwt-decode": "^3.1.2",
     "prettier": "^3.0.0",
-    "query-string": "^8.1.0",
     "react": "~18.2.0",
     "react-apple-login": "^1.1.6",
     "react-apple-signin-auth": "^1.0.9",
@@ -78,7 +77,6 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
-    "@types/query-string": "^6.3.0",
     "@types/react-router-dom": "^5.3.3"
   }
 }
