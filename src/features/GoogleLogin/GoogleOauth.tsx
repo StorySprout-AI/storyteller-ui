@@ -7,7 +7,7 @@ interface GoogleOauthProps {
 }
 
 const GoogleOauth: React.FC<GoogleOauthProps> = ({ onSuccess, onError }) => {
-  return <GoogleLogin onSuccess={onSuccess} onError={onError} />
+  return <GoogleLogin width={180} onSuccess={onSuccess} onError={onError} />
 }
 
 export default GoogleOauth

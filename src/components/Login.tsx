@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Container, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import GoogleLogin from 'features/GoogleLogin'
 import AppleLogin from 'features/AppleLogin'
@@ -8,6 +8,14 @@ import { FeatureFlagContext } from 'features/FeatureFlags'
 const StyledContainer = styled(Grid)`
   height: 100vh;
   background-color: #f5f5f5; /* Replace with your desired background color */
+`
+
+const ButtonFrame = styled(Container)`
+  display: flex;
+  margin: 3px 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `
 
 const StyledFormContainer = styled(Grid)`
@@ -30,8 +38,10 @@ const Login = () => {
         <Typography variant="h6" align="center" gutterBottom>
           Login to continue
         </Typography>
-        <GoogleLogin />
-        {isEnabled('feat__apple_login') && <AppleLogin />}
+        <ButtonFrame>
+          <GoogleLogin />
+        </ButtonFrame>
+        {isEnabled('feat__apple_login') && <ButtonFrame><AppleLogin /></ButtonFrame>}
       </StyledFormContainer>
     </StyledContainer>
   )

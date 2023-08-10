@@ -1,5 +1,5 @@
 import React from 'react'
-import AppleOauth from 'components/shared/AppleOauth'
+import AppleOauth from './AppleOauth'
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
 

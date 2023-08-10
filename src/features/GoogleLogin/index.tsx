@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GoogleOauth from 'components/shared/GoogleOauth'
+import GoogleOauth from './GoogleOauth'
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
 
