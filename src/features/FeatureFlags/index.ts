@@ -1,5 +1,6 @@
 import { createContext } from 'react'
-export { default as useFeatureFlags } from './useFeatureFlags'
+
+export * from './useFeatureFlags'
 
 interface FeatureFlagContextType {
   loading: boolean

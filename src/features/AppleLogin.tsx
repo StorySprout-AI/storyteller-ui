@@ -1,7 +1,7 @@
 import React from 'react'
 import AppleOauth from 'components/shared/AppleOauth'
 import axios from 'axios'
-// import CryptoJS from 'crypto-js'
+import CryptoJS from 'crypto-js'
 
 interface NameI {
   firstName: string
@@ -45,28 +45,29 @@ export default function AppleLogin() {
       id_token,
       code,
       client_id: process.env.REACT_APP_CLIENT_ID,
-      client_secret: process.env.REACT_APP_CLIENT_SECRET
+      client_secret: process.env.REACT_APP_CLIENT_SECRET,
+      redirect_uri: 'https://storysprout.ngrok.app'
     }
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/oauth/apple`, data)
       const { access_token: accessToken, refresh_token: refreshToken, user } = res.data
       console.debug({ accessToken, refreshToken, user })
-      // const encryptedToken = CryptoJS.AES.encrypt(accessToken, process.env.REACT_APP_ENCRYPTION_KEY as string).toString()
-      // const encryptedRefreshToken = CryptoJS.AES.encrypt(
-      //   refreshToken,
-      //   process.env.REACT_APP_ENCRYPTION_KEY as string
-      // ).toString()
-      // const encryptedUser = CryptoJS.AES.encrypt(
-      //   JSON.stringify(user),
-      //   process.env.REACT_APP_ENCRYPTION_KEY as string
-      // ).toString()
+      const encryptedToken = CryptoJS.AES.encrypt(accessToken, process.env.REACT_APP_ENCRYPTION_KEY as string).toString()
+      const encryptedRefreshToken = CryptoJS.AES.encrypt(
+        refreshToken,
+        process.env.REACT_APP_ENCRYPTION_KEY as string
+      ).toString()
+      const encryptedUser = CryptoJS.AES.encrypt(
+        JSON.stringify(user),
+        process.env.REACT_APP_ENCRYPTION_KEY as string
+      ).toString()
 
-      // localStorage.setItem('authProvider', 'apple')
-      // localStorage.setItem('refreshToken', encryptedRefreshToken)
-      // localStorage.setItem('token', encryptedToken)
-      // localStorage.setItem('user', encryptedUser)
+      localStorage.setItem('authProvider', 'apple')
+      localStorage.setItem('refreshToken', encryptedRefreshToken)
+      localStorage.setItem('token', encryptedToken)
+      localStorage.setItem('user', encryptedUser)
 
-      // window.location.reload()
+      window.location.reload()
     } catch(err) {
       console.log(err)
     }
