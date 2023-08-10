@@ -23,7 +23,7 @@ export default function AppleOauth({ ...rest }) {
       responseMode="fragment"
       state="apple_oauth_via_fragment"
       clientId="app.storysprout.web.auth"
-      redirectURI="https://storysprout.ngrok.app"
+      redirectURI={process.env.REACT_APP_APPLE_REDIRECT_URI}
       designProp={{ width: 180, height: 40, border_radius: 10 }}
       style={{ marginTop: 10 }} />
 )
