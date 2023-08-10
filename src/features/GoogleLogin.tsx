@@ -28,6 +28,7 @@ export default function GoogleLogin() {
           process.env.REACT_APP_ENCRYPTION_KEY as string
         ).toString()
 
+        localStorage.setItem('authProvider', 'google')
         localStorage.setItem('refreshToken', encryptedRefreshToken)
         localStorage.setItem('token', encryptedToken)
         localStorage.setItem('user', encryptedUser)

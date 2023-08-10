@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import GoogleLogin from 'features/GoogleLogin'
 import AppleLogin from 'features/AppleLogin'
+import { FeatureFlagContext } from 'features/FeatureFlags'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -18,6 +19,8 @@ const StyledFormContainer = styled(Grid)`
 `
 
 const Login = () => {
+  const { isEnabled } = useContext(FeatureFlagContext)
+
   return (
     <StyledContainer container justifyContent="center" alignItems="center">
       <StyledFormContainer item xs={12} sm={6} md={4}>
@@ -28,7 +31,7 @@ const Login = () => {
           Login to continue
         </Typography>
         <GoogleLogin />
-        <AppleLogin />
+        {isEnabled('feat__apple_login') && <AppleLogin />}
       </StyledFormContainer>
     </StyledContainer>
   )

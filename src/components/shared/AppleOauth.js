@@ -8,7 +8,10 @@ export default function AppleOauth({ ...rest }) {
 
   useEffect(() => {
     if(code && id_token && state)
-      onSuccess({ credential: id_token, code, id_token, state })
+      onSuccess({ 
+        credential: id_token, 
+        authorization: { code, id_token, state } 
+      })
     else if(error)
       onError(error)
   // eslint-disable-next-line react-hooks/exhaustive-deps
