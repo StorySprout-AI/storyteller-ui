@@ -20,29 +20,44 @@ const useUser = () => {
   // TODO: break down as useRefreshAccessToken hook
   const refreshAccessToken = async () => {
     // Retrieve the refresh token from localStorage
-    const token = localStorage.getItem('refreshToken')
+    const encrypteToken = localStorage.getItem('refreshToken')
+    const token = CryptoJS.AES.decrypt(
+      encrypteToken as string,
+      process.env.REACT_APP_ENCRYPTION_KEY as string
+    ).toString(CryptoJS.enc.Utf8)
+
     try {
-      const response = await axios.post('/oauth/token', {
+      const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/oauth/token`, {
         grant_type: 'refresh_token',
         refresh_token: token,
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
-      // Store the new token in localStorage
+      // Encrypt and store the new token in localStorage
       const encryptedToken = CryptoJS.AES.encrypt(
         response.data.access_token,
         process.env.REACT_APP_ENCRYPTION_KEY as string
       ).toString()
-
       localStorage.setItem('token', encryptedToken)
 
-      // Store the new refresh token in localStorage
-      localStorage.setItem('refreshToken', response.data.refresh_token)
+      // Encrypt and Store the new refresh token in localStorage
+      const encryptedRefreshToken = CryptoJS.AES.encrypt(
+        response.data.refresh_token,
+        process.env.REACT_APP_ENCRYPTION_KEY as string
+      ).toString()
+      localStorage.setItem('refreshToken', encryptedRefreshToken)
 
-      // Store the new user in localStorage
-      const user = jwt_decode(response.data.access_token) as { user: string }
+      // Encrypt and store the user in localStorage
+      const user = jwt_decode(response.data.access_token)
+      const encryptedUser = CryptoJS.AES.encrypt(
+        JSON.stringify(user),
+        process.env.REACT_APP_ENCRYPTION_KEY as string
+      ).toString()
+      localStorage.setItem('user', encryptedUser)
 
-      localStorage.setItem('user', JSON.stringify(user.user))
+      // Set the user and login status
+      setUser(encryptedUser as unknown as User)
+      setIsLoggedIn(true)
     } catch (error) {
       // No token found, clear user and login status
       setUser(null)
@@ -62,8 +77,8 @@ const useUser = () => {
       const refreshToken = localStorage.getItem('refreshToken')
 
       if (refreshToken) {
-        /** 
-         * TODO: look into the effect of calling isTokenValid in a synchronous context 
+        /**
+         * TODO: look into the effect of calling isTokenValid in a synchronous context
          *   with async refreshAccessToken implemented here
          */
         // Refresh the access token
@@ -112,26 +127,7 @@ const useUser = () => {
       const refreshToken = localStorage.getItem('refreshToken')
 
       if (refreshToken) {
-        // Refresh the access token
         refreshAccessToken()
-
-        // Retrieve the encrypted token from localStorage
-        const encryptedToken = localStorage.getItem('token')
-        const decryptedUser = CryptoJS.AES.decrypt(
-          storedUser as string,
-          process.env.REACT_APP_ENCRYPTION_KEY as string
-        ).toString(CryptoJS.enc.Utf8)
-
-        if (encryptedToken) {
-          setUser(JSON.parse(decryptedUser))
-          setIsLoggedIn(true)
-        } else {
-          // No token found, clear user and login status
-          setUser(null)
-          setIsLoggedIn(false)
-
-          clearCredentials()
-        }
       }
 
       // No token found, clear user and login status
@@ -139,7 +135,7 @@ const useUser = () => {
       setIsLoggedIn(false)
       clearCredentials()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return { user, isLoggedIn }
