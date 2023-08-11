@@ -1,4 +1,4 @@
-import { LinearProgress } from '@mui/material'
+import LinearProgress from '@mui/material/LinearProgress'
 import React from 'react'
 import useFeatureFlags from './useFeatureFlags'
 
