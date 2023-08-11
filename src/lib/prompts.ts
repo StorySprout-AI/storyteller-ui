@@ -12,7 +12,18 @@ export const places = [
   'Heaven'
 ]
 export const characters = ['Rabbit', 'Fairy', 'Wizard', 'Lion', 'Elf', 'Knight', 'Mermaid', 'Witch', 'Ghost', 'Angel']
-export const objects = ['Mirror', 'Lamp', 'Ring', 'Sword', 'Map', 'Key', 'Book', 'Crystal Ball', 'Potion', 'Treasure Chest']
+export const objects = [
+  'Mirror',
+  'Lamp',
+  'Ring',
+  'Sword',
+  'Map',
+  'Key',
+  'Book',
+  'Crystal Ball',
+  'Potion',
+  'Treasure Chest'
+]
 export const subjects = [
   'Friendship',
   'Adventure',

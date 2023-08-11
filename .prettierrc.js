@@ -5,6 +5,6 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'none',
   bracketSpacing: true,
-  jsxBracketSameLine: false,
+  bracketSameLine: false,
   overrides: [{ files: '*.yml', options: { singleQuote: false } }]
 }
