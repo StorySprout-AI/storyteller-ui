@@ -5,13 +5,19 @@ import { heroes, places, characters, subjects, objects, ages, writingStyles } fr
 import { useUser, useStoryPrompt, useGenerateStory } from 'hooks'
 
 const PagedStoryV0: React.FC = () => {
-  const { 
-    hero, setHero, 
-    place, setPlace, 
-    character, setCharacter, 
-    object, setObject, 
-    age, setAge, 
-    subject, setSubject, 
+  const {
+    hero,
+    setHero,
+    place,
+    setPlace,
+    character,
+    setCharacter,
+    object,
+    setObject,
+    age,
+    setAge,
+    subject,
+    setSubject,
     composePrompt
   } = useStoryPrompt()
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
@@ -89,12 +95,12 @@ const PagedStoryV0: React.FC = () => {
           }}
         >
           <Typography variant="body1" sx={{ textAlign: 'center', color: '#808080' }}>
-            Create amazing stories with just a few clicks! Simply select the options below and click "Generate Story" to
-            get started.
+            Create amazing stories with just a few clicks! Simply select the options below and click &quot;Generate
+            Story&quot; to get started.
           </Typography>
         </Box>
         <FormControl variant="outlined">
-          <InputLabel id="hero-label">Hero's Name</InputLabel>
+          <InputLabel id="hero-label">Hero&#39;s Name</InputLabel>
           <Select
             labelId="hero-label"
             value={hero}
