@@ -18,7 +18,9 @@ export function useFeatureFlags() {
   const loadFlags = useCallback(async () => {
     setLoading(true)
     try {
-      const { data } = await axios.get<FlipperFeaturesResponse>(`${process.env.REACT_APP_API_ENDPOINT}/api/flipper/features`)
+      const { data } = await axios.get<FlipperFeaturesResponse>(
+        `${process.env.REACT_APP_API_ENDPOINT}/api/flipper/features`
+      )
       const { features } = data
       const latestFlags = features.reduce((acc, { key, state }) => {
         return { ...acc, [key]: state === 'on' }
