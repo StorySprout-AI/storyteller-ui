@@ -16,8 +16,7 @@ export default function ScriptTag({ id, src, async = false, children }: ScriptTa
     document.body.appendChild(resource)
 
     return () => {
-      if(document.body.contains(resource))
-        document.body.removeChild(resource)
+      if (document.body.contains(resource)) document.body.removeChild(resource)
     }
   })
 
