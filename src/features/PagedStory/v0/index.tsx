@@ -47,6 +47,7 @@ const PagedStoryV0: React.FC = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('user')
+    localStorage.removeItem('authProvider')
     window.location.reload()
   }
 
