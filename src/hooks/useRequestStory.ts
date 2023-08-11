@@ -36,10 +36,10 @@ export default function useRequestStory() {
     }
   }, [])
 
-  return { 
-    loading, 
-    prompt, 
-    storyPages, 
-    requestStory 
+  return {
+    loading,
+    prompt,
+    storyPages,
+    requestStory
   }
 }
