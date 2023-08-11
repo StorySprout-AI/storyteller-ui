@@ -10,7 +10,7 @@ interface FlipperFeaturesResponse {
   features: FlipperFeature[]
 }
 
-export default function useFeatureFlags() {
+export function useFeatureFlags() {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<any>('')
   const [flags, setFlags] = useState<Record<string, boolean>>({})
@@ -49,3 +49,5 @@ export default function useFeatureFlags() {
     isEnabled
   }
 }
+
+export default useFeatureFlags
