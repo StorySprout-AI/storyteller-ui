@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import MuiAppBar, { AppBarProps } from '@mui/material/AppBar'
 import MuiToolbar from '@mui/material/Toolbar'
 import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
+// import Link from '@mui/material/Link'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
@@ -20,11 +20,11 @@ import styled from '@mui/system/styled'
 import { AuthStatus, useAuth } from 'components/shared/AuthProvider'
 import { StoryBuilderContext } from '../../components/StoryBuilder'
 
-const rightLink = {
-  fontSize: 16,
-  color: 'common.white',
-  ml: 3
-}
+// const rightLink = {
+//   fontSize: 16,
+//   color: 'common.white',
+//   ml: 3
+// }
 
 const Toolbar = styled(MuiToolbar)(({ theme }) => ({
   height: 64,
