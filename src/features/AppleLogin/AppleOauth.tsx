@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import MetaTag from 'components/shared/MetaTag'
 import ScriptTag from 'components/shared/ScriptTag'
 import { SignInErrorI, SignInResponseI } from './types'
-import { useCookies } from 'react-cookie'
 
-import { COOKIE_FLAGS, FEATURE_FLAGS } from 'lib/constants'
+import useDomainWarningCookie from './useDomainWarningCookie'
 
 interface AppleLoginProps {
   clientId: string
@@ -19,10 +18,6 @@ interface AppleLoginProps {
   responseType?: 'code' | 'id_token' | 'id_token code' | 'code id_token'
 }
 
-function isSupportedDomain() {
-  return /^https:\/\/(?:(?:.*.)?storysprout|storysprout.ngrok).app/gm.test(window.location.href)
-}
-
 export default function AppleOauth({
   clientId,
   scope = 'name email',
@@ -35,14 +30,7 @@ export default function AppleOauth({
   onSuccess,
   onError
 }: AppleLoginProps) {
-  const [cookies, setCookie] = useCookies([FEATURE_FLAGS.APPLE_LOGIN])
-  const [hasSeenDomainWarning, setHasSeenDomainWarning] = useState<string>(
-    () => cookies[COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING]
-  )
-
-  const shouldShowDomainWarning = useCallback(() => {
-    return !isSupportedDomain() && hasSeenDomainWarning !== 'yes'
-  }, [hasSeenDomainWarning])
+  const domainWarning = useDomainWarningCookie()
 
   useEffect(() => {
     document.addEventListener('AppleIDSignInOnSuccess', onSuccess as any)
@@ -56,27 +44,9 @@ export default function AppleOauth({
   }, [])
 
   useEffect(() => {
-    /**
-     * TODO: Make sure app is on supported domain - and include helpful dev docs
-     *   to fix the issue
-     */
-    if (shouldShowDomainWarning()) {
-      setHasSeenDomainWarning('yes')
-      alert(
-        `From the app URL ${window.location.href} ` +
-          'you will probably not be able to Sign In ' +
-          'with Apple: https://regex101.com/r/yhs1AT/1'
-      )
-    }
+    domainWarning.check()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldShowDomainWarning])
-
-  // Manage cookie values
-  useEffect(() => {
-    if (!setCookie) return
-
-    setCookie(COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING, hasSeenDomainWarning)
-  }, [setCookie, hasSeenDomainWarning])
+  }, [domainWarning.alreadyShown])
 
   return (
     <>

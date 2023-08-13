@@ -1,4 +1,4 @@
-export const FEATURE_FLAGS = {
+export const FEATURE_FLAGS: Record<string, string> = {
   APPLE_LOGIN: 'feat__apple_login'
 }
 
