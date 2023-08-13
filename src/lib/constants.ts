@@ -11,9 +11,3 @@ export const COOKIE_FLAGS: Record<FeatureCookieType, Record<string, string>> = {
     HAS_SEEN_DOMAIN_WARNING: `${FEATURE_FLAGS.APPLE_LOGIN}.hasSeenDomainWarning`
   }
 }
-
-// export const ALL_COOKIE_FLAGS = Object.entries(COOKIE_FLAGS).map<Array<[FeatureCookieType, Record<string, string>]>>(
-//   ([key, value]) => {
-//     return Object.entries(value).map(([vKey, vValue]) => vValue)
-//   }
-// )
