@@ -6,6 +6,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import Login from './components/Login'
 import useUser from './hooks/useUser'
 import { useFeatureFlags, FeatureFlagContext } from 'features/FeatureFlags'
+import { CookiesProvider } from 'react-cookie'
 
 function App() {
   const { loading, flags, isEnabled } = useFeatureFlags()
@@ -13,13 +14,15 @@ function App() {
 
   return (
     <FeatureFlagContext.Provider value={{ loading, flags, isEnabled }}>
-      <Router>
-        <div className="App">
-          <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}>
-            {isLoggedIn ? <StoryGenerator /> : <Login />}
-          </GoogleOAuthProvider>
-        </div>
-      </Router>
+      <CookiesProvider>
+        <Router>
+          <div className="App">
+            <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}>
+              {isLoggedIn ? <StoryGenerator /> : <Login />}
+            </GoogleOAuthProvider>
+          </div>
+        </Router>
+      </CookiesProvider>
     </FeatureFlagContext.Provider>
   )
 }

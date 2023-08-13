@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import MetaTag from 'components/shared/MetaTag'
 import ScriptTag from 'components/shared/ScriptTag'
 import { SignInErrorI, SignInResponseI } from './types'
+import { useCookies } from 'react-cookie'
+
+import { COOKIE_FLAGS, FEATURE_FLAGS } from 'lib/constants'
 
 interface AppleLoginProps {
   clientId: string
@@ -32,20 +35,18 @@ export default function AppleOauth({
   onSuccess,
   onError
 }: AppleLoginProps) {
+  const [cookies, setCookie] = useCookies([FEATURE_FLAGS.APPLE_LOGIN])
+  const [hasSeenDomainWarning, setHasSeenDomainWarning] = useState<string>(
+    () => cookies[COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING]
+  )
+
+  const shouldShowDomainWarning = useCallback(() => {
+    return !isSupportedDomain() && hasSeenDomainWarning !== 'yes'
+  }, [hasSeenDomainWarning])
+
   useEffect(() => {
     document.addEventListener('AppleIDSignInOnSuccess', onSuccess as any)
     document.addEventListener('AppleIDSignInOnFailure', onError as any)
-
-    /**
-     * TODO: Make sure app is on supported domain - and include helpful dev docs
-     *   to fix the issue
-     */
-    if (!isSupportedDomain())
-      alert(
-        `From the app URL ${window.location.href} ` +
-          'you will probably not be able to Sign In ' +
-          'with Apple: https://regex101.com/r/yhs1AT/1'
-      )
 
     return () => {
       document.removeEventListener('AppleIDSignInOnSuccess', onSuccess as any)
@@ -53,6 +54,29 @@ export default function AppleOauth({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    /**
+     * TODO: Make sure app is on supported domain - and include helpful dev docs
+     *   to fix the issue
+     */
+    if (shouldShowDomainWarning()) {
+      setHasSeenDomainWarning('yes')
+      alert(
+        `From the app URL ${window.location.href} ` +
+          'you will probably not be able to Sign In ' +
+          'with Apple: https://regex101.com/r/yhs1AT/1'
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldShowDomainWarning])
+
+  // Manage cookie values
+  useEffect(() => {
+    if (!setCookie) return
+
+    setCookie(COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING, hasSeenDomainWarning)
+  }, [setCookie, hasSeenDomainWarning])
 
   return (
     <>
