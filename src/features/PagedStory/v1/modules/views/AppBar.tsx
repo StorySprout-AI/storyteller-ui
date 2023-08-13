@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import MuiAppBar, { AppBarProps } from '@mui/material/AppBar'
 import MuiToolbar from '@mui/material/Toolbar'
 import Box from '@mui/material/Box'
@@ -17,18 +17,13 @@ import styled from '@mui/system/styled'
 // // Problems? Try this alt syntax
 // import styled from '@mui/material/styles/styled'
 
-import noopFn from 'lodash/noop'
-
-import { useAuth } from 'components/shared/AuthProvider'
+import { AuthStatus, useAuth } from 'components/shared/AuthProvider'
+import { StoryBuilderContext } from '../../components/StoryBuilder'
 
 const rightLink = {
   fontSize: 16,
   color: 'common.white',
   ml: 3
-}
-
-function AppBar(props: AppBarProps) {
-  return <MuiAppBar elevation={0} position="fixed" {...props} />
 }
 
 const Toolbar = styled(MuiToolbar)(({ theme }) => ({
@@ -38,11 +33,11 @@ const Toolbar = styled(MuiToolbar)(({ theme }) => ({
   }
 }))
 
-export function AppAppBar() {
+export function AppBar(props: AppBarProps) {
   return (
     <div>
-      <AppBar position="fixed">
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+      <MuiAppBar elevation={0} position="fixed" {...props}>
+        {/* <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ flex: 1 }} />
           <Link variant="h6" underline="none" color="inherit" href="/premium-themes/onepirate/" sx={{ fontSize: 24 }}>
             {'onepirate'}
@@ -66,21 +61,23 @@ export function AppAppBar() {
               {'Sign Up'}
             </Link>
           </Box>
-        </Toolbar>
-      </AppBar>
+        </Toolbar> */}
+        {props.children}
+      </MuiAppBar>
       <Toolbar />
     </div>
   )
 }
 
-const pages = ['Products', 'Pricing', 'Blog']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const pages = ['Home', 'About']
+const settings = ['Profile', 'Account', 'Your Library']
 
 export function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
   const auth = useAuth()
+  const sbContext = useContext(StoryBuilderContext)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -89,7 +86,7 @@ export function ResponsiveAppBar() {
     setAnchorElUser(event.currentTarget)
   }
   const handleSignOutMenu = async (event: React.MouseEvent<HTMLElement>) => {
-    await auth.signOut(noopFn)
+    await auth.signOut()
   }
 
   const handleCloseNavMenu = () => {
@@ -101,9 +98,10 @@ export function ResponsiveAppBar() {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* Icon & Logo */}
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -123,6 +121,7 @@ export function ResponsiveAppBar() {
             LOGO
           </Typography>
 
+          {/* Mobile Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -159,6 +158,7 @@ export function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
+
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -178,7 +178,20 @@ export function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <AuthStatus />
+          </Box>
+
+          {/* Page Links */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+            <Button
+              key="function--new-story"
+              onClick={sbContext.toggleDrawer('bottom', true)}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              New Story
+            </Button>
             {pages.map((page) => (
               <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page}

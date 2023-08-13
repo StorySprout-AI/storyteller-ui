@@ -72,12 +72,12 @@ const theme = {
     h3: {
       ...rawTheme.typography.h3,
       ...fontHeader,
-      fontSize: 42
+      fontSize: 38
     },
     h4: {
       ...rawTheme.typography.h4,
       ...fontHeader,
-      fontSize: 36
+      fontSize: 26
     },
     h5: {
       ...rawTheme.typography.h5,

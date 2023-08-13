@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext } from 'react'
 import useUser, { User } from 'hooks/useUser'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 // Example project: https://github.com/remix-run/react-router/blob/dev/examples/auth/src/App.tsx
@@ -8,7 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 export interface AuthContextType {
   loading: boolean
   user: User | null
-  signOut: (callback: VoidFunction) => Promise<void>
+  signOut: (callback?: VoidFunction) => Promise<void>
   // signIn: () => void
   isLoggedIn: boolean
 }
@@ -23,7 +23,6 @@ export function useAuth() {
 
 export function AuthStatus() {
   let auth = useAuth()
-  let navigate = useNavigate()
 
   if (!auth.user) {
     return <p>Login to continue</p>
@@ -31,13 +30,18 @@ export function AuthStatus() {
 
   return (
     <>
-      Hello {auth.user.name}!{' '}
+      Hello {auth.user.name}!&nbsp;
       <button
         onClick={() => {
-          auth.signOut(() => navigate('/'))
+          /**
+           * TODO: Pass a callback to do a hard sign out and clear all provider
+           *   auth sessions (done if the google sign in button does not show info
+           *   for any account)
+           */
+          auth.signOut()
         }}
       >
-        Sign out
+        Not you? Sign out
       </button>
     </>
   )
@@ -61,12 +65,14 @@ export function RequireAuth({ children }: WithRequiredChildren) {
 export default function AuthProvider({ children }: WithRequiredChildren) {
   const { loading, user, isLoggedIn } = useUser()
 
-  const signOut = async (callback: VoidFunction) => {
+  const signOut = async (callback?: VoidFunction) => {
     localStorage.removeItem('token')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('user')
-    // window.location.reload()
-    callback()
+    if (!!callback) callback()
+    else {
+      window.location.reload()
+    }
   }
 
   return (
