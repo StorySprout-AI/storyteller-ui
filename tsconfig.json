@@ -29,6 +29,12 @@
     "*": [
       "*"
     ],
+    "v0": [
+      "features/PagedStory/v0/*"
+    ],
+    "v1": [
+      "features/PagedStory/v1/*"
+    ],
     "features/*": [
       "features/*"
     ],

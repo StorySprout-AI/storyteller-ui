@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import GoogleLogin from 'features/GoogleLogin'
+import { AuthStatus } from './shared/AuthProvider'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -24,7 +25,7 @@ const Login = () => {
           Welcome to StorySprout
         </Typography>
         <Typography variant="h6" align="center" gutterBottom>
-          Login to continue
+          <AuthStatus />
         </Typography>
         <GoogleLogin />
       </StyledFormContainer>

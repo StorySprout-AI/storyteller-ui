@@ -2,14 +2,18 @@ import { useState, useEffect } from 'react'
 import CryptoJS from 'crypto-js'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-type User = {
+export type User = {
   name: string
 }
 
 const useUser = () => {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
 
   // Remove the token and user from localStorage
   const clearCredentials = () => {
@@ -27,6 +31,7 @@ const useUser = () => {
     ).toString(CryptoJS.enc.Utf8)
 
     try {
+      setLoading(true)
       const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/oauth/token`, {
         grant_type: 'refresh_token',
         refresh_token: token,
@@ -57,11 +62,13 @@ const useUser = () => {
 
       // Set the user and login status
       setUser(encryptedUser as unknown as User)
+      setLoading(false)
       setIsLoggedIn(true)
     } catch (error) {
       // No token found, clear user and login status
       setUser(null)
       setIsLoggedIn(false)
+      setLoading(false)
       clearCredentials()
     }
   }
@@ -94,7 +101,8 @@ const useUser = () => {
     return true
   }
 
-  useEffect(() => {
+  const checkForAuth = async () => {
+    setLoading(true)
     // Retrieve the encrypted token from localStorage
     const encryptedToken = localStorage.getItem('token')
     const storedUser = localStorage.getItem('user')
@@ -127,7 +135,7 @@ const useUser = () => {
       const refreshToken = localStorage.getItem('refreshToken')
 
       if (refreshToken) {
-        refreshAccessToken()
+        await refreshAccessToken()
       }
 
       // No token found, clear user and login status
@@ -135,10 +143,33 @@ const useUser = () => {
       setIsLoggedIn(false)
       clearCredentials()
     }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    checkForAuth()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { user, isLoggedIn }
+  useEffect(() => {
+    console.debug('Logged in!', { where: location.pathname, state: location.state })
+    if (!!user && !loading) {
+      // TODO: This seems ridiculous. Can this logic be better?
+      if (
+        location.pathname === '/login' &&
+        !!location.state.from.pathname &&
+        location.state.from.pathname !== location.pathname
+      ) {
+        navigate(location.state.from.pathname)
+      } else if (/^\/(?:login)?$/.test(location.pathname)) {
+        console.debug('Should navigate to protected landing page...')
+        navigate('/v0/stories/new')
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, user])
+
+  return { loading, user, isLoggedIn }
 }
 
 export default useUser // Export the hook
