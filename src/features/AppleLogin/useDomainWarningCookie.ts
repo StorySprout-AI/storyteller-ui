@@ -38,8 +38,6 @@ export default function useDomainWarningCookie() {
   }, [shouldShow])
 
   useEffect(() => {
-    if (!setCookie) return
-
     setCookie(COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING, alreadyShown)
   }, [setCookie, alreadyShown])
 
