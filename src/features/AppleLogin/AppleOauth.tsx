@@ -16,6 +16,10 @@ interface AppleLoginProps {
   responseType?: 'code' | 'id_token' | 'id_token code' | 'code id_token'
 }
 
+function isSupportedDomain() {
+  return /^https:\/\/(?:(?:.*.)?storysprout|storysprout.ngrok).app/gm.test(window.location.href)
+}
+
 export default function AppleOauth({
   clientId,
   scope = 'name email',
@@ -31,6 +35,17 @@ export default function AppleOauth({
   useEffect(() => {
     document.addEventListener('AppleIDSignInOnSuccess', onSuccess as any)
     document.addEventListener('AppleIDSignInOnFailure', onError as any)
+
+    /**
+     * TODO: Make sure app is on supported domain - and include helpful dev docs
+     *   to fix the issue
+     */
+    if (!isSupportedDomain())
+      alert(
+        `From the app URL ${window.location.href} ` +
+          'you will probably not be able to Sign In ' +
+          'with Apple: https://regex101.com/r/yhs1AT/1'
+      )
 
     return () => {
       document.removeEventListener('AppleIDSignInOnSuccess', onSuccess as any)
