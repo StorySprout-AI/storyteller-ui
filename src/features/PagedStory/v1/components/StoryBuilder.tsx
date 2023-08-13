@@ -46,8 +46,13 @@ type StoryBuilderProps = Omit<SwipeableDrawerProps, 'onClose' | 'onOpen'> & {
   header?: ReactNode
 }
 
+// Swipeable edge drawer: https://mui.com/material-ui/react-drawer/#swipeable-edge
 function StoryBuilder({ anchor = 'bottom', children, header, ...rest }: StoryBuilderProps) {
   const { open, toggleDrawer } = useContext(StoryBuilderContext)
+
+  useEffect(() => {
+    console.debug(`"Story builder drawer is open?": ${open}`)
+  }, [open])
 
   return (
     <Root>
