@@ -1,10 +1,16 @@
-import React, { ReactNode, createContext, useState, useEffect } from 'react'
+import React, { ReactNode, createContext, useState, useEffect, useRef, MutableRefObject, useCallback } from 'react'
 
 export type DrawerControlFn = (anchor: string, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => void
 
 export type StoryBuilderContextType = {
   open: boolean
   toggleDrawer: DrawerControlFn
+  autoClickButtonRef: MutableRefObject<HTMLButtonElement>
+  /**
+   * @deprecated Unless we get another use case for capturing the main button
+   *   used to toggle the drawer, we probably don't need to keep this
+   */
+  useAutoClickButton: () => HTMLButtonElement
 }
 
 export const StoryBuilderContext = createContext<StoryBuilderContextType>(null!)
@@ -15,8 +21,9 @@ type StoryBuilderProviderProps = {
 
 export default function Provider({ children }: StoryBuilderProviderProps) {
   const [open, setOpen] = useState(() => true)
+  const autoClickButtonRef = useRef<HTMLButtonElement>(null!)
 
-  const toggleDrawer: DrawerControlFn = (_anchor, isOpen) => (event) => {
+  const toggleDrawer: DrawerControlFn = (_anchor, isOpen) => (_event) => {
     /**
      * TODO: It seems we disabled all the checks for a swipeable edge.
      *   Look into why that is https://mui.com/material-ui/react-drawer/#swipeable-edge
@@ -33,8 +40,16 @@ export default function Provider({ children }: StoryBuilderProviderProps) {
   }
 
   useEffect(() => {
-    console.debug(`Attempted to toggle drawer "open" to: ${open}`)
-  }, [open])
+    if (!!autoClickButtonRef.current)
+      console.debug('Got a ref for the main drawer toggle button!', autoClickButtonRef.current)
+  }, [autoClickButtonRef])
 
-  return <StoryBuilderContext.Provider value={{ open, toggleDrawer }}>{children}</StoryBuilderContext.Provider>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const useAutoClickButton = useCallback(() => autoClickButtonRef.current, [autoClickButtonRef?.current])
+
+  return (
+    <StoryBuilderContext.Provider value={{ open, toggleDrawer, autoClickButtonRef, useAutoClickButton }}>
+      {children}
+    </StoryBuilderContext.Provider>
+  )
 }

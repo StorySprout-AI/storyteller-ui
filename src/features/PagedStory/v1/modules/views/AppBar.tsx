@@ -78,7 +78,7 @@ export function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
   const auth = useAuth()
-  const sbContext = useContext(StoryBuilder.Context)
+  const sbContext = StoryBuilder.useContext()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -187,7 +187,9 @@ export function ResponsiveAppBar() {
           {/* Page Links */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             <Button
+              data-testid="new-story.appbar.btn"
               key="function--new-story"
+              ref={sbContext.autoClickButtonRef}
               onClick={sbContext.toggleDrawer('bottom', true)}
               sx={{ my: 2, color: 'secondary.main', display: 'block' }}
             >

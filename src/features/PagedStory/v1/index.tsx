@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import Grid, { GridProps } from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -67,9 +67,12 @@ function PagedStoryV1() {
 
   const generateStory = useCallback(async () => {
     const prompt = composePrompt()
-    await requestStory(prompt)
-    sbContext.toggleDrawer('bottom', false)
-  }, [composePrompt, requestStory, sbContext])
+    await requestStory(prompt, async () => {
+      const autoClick = new MouseEvent('click', { bubbles: true })
+      sbContext.toggleDrawer('bottom', false)(autoClick as any)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [composePrompt, requestStory, sbContext.toggleDrawer])
 
   return (
     <>

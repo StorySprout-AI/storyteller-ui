@@ -2,14 +2,11 @@
 import React, { useContext, useEffect, ReactNode } from 'react'
 import SwipeableDrawer, { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer'
 import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Global } from '@emotion/react'
 
 import styled from '@mui/system/styled'
 import { grey } from '@mui/material/colors'
-
-import { StoryBuilderContext } from 'features/StoryBuilder/Provider'
 
 import StoryBuilder from './index'
 

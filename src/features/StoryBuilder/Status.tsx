@@ -4,6 +4,8 @@ import Box from '@mui/material/Box'
 import styled from '@mui/material/styles/styled'
 import withRoot from 'features/PagedStory/v1/modules/withRoot'
 
+import random from 'lodash/random'
+
 interface StoryBuilderStatusProps {
   loading: boolean
   storiesAvailable: boolean
@@ -19,7 +21,7 @@ export const CTAMessageOptions = [
 ]
 
 const pickARandomCTAPrompt = () => {
-  const pickIndex = Math.ceil(Math.random() * CTAMessageOptions.length)
+  const pickIndex = random(0, CTAMessageOptions.length - 1, false)
   return CTAMessageOptions[pickIndex]
 }
 
