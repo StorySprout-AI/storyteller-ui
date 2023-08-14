@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GoogleOauth from 'components/shared/GoogleOauth'
+import GoogleOauth from './GoogleOauth'
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
 
@@ -28,6 +28,7 @@ export default function GoogleLogin() {
           process.env.REACT_APP_ENCRYPTION_KEY as string
         ).toString()
 
+        localStorage.setItem('authProvider', 'google')
         localStorage.setItem('refreshToken', encryptedRefreshToken)
         localStorage.setItem('token', encryptedToken)
         localStorage.setItem('user', encryptedUser)

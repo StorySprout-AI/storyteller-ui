@@ -1,8 +1,14 @@
 import React from 'react'
 import { Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
-import GoogleLogin from 'features/GoogleLogin'
+import ButtonStack from 'components/shared/ButtonStack'
+import Feature from 'features/FeatureFlags/Feature'
 import { AuthStatus } from './shared/AuthProvider'
+
+import featureFlags from 'lib/features'
+
+import GoogleLogin from 'features/GoogleLogin'
+import AppleLogin from 'features/AppleLogin'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -27,7 +33,14 @@ const Login = () => {
         <Typography variant="h6" align="center" gutterBottom>
           <AuthStatus />
         </Typography>
-        <GoogleLogin />
+        <ButtonStack>
+          <GoogleLogin />
+        </ButtonStack>
+        <Feature flag={featureFlags.APPLE_LOGIN}>
+          <ButtonStack>
+            <AppleLogin />
+          </ButtonStack>
+        </Feature>
       </StyledFormContainer>
     </StyledContainer>
   )

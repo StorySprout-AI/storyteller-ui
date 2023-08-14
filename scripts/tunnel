@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+ngrok http --domain=storysprout.ngrok.app 3006
