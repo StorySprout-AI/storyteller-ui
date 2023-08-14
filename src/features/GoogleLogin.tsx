@@ -44,9 +44,5 @@ export default function GoogleLogin() {
     // Add your logic here for handling login errors
   }
 
-  return (
-    <GoogleOauth 
-      onSuccess={handleLoginSuccess} 
-      onError={handleLoginError} />
-  )
+  return <GoogleOauth onSuccess={handleLoginSuccess} onError={handleLoginError} />
 }
