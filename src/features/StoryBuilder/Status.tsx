@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import styled from '@mui/material/styles/styled'
@@ -26,12 +26,16 @@ const pickARandomCTAPrompt = () => {
 const StatusTitleTextBox = ({ children }: { children: ReactNode }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-      <Typography variant="h5">{children}</Typography>
+      <Typography fontWeight="400" fontSize={26} sx={{ color: 'text.secondary' }}>
+        {children}
+      </Typography>
     </Box>
   )
 }
 
 export default function Status({ loading, storiesAvailable }: StoryBuilderStatusProps) {
+  const [ctaText] = useState(() => pickARandomCTAPrompt())
+
   if (loading) {
     return <StatusTitleTextBox>One moment, while we build your story...</StatusTitleTextBox>
   }
@@ -39,7 +43,7 @@ export default function Status({ loading, storiesAvailable }: StoryBuilderStatus
   return (
     <StatusTitleTextBox>
       {!!storiesAvailable && <span>Your story is ready</span>}
-      {!storiesAvailable && <span>{pickARandomCTAPrompt()}</span>}
+      {!storiesAvailable && <span>{ctaText}</span>}
     </StatusTitleTextBox>
   )
 }

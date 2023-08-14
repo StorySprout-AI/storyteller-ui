@@ -11,6 +11,8 @@ import { grey } from '@mui/material/colors'
 
 import { StoryBuilderContext } from 'features/StoryBuilder/Provider'
 
+import StoryBuilder from './index'
+
 import withRoot from 'features/PagedStory/v1/modules/withRoot'
 
 const Root = styled('div')(({ theme }) => ({
@@ -39,7 +41,7 @@ type StoryBuilderProps = Omit<SwipeableDrawerProps, 'onClose' | 'onOpen'> & {
 const drawerBleeding = 56
 
 function Drawer({ anchor = 'bottom', children, header, ...rest }: StoryBuilderProps) {
-  const { open, toggleDrawer } = useContext(StoryBuilderContext)
+  const { open, toggleDrawer } = useContext(StoryBuilder.Context)
 
   useEffect(() => {
     console.debug(`"Story builder drawer is open?": ${open}`)
@@ -83,7 +85,7 @@ function Drawer({ anchor = 'bottom', children, header, ...rest }: StoryBuilderPr
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>{!!header ? header : <span>&nbsp;</span>}</Typography>
+          <Box sx={{ display: 'flex-block', flexDirection: 'column', py: 1.5 }}>{header ?? <span>&nbsp;</span>}</Box>
         </StyledBox>
         <StyledBox
           sx={{
