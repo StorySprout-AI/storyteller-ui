@@ -18,7 +18,8 @@ import styled from '@mui/system/styled'
 // import styled from '@mui/material/styles/styled'
 
 import { AuthStatus, useAuth } from 'components/shared/AuthProvider'
-import { StoryBuilderContext } from '../../components/StoryBuilder'
+
+import StoryBuilder from 'features/StoryBuilder'
 
 const rightLink = {
   fontSize: 16,
@@ -77,7 +78,7 @@ export function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
   const auth = useAuth()
-  const sbContext = useContext(StoryBuilderContext)
+  const sbContext = useContext(StoryBuilder.Context)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)

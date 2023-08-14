@@ -1,11 +1,11 @@
 import { useState, useCallback, useContext } from 'react'
 import axios from 'axios'
-import { StoryBuilderContext } from 'features/PagedStory/v1/components/StoryBuilder'
+import StoryBuilder from 'features/StoryBuilder'
 
 export default function useRequestStory() {
   const [loading, setLoading] = useState(false)
   const [storyPages, setStoryPages] = useState<string[]>([])
-  const builder = useContext(StoryBuilderContext)
+  const builder = useContext(StoryBuilder.Context)
 
   const requestStory = useCallback(
     async (prompt: string) => {

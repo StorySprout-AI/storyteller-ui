@@ -2,13 +2,13 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Box from '@mui/material/Box'
 
+import StoryBuilder from 'features/StoryBuilder'
 import withRoot from 'features/PagedStory/v1/modules/withRoot'
 import { ResponsiveAppBar } from '../modules/views/AppBar'
-import { StoryBuilderProvider } from './StoryBuilder'
 
 function Layout() {
   return (
-    <StoryBuilderProvider>
+    <StoryBuilder.Provider>
       <ResponsiveAppBar />
       {/* <Box
         sx={{
@@ -23,7 +23,7 @@ function Layout() {
         <Outlet />
       </Box> */}
       <Outlet />
-    </StoryBuilderProvider>
+    </StoryBuilder.Provider>
   )
 }
 

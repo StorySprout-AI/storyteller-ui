@@ -15,10 +15,10 @@ import Story from './modules/views/Story'
 
 import { useAuth } from 'components/shared/AuthProvider'
 import { useGenerateStory, useStoryPrompt } from 'hooks'
-// import { Routes } from 'react-router-dom'
-
 import { heroes, places, characters, subjects, objects, ages, writingStyles } from 'lib/prompts'
-import StoryBuilder, { StoryBuilderContext } from './components/StoryBuilder'
+import { nullSafeStringOrValue } from 'lib'
+
+import StoryBuilder from 'features/StoryBuilder'
 
 function StackableItem({ children, ...otherProps }: GridProps) {
   return (
@@ -58,10 +58,12 @@ function PagedStoryV1() {
     setAge,
     subject,
     setSubject,
+    writingStyle,
+    setWritingStyle,
     composePrompt
   } = useStoryPrompt()
   const { loading, storyPages, requestStory } = useGenerateStory()
-  const sbContext = useContext(StoryBuilderContext)
+  const sbContext = useContext(StoryBuilder.Context)
 
   const generateStory = useCallback(async () => {
     const prompt = composePrompt()
@@ -75,7 +77,7 @@ function PagedStoryV1() {
       <Story loading={loading} pages={storyPages} />
 
       {/* Bottom drawer StoryBuilder form: https://mui.com/material-ui/react-drawer/#swipeable-edge */}
-      <StoryBuilder
+      <StoryBuilder.Drawer
         header={
           <>
             {!!loading && <span>Generating your story...</span>}
@@ -110,7 +112,7 @@ function PagedStoryV1() {
               <Select
                 labelId="hero-label"
                 value={hero}
-                onChange={(e) => setHero(e.target.value as string)}
+                onChange={(e) => setHero(nullSafeStringOrValue(e.target.value))}
                 label="Hero's Name"
               >
                 {heroes.map((name, index) => (
@@ -122,7 +124,11 @@ function PagedStoryV1() {
             </StackableItem>
             <StackableItem>
               <InputLabel id="place-label">Place</InputLabel>
-              <Select labelId="place-label" value={place} onChange={(e) => setPlace(e.target.value as string)}>
+              <Select
+                labelId="place-label"
+                value={place}
+                onChange={(e) => setPlace(nullSafeStringOrValue(e.target.value))}
+              >
                 {places.map((name, index) => (
                   <MenuItem key={index} value={name}>
                     {name}
@@ -135,7 +141,7 @@ function PagedStoryV1() {
               <Select
                 labelId="character-label"
                 value={character}
-                onChange={(e) => setCharacter(e.target.value as string)}
+                onChange={(e) => setCharacter(nullSafeStringOrValue(e.target.value))}
                 label="Secondary Character"
               >
                 {characters.map((name, index) => (
@@ -150,7 +156,7 @@ function PagedStoryV1() {
               <Select
                 labelId="object-label"
                 value={object}
-                onChange={(e) => setObject(e.target.value as string)}
+                onChange={(e) => setObject(nullSafeStringOrValue(e.target.value))}
                 label="Object"
               >
                 {objects.map((name, index) => (
@@ -162,7 +168,12 @@ function PagedStoryV1() {
             </StackableItem>
             <StackableItem>
               <InputLabel id="age-label">Age</InputLabel>
-              <Select labelId="age-label" value={age} onChange={(e) => setAge(e.target.value as string)} label="Age">
+              <Select
+                labelId="age-label"
+                value={age}
+                onChange={(e) => setAge(nullSafeStringOrValue(e.target.value))}
+                label="Age"
+              >
                 {ages.map((name, index) => (
                   <MenuItem key={index} value={name}>
                     {name}
@@ -175,7 +186,7 @@ function PagedStoryV1() {
               <Select
                 labelId="subject-label"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value as string)}
+                onChange={(e) => setSubject(nullSafeStringOrValue(e.target.value))}
                 label="Subject"
               >
                 {subjects.map((name, index) => (
@@ -187,7 +198,12 @@ function PagedStoryV1() {
             </StackableItem>
             <CenteredRowItem>
               <InputLabel id="writing-style-label">Writing Style</InputLabel>
-              <Select labelId="writing-style-label" label="Writing Style">
+              <Select
+                labelId="writing-style-label"
+                value={writingStyle}
+                onChange={(e) => setWritingStyle(nullSafeStringOrValue(e.target.value))}
+                label="Writing Style"
+              >
                 {writingStyles.map((name, index) => (
                   <MenuItem key={index} value={name}>
                     {name}
@@ -202,7 +218,7 @@ function PagedStoryV1() {
             </CenteredRowItem>
           </Grid>
         </Box>
-      </StoryBuilder>
+      </StoryBuilder.Drawer>
     </>
   )
 }
