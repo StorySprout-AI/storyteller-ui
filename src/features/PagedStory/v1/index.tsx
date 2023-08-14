@@ -77,14 +77,7 @@ function PagedStoryV1() {
       <Story loading={loading} pages={storyPages} />
 
       {/* Bottom drawer StoryBuilder form: https://mui.com/material-ui/react-drawer/#swipeable-edge */}
-      <StoryBuilder.Drawer
-        header={
-          <>
-            {!!loading && <span>Generating your story...</span>}
-            {!loading && <span>&nbsp;</span>}
-          </>
-        }
-      >
+      <StoryBuilder.Drawer header={<StoryBuilder.Status loading={loading} storiesAvailable={storyPages.length > 0} />}>
         <Box
           sx={{
             // backgroundColor: '#f5f5f5',
