@@ -12,7 +12,7 @@ export default function useURLFragmentParams() {
       searchParams.forEach((value, key) => {
         fragmentParams = { ...fragmentParams, [key]: value }
       })
-      setParams(fragmentParams)  
+      setParams(fragmentParams)
     }
   }, [location.hash])
 
