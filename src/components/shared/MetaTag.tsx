@@ -13,8 +13,7 @@ export default function MetaTag({ name, content }: MetaTagProps) {
     document.head.appendChild(resource)
 
     return () => {
-      if(document.head.contains(resource))
-        document.head.removeChild(resource)
+      if (document.head.contains(resource)) document.head.removeChild(resource)
     }
   })
 
