@@ -14,8 +14,15 @@ class TestDomain < Minitest::Test
     # assert true
   end
 
+  def test_records
+    out, _err = capture_io {
+      @domain.invoke(:records, %w[--domain-name storysprout.app])
+    }
+    assert_equal out, "stuff"
+  end
+
   def test_repo_path
-    assert_equal @domain.send(:repo_path), 'donnadieu'
+    assert_equal @domain.send(:repo_path), 'git@github.com:Donnadieu/storyteller-ui.git'
   end
 
   def test_current_branch
