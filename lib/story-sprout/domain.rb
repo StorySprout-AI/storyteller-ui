@@ -1,7 +1,7 @@
 require 'bundler'
 require 'thor'
 require 'dotenv'
-require_relative '../digitalocean/records'
+require_relative '../digitalocean'
 
 # TODO: This should be helping avoid explicit requires,
 #   but I'm not sure I have it working yet https://bundler.io/guides/bundler_setup.html
@@ -47,21 +47,24 @@ module StorySprout
            desc: 'Variable data depending on record type',
            required: true
     option :ttl, type: :numeric, desc: 'This value is the time to live for the record, in seconds'
-    desc 'record', 'Manage DNS records'
-    def record
-    end
-
-    desc 'records', 'List DNS records for a domain'
-    def records
-      result = Digitalocean::Records.call(domain: options[:domain])
+    desc 'upsert_record', 'Create or Update a DNS record'
+    def upsert_record
+      # Fetch DNS records for options[:domain] (via Digitalocean::Records)
+      #  - If the record exists by options[:name], update it (via Digitalocean::PatchRecord)
+      #  - If the record does not exist, create it (via Digitalocean::PutRecord)
+      result = Digitalocean::UpsertRecord.call(options)
       if result.success?
-        puts result.data
+        puts "Upserted record for #{record_fqdn}"
       else
-        puts result.error
+        puts result.message
       end
     end
 
     private
+
+    def record_fqdn
+      "#{options[:name] || record_name}.#{options[:domain]}"
+    end
 
     def record_name(from_branch = nil)
       matches = /^git@github.com:(.+)\/(.+).git$/.match(repo_path)

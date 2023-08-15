@@ -1,3 +1,4 @@
+require_relative './digitalocean/upsert_record'
+
 module Digitalocean
-  BASE_URI = 'api.digitalocean.com/v2'
 end

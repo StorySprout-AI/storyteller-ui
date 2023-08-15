@@ -14,11 +14,16 @@ class TestDomain < Minitest::Test
     # assert true
   end
 
-  def test_records
+  def test_upsert_record
     out, _err = capture_io {
-      @domain.invoke(:records, %w[--domain-name storysprout.app])
+      @domain.invoke(
+        :upsert_record, [],
+        type: 'CNAME',
+        name: 'staging-test',
+        data: 'storysprout-staging-test.ngrok.app',
+        verbose: true)
     }
-    assert_equal out, "stuff"
+    assert_match /(Creat|Updat|Upsert)ed record for staging-test.storysprout.app/, out
   end
 
   def test_repo_path

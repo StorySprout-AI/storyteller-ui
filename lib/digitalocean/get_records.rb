@@ -1,22 +1,9 @@
-require 'interactor'
-require 'httparty'
-require_relative '../digitalocean'
+require_relative './base_object'
 
 module Digitalocean
-  class Records
-    include Interactor
-    include HTTParty
-
-    base_uri Digitalocean::BASE_URI
-
-    # TODO: Can we move this to a base interactor class
-    #   for the Digitalocean module?
+  class GetRecords < BaseObject
     before do
-      context.options = {
-        headers: {
-          Authorization: "Bearer #{ENV.fetch('DIGITALOCEAN_TOKEN')}"
-        }
-      }
+      set_authorization_header!
     end
 
     def call
