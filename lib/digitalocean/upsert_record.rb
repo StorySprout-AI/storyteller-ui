@@ -1,6 +1,6 @@
 require_relative './get_records'
 require_relative './patch_record'
-require_relative './put_record'
+require_relative './post_record'
 
 module Digitalocean
   class UpsertRecord
@@ -8,6 +8,6 @@ module Digitalocean
 
     organize GetRecords,
              PatchRecord,
-             PutRecord
+             PostRecord
   end
 end

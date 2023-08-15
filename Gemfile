@@ -17,3 +17,5 @@ gem "rake", "~> 13.0"
 gem "interactor", "~> 3.1"
 
 gem "dotenv", "~> 2.8"
+
+gem "deep_merge", "~> 1.2"

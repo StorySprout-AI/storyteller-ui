@@ -8,12 +8,12 @@ module Digitalocean
 
     # TODO: Consider using this instead https://github.com/digitalocean/droplet_kit
     def call
-      response = self.class.get("/domains/#{context.domain}/records", context.options)
+      get("/domains/#{context.domain}/records", context.request_options)
       # TODO: Set context.records
-      if (data = (response.parsed_response.dig('domain_records') || []).map(&:deep_symbolize_keys))
-        context.data = data
+      if (data = response_item('domain_records', as_list: true))
+        context.domain_records = data
       else
-        context.fail!('Failed to get domain records')
+        context.fail!(message: 'Failed to get domain records')
       end
     end
   end

@@ -1,6 +1,7 @@
 require 'bundler'
 require 'thor'
 require 'dotenv'
+require 'deep_merge'
 require_relative '../digitalocean'
 
 # TODO: This should be helping avoid explicit requires,
