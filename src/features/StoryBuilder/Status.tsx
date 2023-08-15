@@ -1,8 +1,6 @@
 import React, { ReactNode, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import styled from '@mui/material/styles/styled'
-import withRoot from 'features/PagedStory/v1/modules/withRoot'
 
 import random from 'lodash/random'
 
@@ -17,7 +15,7 @@ export const CTAMessageOptions = [
   'Prompt a new story',
   'Choose your story adventure',
   "Let's make a new tale",
-  'What adventure awaits your Hero today?'
+  "Let's build a new story"
 ]
 
 const pickARandomCTAPrompt = () => {
@@ -27,7 +25,7 @@ const pickARandomCTAPrompt = () => {
 
 const StatusTitleTextBox = ({ children }: { children: ReactNode }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', p: 1, justifyContent: 'center' }}>
       <Typography fontWeight="400" fontSize={26} sx={{ color: 'text.secondary' }}>
         {children}
       </Typography>
@@ -39,7 +37,12 @@ export default function Status({ loading, storiesAvailable }: StoryBuilderStatus
   const [ctaText] = useState(() => pickARandomCTAPrompt())
 
   if (loading) {
-    return <StatusTitleTextBox>One moment, while we build your story...</StatusTitleTextBox>
+    return (
+      <StatusTitleTextBox>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>One moment, while we build your story...</Box>
+        <Box sx={{ display: { sm: 'none' } }}>Working...</Box>
+      </StatusTitleTextBox>
+    )
   }
 
   return (

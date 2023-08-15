@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext } from 'react'
 
 import Grid, { GridProps } from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -78,6 +78,23 @@ function PagedStoryV1() {
     <>
       {/* Will show the story - when it's ready */}
       <Story loading={loading} pages={storyPages} />
+
+      <Grid
+        container
+        sx={{
+          display: 'flex',
+          overflowY: 'hidden',
+          minHeight: '85vh',
+          flexDirection: 'column',
+          flexGrow: 1,
+          justifyContent: 'center'
+        }}
+      >
+        <Typography variant="h3">
+          You&apos;ve built
+          <br />0 stories
+        </Typography>
+      </Grid>
 
       {/* Bottom drawer StoryBuilder form: https://mui.com/material-ui/react-drawer/#swipeable-edge */}
       <StoryBuilder.Drawer header={<StoryBuilder.Status loading={loading} storiesAvailable={storyPages.length > 0} />}>
