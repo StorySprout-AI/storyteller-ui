@@ -1,29 +1,59 @@
 import React from 'react'
-import './App.css'
-import { BrowserRouter as Router } from 'react-router-dom'
-import StoryGenerator from './features/PagedStory/v0'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-import Login from './components/Login'
-import useUser from './hooks/useUser'
-import { useFeatureFlags, FeatureFlagContext } from 'features/FeatureFlags'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CookiesProvider } from 'react-cookie'
+
+import { useFeatureFlags, FeatureFlagContext } from 'features/FeatureFlags'
+import StoryGenerator from 'features/PagedStory/v0'
+import StoryGeneratorV1 from 'features/PagedStory/v1'
+import Layout from 'features/PagedStory/v1/components/Layout'
+
+import AuthProvider, { RequireAuth } from 'components/shared/AuthProvider'
+import Login from 'components/Login'
+
+import './App.css'
 
 function App() {
   const { loading, flags, isEnabled } = useFeatureFlags()
-  const { isLoggedIn } = useUser()
-
+  // TODO: Get FE app routes def to be more dry by using createBrowserRouter: https://reactrouter.com/en/main/routers/create-browser-router
   return (
-    <FeatureFlagContext.Provider value={{ loading, flags, isEnabled }}>
-      <CookiesProvider>
-        <Router>
-          <div className="App">
-            <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}>
-              {isLoggedIn ? <StoryGenerator /> : <Login />}
-            </GoogleOAuthProvider>
-          </div>
-        </Router>
-      </CookiesProvider>
-    </FeatureFlagContext.Provider>
+    <div className="App">
+      <BrowserRouter>
+        <CookiesProvider>
+          <FeatureFlagContext.Provider value={{ loading, flags, isEnabled }}>
+            <AuthProvider>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/v1">
+                  <Route element={<Layout />}>
+                    <Route
+                      path="stories/:action"
+                      element={
+                        <RequireAuth>
+                          <StoryGeneratorV1 />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route index element={<Navigate to="stories/new" />} />
+                  </Route>
+                </Route>
+                <Route path="/v0">
+                  <Route
+                    path="stories/:action"
+                    element={
+                      <RequireAuth>
+                        <StoryGenerator />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route index element={<Navigate to="stories/new" />} />
+                </Route>
+              </Routes>
+            </AuthProvider>
+          </FeatureFlagContext.Provider>
+        </CookiesProvider>
+      </BrowserRouter>
+    </div>
   )
 }
 

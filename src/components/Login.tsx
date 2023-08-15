@@ -3,6 +3,7 @@ import { Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import ButtonStack from 'components/shared/ButtonStack'
 import Feature from 'features/FeatureFlags/Feature'
+import { AuthStatus } from './shared/AuthProvider'
 
 import featureFlags from 'lib/features'
 
@@ -30,7 +31,7 @@ const Login = () => {
           Welcome to StorySprout
         </Typography>
         <Typography variant="h6" align="center" gutterBottom>
-          Login to continue
+          <AuthStatus />
         </Typography>
         <ButtonStack>
           <GoogleLogin />
