@@ -1,13 +1,11 @@
-import React, { useState, useCallback, useContext, MouseEvent } from 'react'
+import React from 'react'
 import axios from 'axios'
-import StoryBuilder from 'features/StoryBuilder'
 
 export default function useRequestStory() {
-  const [loading, setLoading] = useState(false)
-  const [storyPages, setStoryPages] = useState<string[]>([])
-  // const builder = useContext(StoryBuilder.Context)
+  const [loading, setLoading] = React.useState(false)
+  const [storyPages, setStoryPages] = React.useState<string[]>([])
 
-  const requestStory = useCallback(async (prompt: string, successCallback?: () => Promise<void>) => {
+  const requestStory = React.useCallback(async (prompt: string, successCallback?: () => Promise<void>) => {
     setLoading(true)
     const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY
 
@@ -30,13 +28,6 @@ export default function useRequestStory() {
       const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
 
       if (!!successCallback) await successCallback()
-      // if (builder.open) {
-      //   console.debug('Attempting to close story builder...')
-      //   // builder.toggleDrawer(
-      //   //   'bottom',
-      //   //   false
-      //   // )()
-      // }
 
       setStoryPages(pages)
     } catch (error) {

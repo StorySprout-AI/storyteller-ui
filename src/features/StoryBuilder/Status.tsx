@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
@@ -34,7 +34,7 @@ const StatusTitleTextBox = ({ children }: { children: ReactNode }) => {
 }
 
 export default function Status({ loading, storiesAvailable }: StoryBuilderStatusProps) {
-  const [ctaText] = useState(() => pickARandomCTAPrompt())
+  const [ctaText] = React.useState(() => pickARandomCTAPrompt())
 
   if (loading) {
     return (
