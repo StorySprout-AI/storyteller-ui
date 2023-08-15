@@ -6,6 +6,7 @@ module Digitalocean
       set_authorization_header!
     end
 
+    # TODO: Consider using this instead https://github.com/digitalocean/droplet_kit
     def call
       response = self.class.get("/domains/#{context.domain}/records", context.options)
       # TODO: Set context.records
