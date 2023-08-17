@@ -90,10 +90,8 @@ function PagedStoryV1() {
           justifyContent: 'center'
         }}
       >
-        <Typography variant="h3">
-          You&apos;ve built
-          <br />0 stories
-        </Typography>
+        <Typography variant="h3">You haven&apos;t saved any stories</Typography>
+        <Typography variant="subtitle1">We&apos;re working on a feature for saving your stories</Typography>
       </Grid>
 
       {/* Bottom drawer StoryBuilder form: https://mui.com/material-ui/react-drawer/#swipeable-edge */}
