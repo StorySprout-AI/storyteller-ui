@@ -87,5 +87,8 @@
     "eslint-plugin-prettier": "^5.0.0",
     "@types/react-router-dom": "^5.3.3",
     "jest-mock-axios": "^4.7.2"
+  },
+  "overrides": {
+    "css-select": "~4.3"
   }
 }

@@ -35,7 +35,7 @@ type StoryBuilderProps = Omit<SwipeableDrawerProps, 'onClose' | 'onOpen'> & {
   header?: ReactNode
 }
 
-const drawerBleeding = 56
+const drawerBleeding = 70
 
 function Drawer({ anchor = 'bottom', children, header, ...rest }: StoryBuilderProps) {
   const { open, toggleDrawer } = useContext(StoryBuilder.Context)

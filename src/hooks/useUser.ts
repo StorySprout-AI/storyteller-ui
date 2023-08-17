@@ -3,6 +3,7 @@ import CryptoJS from 'crypto-js'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
+import useAppDefaults from 'hooks/useAppDefaults'
 
 export type User = {
   name: string
@@ -14,6 +15,7 @@ const useUser = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+  const { redirect_path } = useAppDefaults()
 
   // Remove the token and user from localStorage
   const clearCredentials = () => {
@@ -163,7 +165,7 @@ const useUser = () => {
         navigate(location.state.from.pathname)
       } else if (/^\/(?:login)?$/.test(location.pathname)) {
         console.debug('Should navigate to protected landing page...')
-        navigate('/v0/stories/new')
+        navigate(redirect_path)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
