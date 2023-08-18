@@ -87,6 +87,7 @@ function PagedStoryV1() {
           minHeight: '85vh',
           flexDirection: 'column',
           flexGrow: 1,
+          padding: 1,
           justifyContent: 'center'
         }}
       >
