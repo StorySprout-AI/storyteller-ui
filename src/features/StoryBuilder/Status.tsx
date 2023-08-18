@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import styled from '@mui/system/styled'
 
 import random from 'lodash/random'
 
@@ -23,13 +24,35 @@ const pickARandomCTAPrompt = () => {
   return CTAMessageOptions[pickIndex]
 }
 
+const ResponsiveTextBox = styled(Box)`
+  h4 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem;
+    @media (max-width: 600px) {
+      font-size: 1.2rem;
+    }
+    @media (min-width: 600px, max-width: 960px) {
+      font-size: 1.2rem;
+    }
+    @media (min-width: 960px) {
+      font-size: 1.5rem;
+    }
+  }
+`
+
 const StatusTitleTextBox = ({ children }: { children: ReactNode }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', p: 1, justifyContent: 'center' }}>
-      <Typography fontWeight="400" fontSize={26} sx={{ color: 'text.secondary' }}>
-        {children}
-      </Typography>
-    </Box>
+    // <Box sx={{ display: 'flex', flexDirection: 'row', p: 1, justifyContent: 'center' }}>
+    //   <Typography fontWeight="400" fontSize={26} sx={{ color: 'text.secondary' }}>
+    //     {children}
+    //   </Typography>
+    // </Box>
+
+    <ResponsiveTextBox>
+      <Typography variant="h4">{children}</Typography>
+    </ResponsiveTextBox>
   )
 }
 

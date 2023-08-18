@@ -12,7 +12,7 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
-import AdbIcon from '@mui/icons-material/Adb'
+import BookIcon from '@mui/icons-material/Book'
 import styled from '@mui/system/styled'
 // // Problems? Try this alt syntax
 // import styled from '@mui/material/styles/styled'
@@ -20,12 +20,6 @@ import styled from '@mui/system/styled'
 import { AuthStatus, useAuth } from 'components/shared/AuthProvider'
 
 import StoryBuilder from 'features/StoryBuilder'
-
-// const rightLink = {
-//   fontSize: 16,
-//   color: 'common.white',
-//   ml: 3
-// }
 
 const Toolbar = styled(MuiToolbar)(({ theme }) => ({
   height: 64,
@@ -38,31 +32,6 @@ export function AppBar(props: AppBarProps) {
   return (
     <div>
       <MuiAppBar elevation={0} position="fixed" {...props}>
-        {/* <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Box sx={{ flex: 1 }} />
-          <Link variant="h6" underline="none" color="inherit" href="/premium-themes/onepirate/" sx={{ fontSize: 24 }}>
-            {'onepirate'}
-          </Link>
-          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Link
-              color="inherit"
-              variant="h6"
-              underline="none"
-              href="/premium-themes/onepirate/sign-in/"
-              sx={rightLink}
-            >
-              {'Sign In'}
-            </Link>
-            <Link
-              variant="h6"
-              underline="none"
-              href="/premium-themes/onepirate/sign-up/"
-              sx={{ ...rightLink, color: 'secondary.main' }}
-            >
-              {'Sign Up'}
-            </Link>
-          </Box>
-        </Toolbar> */}
         {props.children}
       </MuiAppBar>
       <Toolbar />
@@ -103,7 +72,7 @@ export function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Icon & Logo */}
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <BookIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -119,7 +88,7 @@ export function ResponsiveAppBar() {
               textDecoration: 'none'
             }}
           >
-            LOGO
+            StorySprout
           </Typography>
 
           {/* Mobile Menu */}
@@ -160,7 +129,7 @@ export function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <BookIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -177,7 +146,7 @@ export function ResponsiveAppBar() {
               textDecoration: 'none'
             }}
           >
-            LOGO
+            StorySprout
           </Typography>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

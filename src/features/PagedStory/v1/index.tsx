@@ -119,13 +119,16 @@ function PagedStoryV1() {
           }}
         >
           <Grid container maxWidth={800}>
-            <Grid item xs={12} sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <Typography variant="h4" sx={{ textAlign: 'center', marginBottom: '20px' }}>
+            <Grid item xs={12} sx={{ display: { xs: 'flex', md: 'none', justifyContent: 'center' } }}>
+              <Typography
+                variant="h4"
+                sx={{ textAlign: 'center', my: 2, display: { xs: 'none', sm: 'none', md: 'block' } }}
+              >
                 Hello {user?.name}!
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="subtitle1" sx={{ textAlign: 'center', color: '#808080' }}>
+              <Typography variant="subtitle1" sx={{ textAlign: 'center', my: 2, color: '#808080' }}>
                 Create amazing stories with just a few clicks! Simply select the options below and click &quot;Generate
                 Story&quot; to get started.
               </Typography>
