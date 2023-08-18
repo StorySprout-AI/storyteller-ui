@@ -31,17 +31,22 @@ const rawTheme = createTheme({
   },
   typography: {
     fontFamily: "'Work Sans', sans-serif",
-    fontSize: 14,
+    fontSize: 16,
     fontWeightLight: 300, // Work Sans
     fontWeightRegular: 400, // Work Sans
     fontWeightMedium: 700 // Roboto Condensed
   }
 })
 
-const fontHeader = {
+const fontHeaderSoft = {
   color: rawTheme.palette.text.primary,
+  fontWeight: rawTheme.typography.fontWeightLight,
+  fontFamily: "'Roboto Condensed', sans-serif"
+}
+
+const fontHeader = {
+  ...fontHeaderSoft,
   fontWeight: rawTheme.typography.fontWeightMedium,
-  fontFamily: "'Roboto Condensed', sans-serif",
   textTransform: 'uppercase'
 }
 
@@ -72,35 +77,35 @@ const theme = {
     h3: {
       ...rawTheme.typography.h3,
       ...fontHeader,
-      fontSize: 38
+      fontSize: 40
     },
     h4: {
       ...rawTheme.typography.h4,
-      ...fontHeader,
-      fontSize: 26
+      ...fontHeaderSoft,
+      fontSize: 28
     },
     h5: {
       ...rawTheme.typography.h5,
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: rawTheme.typography.fontWeightLight
     },
     h6: {
       ...rawTheme.typography.h6,
       ...fontHeader,
-      fontSize: 18
+      fontSize: 20
     },
     subtitle1: {
       ...rawTheme.typography.subtitle1,
-      fontSize: 18
+      fontSize: 20
     },
     body1: {
       ...rawTheme.typography.body2,
       fontWeight: rawTheme.typography.fontWeightRegular,
-      fontSize: 16
+      fontSize: 18
     },
     body2: {
       ...rawTheme.typography.body1,
-      fontSize: 14
+      fontSize: 16
     }
   }
 }
