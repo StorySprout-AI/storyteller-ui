@@ -110,8 +110,6 @@ function PagedStoryV1() {
       <StoryBuilder.Drawer header={<StoryBuilder.Status loading={loading} storiesAvailable={storyPages.length > 0} />}>
         <Box
           sx={{
-            // backgroundColor: '#f5f5f5',
-            // minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -119,11 +117,8 @@ function PagedStoryV1() {
           }}
         >
           <Grid container maxWidth={800}>
-            <Grid item xs={12} sx={{ display: { xs: 'flex', md: 'none', justifyContent: 'center' } }}>
-              <Typography
-                variant="h4"
-                sx={{ textAlign: 'center', my: 2, display: { xs: 'none', sm: 'none', md: 'block' } }}
-              >
+            <Grid item xs={12} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
+              <Typography variant="h4" sx={{ textAlign: 'center', my: 2 }}>
                 Hello {user?.name}!
               </Typography>
             </Grid>
