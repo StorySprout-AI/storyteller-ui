@@ -90,9 +90,18 @@ function PagedStoryV1() {
           justifyContent: 'center'
         }}
       >
-        <Typography variant="h3">
-          You&apos;ve built
-          <br />0 stories
+        <Typography variant="h3">You haven&apos;t saved any stories</Typography>
+        <Typography variant="subtitle1">
+          We&apos;re working on a feature for saving your stories.
+          <p />
+          Have an idea for a feature you&apos;d like us to build next?{' '}
+          <a
+            href="mailto:storysprout-ai-mailbox@googlegroups.com?subject=Build%20this%20next!"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Let us know!
+          </a>
         </Typography>
       </Grid>
 
