@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, Typography } from '@mui/material'
-import { styled } from '@mui/system'
+import styled from '@mui/system/styled'
 import ButtonStack from 'components/shared/ButtonStack'
 import Feature from 'features/FeatureFlags/Feature'
 import { AuthStatus } from './shared/AuthProvider'
