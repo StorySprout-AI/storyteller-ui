@@ -1,7 +1,7 @@
 import React from 'react'
 import withRoot from 'themes/onepirate/modules/withRoot'
+import AppFooter from './AppFooter'
 import ProductHero from './ProductHero'
-import ProductHowItWorks from './ProductHowItWorks'
 import ProductValues from './ProductValues'
 
 function Home() {
@@ -9,7 +9,7 @@ function Home() {
     <>
       <ProductHero />
       <ProductValues />
-      <ProductHowItWorks />
+      <AppFooter />
     </>
   )
 }
