@@ -4,6 +4,7 @@ import Typography from 'themes/onepirate/components/Typography'
 import ProductHeroLayout from 'themes/onepirate/modules/views/ProductHeroLayout'
 
 import random from 'lodash/random'
+import Logo from './Logo'
 
 const BACKGROUND_IMAGES = [
   {
@@ -48,9 +49,7 @@ export default function ProductHero() {
     >
       {/* Increase the network loading priority of the background image. */}
       <img style={{ display: 'none' }} src={backgroundImageUrl} alt="increase priority" />
-      <Typography color="inherit" align="center" variant="h2" marked="center">
-        Upgrade your Sundays
-      </Typography>
+      <Logo color="inherit" align="center" variant="h2" />
       <Typography color="inherit" align="center" variant="h5" sx={{ mb: 4, mt: { xs: 4, sm: 10 } }}>
         Welcome to a treasure trove of stories that never runs out!
       </Typography>
