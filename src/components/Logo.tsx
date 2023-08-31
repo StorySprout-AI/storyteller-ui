@@ -1,13 +1,11 @@
 import React from 'react'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
-export default function Logo({ sx, ...props }: TypographyProps) {
+export default function Logo({ sx, variant, ...props }: TypographyProps) {
   return (
     <Typography
-      variant={props.variant ?? 'h6'}
-      noWrap
-      component="a"
-      href="/"
+      {...props}
+      variant={variant ?? 'h6'}
       sx={{
         mr: 2,
         display: 'flex',
