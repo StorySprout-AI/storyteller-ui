@@ -9,6 +9,9 @@ import featureFlags from 'lib/features'
 
 import GoogleLogin from 'features/GoogleLogin'
 import AppleLogin from 'features/AppleLogin'
+import withRoot from 'themes/onepirate/modules/withRoot'
+import ProductHero from 'components/ProductHero'
+import AppFooter from './AppFooter'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -25,25 +28,35 @@ const StyledFormContainer = styled(Grid)`
 
 const Login = () => {
   return (
-    <StyledContainer container justifyContent="center" alignItems="center">
-      <StyledFormContainer item xs={12} sm={6} md={4}>
-        <Typography variant="h4" component="h1" align="center" gutterBottom>
-          Welcome to StorySprout
-        </Typography>
-        <Typography variant="h6" align="center" gutterBottom>
-          <AuthStatus />
-        </Typography>
-        <ButtonStack>
-          <GoogleLogin />
-        </ButtonStack>
-        <Feature flag={featureFlags.APPLE_LOGIN}>
+    <>
+      <ProductHero />
+      <StyledContainer container justifyContent="center" alignItems="center">
+        <StyledFormContainer item xs={12} sm={6} md={4}>
+          <Typography variant="h3" component="h1" align="center" gutterBottom>
+            Get ready for storytime
+            <br />
+            like never before!
+          </Typography>
+          <Typography variant="body1">
+            We use the magic of AI to whip up awesome short stories that kids of all ages will love. It&apos;s like
+            having a story buddy that&apos;s always up for an adventure!
+          </Typography>
+          <Typography variant="h6" align="center" gutterBottom>
+            <AuthStatus />
+          </Typography>
           <ButtonStack>
-            <AppleLogin />
+            <GoogleLogin />
           </ButtonStack>
-        </Feature>
-      </StyledFormContainer>
-    </StyledContainer>
+          <Feature flag={featureFlags.APPLE_LOGIN}>
+            <ButtonStack>
+              <AppleLogin />
+            </ButtonStack>
+          </Feature>
+        </StyledFormContainer>
+      </StyledContainer>
+      <AppFooter />
+    </>
   )
 }
 
-export default Login
+export default withRoot(Login)

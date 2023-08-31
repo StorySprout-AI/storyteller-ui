@@ -8,6 +8,8 @@ import StoryGeneratorV1 from 'features/PagedStory/v1'
 import Layout from 'features/PagedStory/v1/components/Layout'
 
 import AuthProvider, { RequireAuth } from 'components/shared/AuthProvider'
+
+import Home from 'components/Home'
 import Login from 'components/Login'
 
 import './App.css'
@@ -22,7 +24,7 @@ function App() {
           <FeatureFlagContext.Provider value={{ loading, flags, isEnabled }}>
             <AuthProvider>
               <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/v1">
                   <Route element={<Layout />}>

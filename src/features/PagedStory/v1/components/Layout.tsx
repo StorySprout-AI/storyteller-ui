@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 
 import StoryBuilder from 'features/StoryBuilder'
-import withRoot from 'features/PagedStory/v1/modules/withRoot'
+import withRoot from 'themes/onepirate/modules/withRoot'
 import { ResponsiveAppBar } from '../modules/views/AppBar'
 
 function Layout() {

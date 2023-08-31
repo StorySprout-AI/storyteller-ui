@@ -25,7 +25,7 @@ export function AuthStatus() {
   let auth = useAuth()
 
   if (!auth.user) {
-    return <p>Login to continue</p>
+    return <></>
   }
 
   return (

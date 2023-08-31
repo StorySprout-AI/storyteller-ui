@@ -9,8 +9,8 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import CircularProgress from '@mui/material/CircularProgress'
 
-import withRoot from './modules/withRoot'
-import Button from './components/Button'
+import withRoot from 'themes/onepirate/modules/withRoot'
+import Button from 'themes/onepirate/components/Button'
 import Story from './modules/views/Story'
 
 import { useAuth } from 'components/shared/AuthProvider'

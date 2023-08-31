@@ -67,45 +67,45 @@ const theme = {
       ...rawTheme.typography.h1,
       ...fontHeader,
       letterSpacing: 0,
-      fontSize: 60
+      fontSize: 58
     },
     h2: {
       ...rawTheme.typography.h2,
       ...fontHeader,
-      fontSize: 48
+      fontSize: 44
     },
     h3: {
       ...rawTheme.typography.h3,
       ...fontHeader,
-      fontSize: 40
+      fontSize: 38
     },
     h4: {
       ...rawTheme.typography.h4,
       ...fontHeaderSoft,
-      fontSize: 28
+      fontSize: 34
     },
     h5: {
       ...rawTheme.typography.h5,
-      fontSize: 22,
+      fontSize: 30,
       fontWeight: rawTheme.typography.fontWeightLight
     },
     h6: {
       ...rawTheme.typography.h6,
       ...fontHeader,
-      fontSize: 20
+      fontSize: 26
     },
     subtitle1: {
       ...rawTheme.typography.subtitle1,
-      fontSize: 20
+      fontSize: 24
     },
     body1: {
       ...rawTheme.typography.body2,
       fontWeight: rawTheme.typography.fontWeightRegular,
-      fontSize: 18
+      fontSize: 22
     },
     body2: {
       ...rawTheme.typography.body1,
-      fontSize: 16
+      fontSize: 18
     }
   }
 }
