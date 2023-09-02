@@ -55,7 +55,7 @@ const styles = ({ theme }: { theme: Theme }) => ({
   },
   [`& .${markClassesMapping.left.h6}`]: {
     height: 2,
-    width: 28,
+    width: 26,
     display: 'block',
     marginTop: theme.spacing(0.5),
     background: 'currentColor'
