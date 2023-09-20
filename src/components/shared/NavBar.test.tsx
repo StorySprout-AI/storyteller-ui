@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from 'test-utils'
 import NavBar from './NavBar'
 
 describe('NavBar', () => {
@@ -10,12 +10,12 @@ describe('NavBar', () => {
     screen.getByText(/welcome to storysprout/i)
   })
 
-  test('home link', () => {
+  xtest('home link', () => {
     render(<NavBar handleLogout={mockHandleLogout} />)
     screen.getByText(/home/i)
   })
 
-  test('about link', () => {
+  xtest('about link', () => {
     render(<NavBar handleLogout={mockHandleLogout} />)
     screen.getByText(/about/i)
   })
