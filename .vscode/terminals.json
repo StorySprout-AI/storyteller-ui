@@ -1,0 +1,16 @@
+{
+  "autorun": true,
+  "autokill": true,
+  "terminals": [
+    {
+      "name": "Run frontend",
+      "description": "Runs and serves the app locally",
+      "open": true,
+      "execute": true,
+      "recycle": true,
+      "commands": [
+        "npm run start"
+      ]
+    }
+  ]
+}
