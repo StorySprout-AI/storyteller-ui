@@ -21,7 +21,8 @@ class TestDomain < Minitest::Test
         type: 'CNAME',
         name: 'staging-test',
         data: 'storysprout-staging-test.ngrok.app',
-        verbose: true)
+        verbose: true
+      )
     }
     assert_match /(Creat|Updat|Upsert)ed record for staging-test.storysprout.app/, out
   end

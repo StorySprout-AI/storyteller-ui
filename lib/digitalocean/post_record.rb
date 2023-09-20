@@ -17,7 +17,7 @@ module Digitalocean
       if (data = response_item('domain_record'))
         context.data = data
       else
-        context.fail!('Failed to create domain record')
+        context.fail!(message: 'Failed to create domain record')
       end
     end
   end
