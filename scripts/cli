@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/story-sprout/domain'
+
+class CLI < Thor
+  class_option :verbose, type: :boolean, aliases: '-v', desc: 'Verbose output', default: false
+
+  desc 'domain SUBCOMMAND', 'Domain script'
+  subcommand 'domain', StorySprout::Domain
+end
+
+CLI.start(ARGV)
