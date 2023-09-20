@@ -44,7 +44,7 @@ export function useFeatureFlags() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const isEnabled = useCallback((key: string) => !!flags[key], [flags])
+  const isEnabled = useCallback((key: string) => flags[key], [flags])
 
   useEffect(() => {
     loadFlags()
