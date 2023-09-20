@@ -14,5 +14,13 @@
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "terminalAllInOne.scripts": [
+    {
+      "name": "start frontend",
+      "script": [
+        "npm run start"
+      ]
+    }
+  ]
 }

@@ -10,8 +10,8 @@ function Copyright() {
   return (
     <React.Fragment>
       {'© '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://storysprout.app/">
+        StorySprout AI
       </Link>{' '}
       {new Date().getFullYear()}
     </React.Fragment>
@@ -59,7 +59,7 @@ export default function AppFooter() {
             </Grid>
           </Grid>
           <Grid item xs={6} sm={4} md={2}>
-            <Typography variant="h6" marked="left" gutterBottom>
+            <Typography variant="h6" marked="none" gutterBottom>
               Legal
             </Typography>
             <Box component="ul" sx={{ m: 0, listStyle: 'none', p: 0 }}>
@@ -72,7 +72,7 @@ export default function AppFooter() {
             </Box>
           </Grid>
           <Grid item xs={6} sm={8} md={4}>
-            <Typography variant="h6" marked="left" gutterBottom>
+            <Typography variant="h6" marked="none" gutterBottom>
               Language
             </Typography>
             <TextField

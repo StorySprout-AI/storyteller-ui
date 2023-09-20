@@ -53,14 +53,7 @@ export default function ProductHero() {
       <Typography color="inherit" align="center" variant="h5" sx={{ mb: 4, mt: { xs: 4, sm: 10 } }}>
         Welcome to a treasure trove of stories that never runs out!
       </Typography>
-      <Button
-        color="secondary"
-        variant="contained"
-        size="large"
-        component="a"
-        href="/premium-themes/onepirate/sign-up/"
-        sx={{ minWidth: 200 }}
-      >
+      <Button color="secondary" variant="contained" size="large" component="a" href="/login" sx={{ minWidth: 200 }}>
         Get Started
       </Button>
       <Typography variant="body2" color="inherit" sx={{ mt: 2 }}>

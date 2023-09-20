@@ -10,7 +10,6 @@ import featureFlags from 'lib/features'
 import GoogleLogin from 'features/GoogleLogin'
 import AppleLogin from 'features/AppleLogin'
 import withRoot from 'themes/onepirate/modules/withRoot'
-import ProductHero from 'components/ProductHero'
 import AppFooter from './AppFooter'
 
 const StyledContainer = styled(Grid)`
@@ -29,7 +28,6 @@ const StyledFormContainer = styled(Grid)`
 const Login = () => {
   return (
     <>
-      <ProductHero />
       <StyledContainer container justifyContent="center" alignItems="center">
         <StyledFormContainer item xs={12} sm={6} md={4}>
           <Typography variant="h3" component="h1" align="center" gutterBottom>
