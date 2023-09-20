@@ -1,6 +1,6 @@
 import React from 'react'
 import mockAxios from 'jest-mock-axios'
-import { render, screen, waitFor } from 'test-utils'
+import { render, screen, waitFor } from 'test/utils'
 import Feature from './Feature'
 
 // Fixing the "not wrapped in act(...)" warning: https://kentcdodds.com/blog/fix-the-not-wrapped-in-act-warning
