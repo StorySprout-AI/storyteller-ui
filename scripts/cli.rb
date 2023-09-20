@@ -1,5 +1,6 @@
 require 'open3'
 require 'thor'
+require 'droplet_kit'
 require_relative '../lib/story-sprout/domain'
 
 class CLI < Thor
@@ -30,15 +31,19 @@ class CLI < Thor
     puts "Output: #{o}"
     if s.success?
       matches = /\Ahttps?:\/\/((.+)\.vercel\.app)/.match(o)
-      _deploy_url, cname_data, deploy_name = matches.values_at 0, 1, 2
+      _deploy_url, fqdn, name = matches.values_at 0, 1, 2
       # Attempt to create DNS record
-      StorySprout::Domain.new.invoke(
-        :upsert_record, [],
-        type: 'CNAME',
-        name: deploy_name,
-        data: cname_data,
-        verbose: options[:verbose]
-      )
+      # StorySprout::Domain.new.invoke(
+      #   :upsert_record, [],
+      #   type: 'CNAME',
+      #   name: deploy_name,
+      #   data: cname_data,
+      #   verbose: options[:verbose]
+      # )
+      client = DropletKit::Client.new(access_token: ENV.fetch('DIGITALOCEAN_TOKEN'))
+      record = DropletKit::DomainRecord.new(type: 'CNAME', name:, data: "#{fqdn}.")
+      client.domain_records.create(record, for_domain: 'storysprout.app')
+      # TODO: Add alias/domain for review deployment using vercel CLI
       # TODO: Add github comment with deployment URL to PR if one exists for the current branch
     end
   end

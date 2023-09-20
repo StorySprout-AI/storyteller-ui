@@ -8,10 +8,11 @@ gem "thor", "~> 1.2"
 gem "httparty", "~> 0.21.0"
 
 group :development, :test do
-  gem "minitest"
+  gem "droplet_kit"
   gem "faker"
-  gem "rubocop"
+  gem "minitest"
   gem "open3"
+  gem "rubocop"
   gem "rubocop-performance"
 end
 
