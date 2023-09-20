@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useCallback, useEffect, useState } from 'react'
+import { createContext, useCallback, useEffect, useState } from 'react'
 
 interface FlipperFeature {
   key: string
@@ -9,6 +9,14 @@ interface FlipperFeature {
 interface FlipperFeaturesResponse {
   features: FlipperFeature[]
 }
+
+interface FeatureFlagContextType {
+  loading: boolean
+  flags: Record<string, boolean>
+  isEnabled: (key: string) => boolean
+}
+
+export const FeatureFlagContext = createContext<FeatureFlagContextType>(null!)
 
 export function useFeatureFlags() {
   const [loading, setLoading] = useState<boolean>(false)
@@ -36,7 +44,7 @@ export function useFeatureFlags() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const isEnabled = useCallback((key: string) => flags[key], [flags])
+  const isEnabled = useCallback((key: string) => !!flags[key], [flags])
 
   useEffect(() => {
     loadFlags()

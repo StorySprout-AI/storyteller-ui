@@ -1,6 +1,6 @@
 import LinearProgress from '@mui/material/LinearProgress'
-import React from 'react'
-import useFeatureFlags from './useFeatureFlags'
+import React, { useContext } from 'react'
+import { FeatureFlagContext } from './useFeatureFlags'
 
 type FeatureProps = {
   flag: string
@@ -8,7 +8,7 @@ type FeatureProps = {
 }
 
 export function Feature({ flag, children }: FeatureProps) {
-  const { loading, flags, isEnabled } = useFeatureFlags()
+  const { loading, flags, isEnabled } = useContext(FeatureFlagContext)
   const flagExists = flag in flags
 
   return (
