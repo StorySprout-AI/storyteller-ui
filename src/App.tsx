@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CookiesProvider } from 'react-cookie'
 
-import { useFeatureFlags, FeatureFlagContext } from 'features/FeatureFlags'
+import { FeatureFlagProvider } from 'features/FeatureFlags'
 import StoryGenerator from 'features/PagedStory/v0'
 import StoryGeneratorV1 from 'features/PagedStory/v1'
 import Layout from 'features/PagedStory/v1/components/Layout'
@@ -13,13 +13,12 @@ import Login from 'components/Login'
 import './App.css'
 
 function App() {
-  const { loading, flags, isEnabled } = useFeatureFlags()
   // TODO: Get FE app routes def to be more dry by using createBrowserRouter: https://reactrouter.com/en/main/routers/create-browser-router
   return (
     <div className="App">
       <BrowserRouter>
         <CookiesProvider>
-          <FeatureFlagContext.Provider value={{ loading, flags, isEnabled }}>
+          <FeatureFlagProvider>
             <AuthProvider>
               <Routes>
                 <Route path="/" element={<Login />} />
@@ -50,7 +49,7 @@ function App() {
                 </Route>
               </Routes>
             </AuthProvider>
-          </FeatureFlagContext.Provider>
+          </FeatureFlagProvider>
         </CookiesProvider>
       </BrowserRouter>
     </div>
