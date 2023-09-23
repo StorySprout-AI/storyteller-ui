@@ -10,7 +10,7 @@ To run all specs locally and review code coverage, execute the following command
 npm test -- --watchAll --ci --coverage
 ```
 
-## Deploying review apps 
+## Deploying review apps
 
 To deploy a review app, run the following command:
 

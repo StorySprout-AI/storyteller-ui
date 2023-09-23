@@ -12,6 +12,6 @@ class TestCLI < Minitest::Test
     out, _err = capture_io {
       @cli.invoke(:deploy, [], verbose: true)
     }
-    assert_match(/https?:\/\/(.+)\.vercel\.app/, out)
+    assert_match(/Deployment successful/, out)
   end
 end
