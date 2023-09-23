@@ -51,7 +51,7 @@ jobs:
 
       - name: Run tests
         if: ${{ contains(github.event.comment.body, '/coverage') }}
-        run: npm test --coverage
+        run: npm test -- --ci --coverage
 
   deploy_on_request:
     name: Deploy for review
