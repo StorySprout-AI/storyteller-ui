@@ -17,7 +17,7 @@ jobs:
         id: workflow-vars
         shell: bash
         run: |
-          echo "::set-output name=sha::$(echo ${GITHUB_SHA})"
+          echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Check Github SHA
         run: |
