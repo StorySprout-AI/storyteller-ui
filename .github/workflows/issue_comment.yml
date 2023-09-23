@@ -3,10 +3,11 @@ on:
   # Doc on issue_comment event: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment-on-issues-only-or-pull-requests-only
   issue_comment:
     types: [created, edited]
+
 jobs:
   test_coverage_on_request:
     name: Test coverage
-    if: github.event.issue.pull_request
+    if: ${{ github.event.issue.pull_request }}
     strategy:
       matrix:
         node: ["18"]
@@ -24,7 +25,7 @@ jobs:
           echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
-      - name: Check Github SHA
+      - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
           echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
@@ -40,12 +41,12 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        if: github.event.issue.pull_request && contains(github.event.comment.body, '/coverage')
+        if: ${{ contains(github.event.comment.body, '/coverage') }}
         run: npm test --coverage
 
   deploy_on_request:
     name: Deploy for review
-    if: github.event.issue.pull_request
+    if: ${{ github.event.issue.pull_request }}
     strategy:
       matrix:
         node: ["18"]
@@ -69,7 +70,7 @@ jobs:
           echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
 
       - name: Deploy for review
-        if: github.event.issue.pull_request && contains(github.event.comment.body, '/review')
+        if: ${{ contains(github.event.comment.body, '/review') }}
         run: |
           git fetch --unshallow
           git checkout deploy/review
