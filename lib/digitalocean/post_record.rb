@@ -13,11 +13,14 @@ module Digitalocean
         body: { type: context.type, name: context.name, data: context.data },
         headers: { 'Content-Type' => 'application/json' }
       )
+      # TODO: Something is happening here that is causing this request to return
+      #   a list of all domain records for context.domain instead of attempting to
+      #   create a new record.
       post("/domains/#{context.domain}/records", post_options)
       if (data = response_item('domain_record'))
         context.data = data
       else
-        context.fail!('Failed to create domain record')
+        context.fail!(message: 'Failed to create domain record')
       end
     end
   end

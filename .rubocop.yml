@@ -1,0 +1,31 @@
+# These are cops we need to re-enable section by section
+require:
+  - rubocop-performance
+
+Metrics:
+  Enabled: false
+
+Naming:
+  Enabled: false
+
+Performance:
+  Enabled: false
+
+Security:
+  Enabled: false
+
+Style:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.6.8
+
+# This cop checks the length of lines in the source code.
+# https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricslinelength
+Layout/LineLength:
+  Max: 120
+
+# This cop checks if the length of a method exceeds some maximum value. Comment lines can optionally be ignored.
+# https://rubocop.readthedocs.io/en/latest/cops_metrics/#metricsmethodlength
+Metrics/MethodLength:
+  Max: 20

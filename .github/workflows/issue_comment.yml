@@ -15,6 +15,17 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+#      # TODO: Need to review the code in this project, and see if we can
+#      #   implement emojifying the source comment for the GHA run
+#      #   without sending a GitHub token out to a third-party service.
+#      # https://github.com/actions-cool/emoji-helper
+#      - name: ACK comment
+#        uses: actions-cool/emoji-helper@v1
+#        with:
+#          github_token: ${{ github.token }}
+#          comment_id: ${{ github.event.comment.id }}
+#          emoji: eyes
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -25,7 +36,7 @@ jobs:
           echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
-      - name: Check Github SHA
+      - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
           echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
@@ -42,7 +53,7 @@ jobs:
 
       - name: Run tests
         if: ${{ contains(github.event.comment.body, '/coverage') }}
-        run: npm test --coverage
+        run: npm test -- --ci --coverage
 
   deploy_on_request:
     name: Deploy for review

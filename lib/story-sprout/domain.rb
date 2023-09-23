@@ -25,7 +25,7 @@ module StorySprout
                  default: false, required: false
     class_option :domain,
                  type: :string,
-                  aliases: '-d',
+                 aliases: '-d',
                  desc: 'The domain name to manage',
                  default: 'storysprout.app',
                  required: false

@@ -37,7 +37,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,md}\""
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "deploy:review": "bin/thor cli:deploy"
   },
   "jest": {
     "transformIgnorePatterns": [

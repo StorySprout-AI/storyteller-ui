@@ -20,7 +20,7 @@ module Digitalocean
           if (data = response_item('domain_record'))
             context.data = data
           else
-            context.fail!('Failed to patch domain record')
+            context.fail!(message: 'Failed to patch domain record')
           end
         end
 
