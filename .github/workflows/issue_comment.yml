@@ -15,6 +15,15 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      # https://github.com/actions-cool/emoji-helper
+      - name: ACK comment
+        uses: actions-cool/emoji-helper@v1
+        if: ${{ github.event.comment.created }}
+        with:
+          github_token: ${{ github.token }}
+          comment_id: ${{ github.event.comment.id }}
+          emoji: eyes
+
       - name: Checkout
         uses: actions/checkout@v3
 
