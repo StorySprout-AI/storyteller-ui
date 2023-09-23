@@ -6,7 +6,7 @@ on:
 jobs:
   test_and_build:
     name: Test, lint and build
-    if: ${{ github.event.issue.pull_request }}
+    if: github.event.issue.pull_request
     strategy:
       matrix:
         node: ["18"]
@@ -22,10 +22,12 @@ jobs:
         shell: bash
         run: |
           echo "::set-output name=sha::$(echo ${GITHUB_SHA})"
+          echo "::set-output name=branch::$(echo ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}})"
 
       - name: Check Github SHA
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
+          echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
 
       - name: Install nodejs
         uses: actions/setup-node@v3
@@ -38,5 +40,13 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        if: contains(github.event.comment.body, '/coverage')
+        if: github.event.issue.pull_request && contains(github.event.comment.body, '/coverage')
         run: npm test --coverage
+
+      - name: Deploy for review
+        if: github.event.issue.pull_request && contains(github.event.comment.body, '/review')
+        run: |
+          git fetch --unshallow
+          git checkout deploy/review
+          git pull
+          git merge --no-ff --no-edit ${{ steps.workflow-vars.outputs.sha }} -m "Merge ${{ steps.workflow-vars.outputs.sha }} into deploy/review"

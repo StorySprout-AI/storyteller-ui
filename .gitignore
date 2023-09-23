@@ -31,3 +31,5 @@ yarn-error.log*
 !/.vscode/settings.json
 !/.vscode/terminals.json
 /.idea
+.vercel
+/vendor
