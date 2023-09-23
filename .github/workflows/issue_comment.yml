@@ -3,10 +3,11 @@ on:
   # Doc on issue_comment event: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment-on-issues-only-or-pull-requests-only
   issue_comment:
     types: [created, edited]
+
 jobs:
-  test_and_build:
-    name: Test, lint and build
-    if: github.event.issue.pull_request
+  test_coverage_on_request:
+    name: Test coverage
+    if: ${{ github.event.issue.pull_request }}
     strategy:
       matrix:
         node: ["18"]
@@ -14,6 +15,17 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+#      # TODO: Need to review the code in this project, and see if we can
+#      #   implement emojifying the source comment for the GHA run
+#      #   without sending a GitHub token out to a third-party service.
+#      # https://github.com/actions-cool/emoji-helper
+#      - name: ACK comment
+#        uses: actions-cool/emoji-helper@v1
+#        with:
+#          github_token: ${{ github.token }}
+#          comment_id: ${{ github.event.comment.id }}
+#          emoji: eyes
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -21,10 +33,10 @@ jobs:
         id: workflow-vars
         shell: bash
         run: |
-          echo "::set-output name=sha::$(echo ${GITHUB_SHA})"
-          echo "::set-output name=branch::$(echo ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}})"
+          echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
-      - name: Check Github SHA
+      - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
           echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
@@ -40,11 +52,36 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        if: github.event.issue.pull_request && contains(github.event.comment.body, '/coverage')
-        run: npm test --coverage
+        if: ${{ contains(github.event.comment.body, '/coverage') }}
+        run: npm test -- --ci --coverage
+
+  deploy_on_request:
+    name: Deploy for review
+    if: ${{ github.event.issue.pull_request }}
+    strategy:
+      matrix:
+        node: ["18"]
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup workflow variables
+        id: workflow-vars
+        shell: bash
+        run: |
+          echo "sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - name: Check Github SHA & Branch
+        run: |
+          echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
+          echo "Branch: ${{ steps.workflow-vars.outputs.branch }}"
 
       - name: Deploy for review
-        if: github.event.issue.pull_request && contains(github.event.comment.body, '/review')
+        if: ${{ contains(github.event.comment.body, '/review') }}
         run: |
           git fetch --unshallow
           git checkout deploy/review
