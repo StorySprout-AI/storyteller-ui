@@ -3,3 +3,4 @@ cask_args appdir: "~/Applications", require_sha: true
 
 # 'brew install'
 brew "vercel-cli"
+brew "gh"

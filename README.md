@@ -10,6 +10,20 @@ To run all specs locally and review code coverage, execute the following command
 npm test -- --watchAll --ci --coverage
 ```
 
+## Deploying review apps 
+
+To deploy a review app, run the following command:
+
+```shell
+npm run deploy:review
+```
+
+For the help menu on the deploy command, run:
+
+```shell
+bin/thor cli help deploy
+```
+
 ## Additional documentation
 
 - [Thor executable wiki](https://github.com/rails/thor/wiki/Making-An-Executable)
