@@ -1,6 +1,8 @@
 name: CI / "Storyteller UI" app
-# Doc on issue_comment event: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment-on-issues-only-or-pull-requests-only
-on: issue_comment
+on:
+  # Doc on issue_comment event: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment-on-issues-only-or-pull-requests-only
+  issue_comment:
+    types: [created, edited]
 
 jobs:
   test_coverage_on_request:
