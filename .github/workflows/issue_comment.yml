@@ -6,7 +6,7 @@ on:
 jobs:
   test_coverage_on_request:
     name: Test coverage
-    if: github.event.issue.pull_request
+#    if: github.event.issue.pull_request
     strategy:
       matrix:
         node: ["18"]
@@ -45,7 +45,7 @@ jobs:
 
   deploy_on_request:
     name: Deploy for review
-    if: github.event.issue.pull_request
+#    if: github.event.issue.pull_request
     strategy:
       matrix:
         node: ["18"]
