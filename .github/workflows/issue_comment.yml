@@ -7,7 +7,7 @@ on:
 jobs:
   test_coverage_on_request:
     name: Test coverage
-    if: github.event.issue.pull_request
+    if: ${{ github.event.issue.pull_request }}
     strategy:
       matrix:
         node: ["18"]
@@ -38,10 +38,11 @@ jobs:
           echo "sha=${GITHUB_FEATURE_SHA}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
-      - name: Check Github SHA
+      - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
           echo "BRANCH: ${{ steps.workflow-vars.outputs.branch }}"
+          echo "GITHUB REF: ${GITHUB_REF}"
 
       - name: Install nodejs
         uses: actions/setup-node@v3
@@ -59,7 +60,7 @@ jobs:
 
   deploy_on_request:
     name: Deploy for review
-    if: github.event.issue.pull_request
+    if: ${{ github.event.issue.pull_request }}
     strategy:
       matrix:
         node: ["18"]
@@ -79,13 +80,14 @@ jobs:
           echo "sha=${GITHUB_FEATURE_SHA}" >> $GITHUB_OUTPUT
           echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
-      - name: Check Github SHA
+      - name: Check Github SHA & Branch
         run: |
           echo "SHA: ${{ steps.workflow-vars.outputs.sha }}"
           echo "BRANCH: ${{ steps.workflow-vars.outputs.branch }}"
+          echo "GITHUB REF: ${GITHUB_REF}"
 
       - name: Deploy for review
-        if: contains(github.event.comment.body, '/review')
+        if: ${{ contains(github.event.comment.body, '/review') }}
         run: |
           git fetch --unshallow
           git checkout deploy/review
