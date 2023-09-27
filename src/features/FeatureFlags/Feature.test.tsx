@@ -1,8 +1,7 @@
 import React from 'react'
 import mockAxios from 'jest-mock-axios'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from 'test/utils'
 
-import { FeatureFlagProvider } from './index'
 import Feature from './Feature'
 
 // Fixing the "not wrapped in act(...)" warning: https://kentcdodds.com/blog/fix-the-not-wrapped-in-act-warning
@@ -14,9 +13,7 @@ describe('<Feature />', () => {
   test('renders when flag is enabled', async () => {
     mockAxios.get.mockResolvedValueOnce({ data: { features: [{ key: 'feat__hello', state: 'on' }] } })
     render(
-      <FeatureFlagProvider>
-        <Feature flag="feat__hello">Hello</Feature>
-      </FeatureFlagProvider>
+      <Feature flag="feat__hello">Hello</Feature>
     )
     await waitFor(() => mockAxios.get)
     expect(mockAxios.get).toHaveBeenCalledTimes(1)
@@ -26,9 +23,7 @@ describe('<Feature />', () => {
   test('does not render when flag is disabled', async () => {
     mockAxios.get.mockResolvedValueOnce({ data: { features: [{ key: 'feat__hello', state: 'off' }] } })
     render(
-      <FeatureFlagProvider>
-        <Feature flag="feat__hello">Hello</Feature>
-      </FeatureFlagProvider>
+      <Feature flag="feat__hello">Hello</Feature>
     )
     await waitFor(() => mockAxios.get)
     expect(mockAxios.get).toHaveBeenCalledTimes(1)
@@ -38,9 +33,7 @@ describe('<Feature />', () => {
   test('does not render when flag is not defined', async () => {
     mockAxios.get.mockResolvedValueOnce({ data: { features: [] } })
     render(
-      <FeatureFlagProvider>
-        <Feature flag="feat__hello">Hello</Feature>
-      </FeatureFlagProvider>
+      <Feature flag="feat__hello">Hello</Feature>
     )
     await waitFor(() => mockAxios.get)
     expect(mockAxios.get).toHaveBeenCalledTimes(1)

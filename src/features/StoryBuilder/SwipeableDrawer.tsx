@@ -10,7 +10,7 @@ import { grey } from '@mui/material/colors'
 
 import StoryBuilder from './index'
 
-import withRoot from 'features/PagedStory/v1/modules/withRoot'
+import withRoot from 'themes/onepirate/modules/withRoot'
 
 const Root = styled('div')(({ theme }) => ({
   height: '100%',

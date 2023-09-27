@@ -4,9 +4,9 @@ import Box, { BoxProps } from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import LinearProgress from '@mui/material/LinearProgress'
 
-import Button from '../../components/Button'
+import Button from 'themes/onepirate/components/Button'
 
-import withRoot from '../withRoot'
+import withRoot from '../../../../../themes/onepirate/modules/withRoot'
 
 type StoryProps = BoxProps & {
   loading?: boolean

@@ -16,10 +16,11 @@ import BookIcon from '@mui/icons-material/Book'
 import styled from '@mui/system/styled'
 // // Problems? Try this alt syntax
 // import styled from '@mui/material/styles/styled'
-
+import StoryBuilder from 'features/StoryBuilder'
+import Feature from 'features/FeatureFlags/Feature'
 import { AuthStatus, useAuth } from 'components/shared/AuthProvider'
 
-import StoryBuilder from 'features/StoryBuilder'
+import featureFlags from 'lib/features'
 
 const Toolbar = styled(MuiToolbar)(({ theme }) => ({
   height: 64,
@@ -39,8 +40,33 @@ export function AppBar(props: AppBarProps) {
   )
 }
 
-const pages = ['Home', 'About']
-const settings = ['Profile', 'Account', 'Your Library']
+interface AppFeature {
+  label: string
+  path: string
+  flag: string
+}
+
+const pages: AppFeature[] = [
+  { label: 'Home', path: '/', flag: featureFlags.HOME_PAGE },
+  { label: 'About', path: '/about', flag: featureFlags.ABOUT_PAGE }
+]
+const settings: AppFeature[] = [
+  {
+    label: 'Profile',
+    path: '/profile',
+    flag: featureFlags.PROFILE
+  },
+  {
+    label: 'Account',
+    path: '/account',
+    flag: featureFlags.ACCOUNT
+  },
+  {
+    label: 'Your Library',
+    path: '/library',
+    flag: featureFlags.LIBRARY
+  }
+]
 
 export function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -122,9 +148,11 @@ export function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Feature key={page.label} flag={page.flag}>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.label}</Typography>
+                  </MenuItem>
+                </Feature>
               ))}
             </Menu>
           </Box>
@@ -165,9 +193,11 @@ export function ResponsiveAppBar() {
               New Story
             </Button>
             {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-                {page}
-              </Button>
+              <Feature flag={page.flag} key={page.label}>
+                <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                  {page.label}
+                </Button>
+              </Feature>
             ))}
             &nbsp;
           </Box>
@@ -195,9 +225,11 @@ export function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+                <Feature key={setting.label} flag={setting.flag}>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.label}</Typography>
+                  </MenuItem>
+                </Feature>
               ))}
               <MenuItem key="menu--sign-out" onClick={handleSignOutMenu}>
                 <Typography textAlign="center">Sign out</Typography>

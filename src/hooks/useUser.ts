@@ -159,8 +159,8 @@ const useUser = () => {
       // TODO: This seems ridiculous. Can this logic be better?
       if (
         location.pathname === '/login' &&
-        !!location.state.from.pathname &&
-        location.state.from.pathname !== location.pathname
+        !!location.state?.from.pathname &&
+        location.state?.from.pathname !== location.pathname
       ) {
         navigate(location.state.from.pathname)
       } else if (/^\/(?:login)?$/.test(location.pathname)) {

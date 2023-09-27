@@ -34,6 +34,9 @@
     "features/*": [
       "features/*"
     ],
+    "themes/*": [
+      "themes/*"
+    ],
     "components/*": [
       "components/*"
     ],
@@ -42,12 +45,16 @@
     ],
     "lib/*": [
       "lib/*"
+    ],
+    "test/*": [
+      "test/*"
     ]
   },
   "include": [
     "src"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "test"
   ]
 }

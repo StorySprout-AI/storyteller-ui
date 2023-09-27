@@ -4,5 +4,5 @@ import App from './App'
 
 test('app renders successfully', () => {
   render(<App />)
-  screen.getByText(/welcome to storysprout/i)
+  screen.getByText(/Welcome to a treasure trove of stories that never runs out!/i)
 })
