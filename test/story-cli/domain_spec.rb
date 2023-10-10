@@ -1,9 +1,9 @@
 require 'minitest/autorun'
-require_relative '../../lib/story-sprout/domain'
+require_relative '../../lib/story-cli/domain'
 
-describe StorySprout::Domain do
+describe StoryCLI::Domain do
   before do
-    @domain = StorySprout::Domain.new
+    @domain = StoryCLI::Domain.new
   end
 
   describe '#record_name_from_branch' do

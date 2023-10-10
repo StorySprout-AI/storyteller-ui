@@ -5,7 +5,7 @@ require_relative '../scripts/cli'
 
 class TestCLI < Minitest::Test
   def setup
-    @cli = ::CLI.new
+    @cli = StoryCLI::App.new
   end
 
   def test_deploy
