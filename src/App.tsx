@@ -15,18 +15,9 @@ import Login from 'components/Login'
 import TermsOfUse from 'components/TermsOfUse'
 import PrivacyPolicy from 'components/PrivacyPolicy'
 
-import useWakeUpServer from 'hooks/useWakeUpServer'
-
 import './App.css'
 
 function App() {
-  const ping = useWakeUpServer()
-
-  React.useEffect(() => {
-    void ping.send()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // TODO: Get FE app routes def to be more dry by using createBrowserRouter: https://reactrouter.com/en/main/routers/create-browser-router
   return (
     <div className="App">
