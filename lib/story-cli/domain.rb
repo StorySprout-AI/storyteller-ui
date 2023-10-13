@@ -2,7 +2,6 @@ require 'bundler'
 require 'thor'
 require 'dotenv'
 require 'deep_merge'
-require_relative '../digitalocean'
 
 # TODO: This should be helping avoid explicit requires,
 #   but I'm not sure I have it working yet https://bundler.io/guides/bundler_setup.html
@@ -12,7 +11,7 @@ Bundler.require(ENV['RACK_ENV'] || 'development')
 Dotenv.load('.envrc')
 
 # Thor method option data types: https://github.com/rails/thor/wiki/Method-Options#types-for-method_options
-module StorySprout
+module StoryCLI
   class Domain < Thor
     def self.exit_on_failure?
       true
@@ -30,44 +29,16 @@ module StorySprout
                  default: 'storysprout.app',
                  required: false
 
-    namespace 'story-sprout-cli:domain'
+    namespace 'story-cli:domain'
 
-    option :type,
+    option :branch_name,
+           aliases: '-b',
            type: :string,
-           alias: '-t',
-           desc: 'The type of the DNS record. For example: A, CNAME, TXT, ...',
+           desc: 'The name of the current feature branch',
            required: true
-    option :name,
-           type: :string,
-           alias: '-n',
-           desc: 'The host name, alias, or service being defined by the record',
-           required: true
-    option :data,
-           type: :string,
-           alias: '-d',
-           desc: 'Variable data depending on record type',
-           required: true
-    option :ttl, type: :numeric, desc: 'This value is the time to live for the record, in seconds'
-    desc 'upsert_record', 'Create or Update a DNS record'
-    def upsert_record
-      # Fetch DNS records for options[:domain] (via Digitalocean::Records)
-      #  - If the record exists by options[:name], update it (via Digitalocean::PatchRecord)
-      #  - If the record does not exist, create it (via Digitalocean::PutRecord)
-      result = Digitalocean::UpsertRecord.call(options)
-      if result.success?
-        puts "Upserted record for #{record_fqdn}"
-      else
-        puts result.message
-      end
-    end
-
-    private
-
-    def record_fqdn
-      "#{options[:name] || record_name}.#{options[:domain]}"
-    end
-
-    def record_name(from_branch = nil)
+    desc 'record_name', 'Algorithm for generating the Render DNS record name derived from the current feature branch'
+    def record_name
+      from_branch = options[:branch_name]
       matches = /^git@github.com:(.+)\/(.+).git$/.match(repo_path)
       branch = from_branch
       branch ||= current_branch
@@ -79,6 +50,8 @@ module StorySprout
       clean_git_user = git_user.gsub(no_special_chars_regex, '')
       [clean_repo_name, 'git', branch_parts, clean_git_user].flatten.map(&:downcase).flatten.join('-')
     end
+
+    private
 
     def repo_path
       # Run command to get the github repository ssh path

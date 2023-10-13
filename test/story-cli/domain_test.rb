@@ -1,9 +1,9 @@
 require 'minitest/autorun'
-require_relative '../../lib/story-sprout/domain'
+require_relative '../../lib/story-cli/domain'
 
 class TestDomain < Minitest::Test
   def setup
-    @domain = StorySprout::Domain.new
+    @domain = StoryCLI::Domain.new
   end
 
   def teardown
