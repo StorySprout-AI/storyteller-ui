@@ -5,6 +5,9 @@ import Link from '@mui/material/Link'
 import Container from '@mui/material/Container'
 import Typography from 'themes/onepirate/components/Typography'
 import TextField from 'themes/onepirate/components/TextField'
+import Feature from 'features/FeatureFlags/Feature'
+
+import featureFlags from 'lib/features'
 
 function Copyright() {
   return (
@@ -44,7 +47,7 @@ export default function AppFooter() {
       <Container sx={{ my: 8, display: 'flex' }}>
         <Grid container spacing={5}>
           <Grid item xs={6} sm={4} md={3}>
-            <Grid container direction="column" justifyContent="flex-end" spacing={2} sx={{ height: 120 }}>
+            <Grid container direction="column" justifyContent="flex-start" spacing={2} sx={{ height: 120 }}>
               {/* <Grid item sx={{ display: 'flex' }}>
                 <Box component="a" href="https://mui.com/" sx={iconStyle}>
                   <img src="/static/themes/onepirate/appFooterFacebook.png" alt="Facebook" />
@@ -71,26 +74,28 @@ export default function AppFooter() {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={6} sm={8} md={4}>
-            <Typography variant="h6" marked="none" gutterBottom>
-              Language
-            </Typography>
-            <TextField
-              select
-              size="medium"
-              variant="standard"
-              SelectProps={{
-                native: true
-              }}
-              sx={{ mt: 1, width: 150 }}
-            >
-              {LANGUAGES.map((language) => (
-                <option value={language.code} key={language.code}>
-                  {language.name}
-                </option>
-              ))}
-            </TextField>
-          </Grid>
+          <Feature flag={featureFlags.SITE_TRANSLATION}>
+            <Grid item xs={6} sm={8} md={4}>
+              <Typography variant="h6" marked="none" gutterBottom>
+                Language
+              </Typography>
+              <TextField
+                select
+                size="medium"
+                variant="standard"
+                SelectProps={{
+                  native: true
+                }}
+                sx={{ mt: 1, width: 150 }}
+              >
+                {LANGUAGES.map((language) => (
+                  <option value={language.code} key={language.code}>
+                    {language.name}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+          </Feature>
           <Grid item>
             <Typography variant="caption">
               {'Icons made by '}
