@@ -5,7 +5,7 @@ import styled from '@mui/system/styled'
 
 import random from 'lodash/random'
 
-interface StoryBuilderStatusProps {
+export interface StoryBuilderStatusProps {
   loading: boolean
   storiesAvailable: boolean
 }

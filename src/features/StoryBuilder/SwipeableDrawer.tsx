@@ -31,7 +31,7 @@ const Puller = styled(Box)(({ theme }) => ({
   left: 'calc(50% - 15px)'
 }))
 
-type StoryBuilderProps = Omit<SwipeableDrawerProps, 'onClose' | 'onOpen'> & {
+export type StoryBuilderProps = Omit<SwipeableDrawerProps, 'onClose' | 'onOpen'> & {
   header?: ReactNode
 }
 

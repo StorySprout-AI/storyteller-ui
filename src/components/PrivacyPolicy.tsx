@@ -1,10 +1,14 @@
 import React from 'react'
 import Box from '@mui/material/Box'
+import useContactInfo from 'hooks/useContactInfo'
 
 const PrivacyPolicy = () => {
   const websiteName = 'StorySprout'
   const effectiveDate = '08/31/2023'
-  const contactEmail = 'storysprout-ai-mailbox@googlegroups.com'
+
+  const {
+    email: { support: contactEmail }
+  } = useContactInfo()
 
   return (
     <Box textAlign="left">

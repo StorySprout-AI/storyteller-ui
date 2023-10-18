@@ -19,6 +19,7 @@ import { heroes, places, characters, subjects, objects, ages, writingStyles } fr
 import { nullSafeStringOrValue } from 'lib'
 
 import StoryBuilder from 'features/StoryBuilder'
+import useContactInfo from 'hooks/useContactInfo'
 
 function StackableItem({ children, ...otherProps }: GridProps) {
   return (
@@ -44,6 +45,7 @@ function CenteredRowItem({ children, ...otherProps }: GridProps) {
 
 // Theme: https://mui.com/store/items/onepirate/
 function PagedStoryV1() {
+  const contactInfo = useContactInfo()
   const { user } = useAuth()
   const {
     hero,
@@ -96,11 +98,7 @@ function PagedStoryV1() {
           We&apos;re working on a feature for saving your stories.
           <p />
           Have an idea for a feature you&apos;d like us to build next?{' '}
-          <a
-            href="mailto:storysprout-ai-mailbox@googlegroups.com?subject=Build%20this%20next!"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={`mailto:${contactInfo.email.support}?subject=Build%20this%20next!`} target="_blank" rel="noreferrer">
             Let us know!
           </a>
         </Typography>

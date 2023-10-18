@@ -1,9 +1,12 @@
 import React from 'react'
 import Box from '@mui/material/Box'
+import useContactInfo from 'hooks/useContactInfo'
 
 export default function TermsOfUse() {
   const currentDate = new Date().toLocaleDateString()
-  const contactEmail = 'storysprout-ai-mailbox@googlegroups.com'
+  const {
+    email: { help: contactEmail }
+  } = useContactInfo()
 
   return (
     <Box textAlign="left">
