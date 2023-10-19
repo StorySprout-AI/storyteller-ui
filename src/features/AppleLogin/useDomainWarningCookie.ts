@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-
-import { COOKIE_FLAGS, FEATURE_FLAGS } from 'lib/constants'
 import { useCookies } from 'react-cookie'
+
+import featureFlags from 'lib/features'
 
 function isSupportedDomain() {
   return /^https:\/\/(?:(?:.*.)?storysprout|storysprout.ngrok).app/gm.test(window.location.href)
@@ -12,14 +12,14 @@ export default function useDomainWarningCookie() {
    * TODO: What does passing in this argument to useCookies do when setting it up
    *   for the app? Are we setting up useCookies correctly in this context?
    */
-  const [cookies, setCookie] = useCookies([FEATURE_FLAGS.APPLE_LOGIN])
-  const [alreadyShown, setAlreadyShown] = useState(
-    () => cookies[COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING] ?? 'no'
+  const [cookies, setCookie] = useCookies([featureFlags.APPLE_LOGIN])
+  const [hasSeenDomainWarning, setHasSeenDomainWarning] = useState(
+    () => cookies[featureFlags.APPLE_LOGIN]?.hasSeenDomainWarning ?? 'no'
   )
 
   const shouldShow = useCallback(() => {
-    return !isSupportedDomain() && alreadyShown !== 'yes'
-  }, [alreadyShown])
+    return !isSupportedDomain() && hasSeenDomainWarning !== 'yes'
+  }, [hasSeenDomainWarning])
 
   const check = useCallback(() => {
     /**
@@ -27,7 +27,7 @@ export default function useDomainWarningCookie() {
      *   to fix the issue
      */
     if (shouldShow()) {
-      setAlreadyShown('yes')
+      setHasSeenDomainWarning('yes')
       // TODO: Change this to a modal component instead
       alert(
         `From the app URL ${window.location.href} ` +
@@ -38,8 +38,8 @@ export default function useDomainWarningCookie() {
   }, [shouldShow])
 
   useEffect(() => {
-    setCookie(COOKIE_FLAGS.APPLE_LOGIN.HAS_SEEN_DOMAIN_WARNING, alreadyShown)
-  }, [setCookie, alreadyShown])
+    setCookie(featureFlags.APPLE_LOGIN, { hasSeenDomainWarning })
+  }, [setCookie, hasSeenDomainWarning])
 
-  return { check, shouldShow, alreadyShown }
+  return { check, shouldShow, alreadyShown: hasSeenDomainWarning }
 }
