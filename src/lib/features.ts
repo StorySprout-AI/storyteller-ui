@@ -5,7 +5,8 @@ export const FEATURE_FLAGS: Record<string, string> = {
   ACCOUNT: 'feat__account',
   LIBRARY: 'feat__library',
   PROFILE: 'feat__profile',
-  SITE_TRANSLATION: 'feat__site_translation'
+  SITE_TRANSLATION: 'feat__site_translation',
+  SOCIAL_LINKS: 'feat__social_links'
 }
 
 export default FEATURE_FLAGS
