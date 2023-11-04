@@ -19,10 +19,12 @@
     "axios": "^1.4.0",
     "clsx": "^2.0.0",
     "crypto-js": "^4.1.1",
+    "dayjs": "^1.11.10",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.3.2",
     "prettier": "^3.0.0",
+    "prop-types": "^15.8.1",
     "react": "~18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "~18.2.0",
@@ -93,9 +95,10 @@
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/lodash": "^4.14.197",
+    "@types/prop-types": "^15.7.9",
+    "@types/react-router-dom": "^5.3.3",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "@types/react-router-dom": "^5.3.3",
     "jest-mock-axios": "^4.7.2"
   },
   "overrides": {
