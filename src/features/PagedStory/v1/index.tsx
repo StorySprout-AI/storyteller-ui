@@ -20,6 +20,7 @@ import { nullSafeStringOrValue } from 'lib'
 
 import StoryBuilder from 'features/StoryBuilder'
 import useContactInfo from 'hooks/useContactInfo'
+import useRequestStoryV2 from 'features/StoryBuilder/hooks/useRequestStoryV2'
 
 function StackableItem({ children, ...otherProps }: GridProps) {
   return (
@@ -65,6 +66,7 @@ function PagedStoryV1() {
     composePrompt
   } = useStoryPrompt()
   const { loading, storyPages, requestStory } = useGenerateStory()
+  const { requestStory: requestStoryV2 } = useRequestStoryV2()
   const sbContext = useContext(StoryBuilder.Context)
 
   const generateStory = useCallback(async () => {
@@ -73,6 +75,8 @@ function PagedStoryV1() {
       const autoClick = new MouseEvent('click', { bubbles: true })
       sbContext.toggleDrawer('bottom', false)(autoClick as any)
     })
+    // Test V2
+    await requestStoryV2({ hero, place, character, object, age, subject })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [composePrompt, requestStory, sbContext.toggleDrawer])
 

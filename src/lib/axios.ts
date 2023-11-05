@@ -1,14 +1,26 @@
-import axios, { InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
+import { camelizeKeys, decamelizeKeys } from 'humps'
 import tokenizer from 'lib/tokenization'
 
+const isNativeRequest = (config: InternalAxiosRequestConfig) => {
+  const matchesAPIURL = new RegExp(`^${process.env.REACT_APP_API_ENDPOINT}/api/v1/`)
+  return matchesAPIURL.test(config.url as string)
+}
+
 const shouldAuthorizeRequest = (config: InternalAxiosRequestConfig) => {
-  // Skip authorization header for feature flag requests
+  // Skip default authorization header for non-native requests
+  if (!isNativeRequest(config)) return false
+
+  // Skip default authorization header for feature flag requests
   if (/\/api\/flipper\/features$/.test(config.url as string)) return false
 
-  // Skip authorization header for auth token requests
+  // Skip default authorization header for auth token requests
   if (/\/oauth\/token$/.test(config.url as string)) return false
 
-  return !!config.headers['X-Skip-Authorization-Header']
+  // Skip default authorization header for OpenAI requests
+  if (/:\/\/api\.openai\.com\//.test(config.url as string)) return false
+
+  return !config.headers['X-Skip-Authorization-Header']
 }
 
 axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT
@@ -37,5 +49,32 @@ axios.interceptors.request.use(async (config) => {
   console.debug({ headers: config.headers })
   return config
 })
+
+// // Axios middleware to convert all api responses to camelCase
+// axios.interceptors.response.use((response: AxiosResponse) => {
+//   if (response.data && response.headers['content-type'] === 'application/json') {
+//     response.data = camelizeKeys(response.data)
+//   }
+
+//   return response
+// })
+
+// // Axios middleware to convert all api requests to snake_case
+// axios.interceptors.request.use((config: AxiosRequestConfig) => {
+//   const newConfig = { ...config }
+//   newConfig.url = `api/${config.url}`
+
+//   if (newConfig.headers['Content-Type'] === 'multipart/form-data') return newConfig
+
+//   if (config.params) {
+//     newConfig.params = decamelizeKeys(config.params)
+//   }
+
+//   if (config.data) {
+//     newConfig.data = decamelizeKeys(config.data)
+//   }
+
+//   return newConfig
+// })
 
 export default axios

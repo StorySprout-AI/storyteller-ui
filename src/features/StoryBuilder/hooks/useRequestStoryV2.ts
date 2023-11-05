@@ -9,6 +9,11 @@ interface StoryParams {
   age: string
   subject: string
 }
+
+interface Story {
+  title?: string
+  description: string
+}
 /**
  * @TODO Refactor to useStoryPromptVariables and make a call to
  *   POST /api/v1/stories
@@ -20,6 +25,7 @@ export default function useRequestStoryV2() {
   const [storyPages, setStoryPages] = React.useState<string[]>([])
 
   const requestStory = React.useCallback(async (story: StoryParams, successCallback?: () => Promise<void>) => {
+    console.debug({ story })
     setLoading(true)
     try {
       const response = await axios.post(
@@ -27,12 +33,14 @@ export default function useRequestStoryV2() {
         { story },
         { headers: { 'Content-Type': 'application/json' } }
       )
-      const generatedStory = response.data.choices[0].message.content
-      const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
 
-      if (!!successCallback) await successCallback()
+      console.debug({ response })
+      // const generatedStory = response.data.choices[0].message.content
+      // const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
 
-      setStoryPages(pages)
+      // if (!!successCallback) await successCallback()
+
+      // setStoryPages(pages)
     } catch (error) {
       console.error('Error generating story:', error)
     } finally {

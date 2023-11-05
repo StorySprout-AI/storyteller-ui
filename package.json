@@ -21,6 +21,7 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.10",
     "formik": "^2.4.5",
+    "humps": "^2.0.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.3.2",
@@ -95,6 +96,7 @@
   "devDependencies": {
     "@types/apple-signin-api": "^1.5.2",
     "@types/crypto-js": "^4.1.1",
+    "@types/humps": "^2.0.5",
     "@types/lodash": "^4.14.197",
     "@types/prop-types": "^15.7.9",
     "@types/react-router-dom": "^5.3.3",
