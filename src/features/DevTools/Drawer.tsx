@@ -2,6 +2,8 @@ import React from 'react'
 import Drawer, { DrawerProps } from '@mui/material/Drawer'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
+import noop from 'lodash/noop'
+import { useFormik } from 'formik'
 
 import TitleTextBox from 'components/shared/TitleTextBox'
 
@@ -14,22 +16,46 @@ type DevToolsDrawerProps = Omit<DrawerProps, 'children'> & {
   anchor?: DrawerProps['anchor']
 }
 
+interface DevToolFormValues {
+  accessToken: string
+  refreshToken: string
+  tokenizedUser: string
+}
+
 export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerProps) {
   const { open, toggleDrawer } = useDevToolsContext()
   const {
     loading: loadingCredentials,
     accessToken,
-    refreshAccessToken,
+    refreshToken,
     refresh: sendTokenRefreshRequest,
     tokenizedUser
   } = useAccessToken()
+
+  const formik = useFormik<DevToolFormValues>({
+    initialValues: {
+      accessToken: 'Loading...',
+      refreshToken: 'Loading...',
+      tokenizedUser: 'Loading...'
+    },
+    onSubmit: noop
+  })
+
+  React.useEffect(() => {
+    if (!loadingCredentials) {
+      formik.setFieldValue('accessToken', accessToken ?? '')
+      formik.setFieldValue('refreshToken', refreshToken ?? '')
+      formik.setFieldValue('tokenizedUser', JSON.stringify(tokenizedUser, null, 2))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadingCredentials, accessToken, refreshToken, tokenizedUser])
 
   React.useEffect(() => {
     if (open) sendTokenRefreshRequest()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
-  console.debug({ toolIsOpen: open, tokenizedUser, accessToken, refreshAccessToken })
+  console.debug({ toolIsOpen: open, tokenizedUser, accessToken, refreshAccessToken: refreshToken })
 
   return (
     <Drawer {...rest} anchor={anchor} open={open} onClose={toggleDrawer(anchor, false)}>
@@ -50,7 +76,7 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
           variant="outlined"
           margin="normal"
           multiline
-          value={JSON.stringify(tokenizedUser, null, 2)}
+          value={formik.values.tokenizedUser}
           disabled
           fullWidth
         />
@@ -60,7 +86,7 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
           variant="outlined"
           margin="normal"
           multiline
-          value={loadingCredentials ? 'Loading...' : accessToken ?? ''}
+          value={formik.values.accessToken}
           disabled
           fullWidth
         />
@@ -70,7 +96,7 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
           variant="outlined"
           margin="normal"
           multiline
-          value={loadingCredentials ? 'Loading...' : refreshAccessToken ?? ''}
+          value={formik.values.refreshToken}
           disabled
           fullWidth
         />

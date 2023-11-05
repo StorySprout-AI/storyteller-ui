@@ -9,7 +9,7 @@ export default function useAccessToken() {
   const tokenHelpers = useTokenHelpers()
   const [loading, setLoading] = React.useState(false)
   const [accessToken, setAccessToken] = React.useState<string | null>(null)
-  const [refreshAccessToken, setRefreshAccessToken] = React.useState<string | null>(null)
+  const [refreshToken, setRefreshToken] = React.useState<string | null>(null)
   const [tokenizedUser, setTokenizedUser] = React.useState<User | null>(null)
 
   const refresh = React.useCallback(async () => {
@@ -33,7 +33,7 @@ export default function useAccessToken() {
       // Set access token to state
       setAccessToken(response.data.access_token)
       // Set refresh token to state
-      setRefreshAccessToken(response.data.refresh_token)
+      setRefreshToken(response.data.refresh_token)
       // Set tokenized user to state
       setTokenizedUser(user)
 
@@ -59,5 +59,5 @@ export default function useAccessToken() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { loading, accessToken, refreshAccessToken, tokenizedUser, refresh }
+  return { loading, accessToken, refreshToken, tokenizedUser, refresh }
 }
