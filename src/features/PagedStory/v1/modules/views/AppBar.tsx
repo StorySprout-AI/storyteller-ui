@@ -240,7 +240,7 @@ export function ResponsiveAppBar() {
                 </Feature>
               ))}
               <MenuItem key="menu--dev-tools" onClick={handleOpenTestingTools}>
-                <Typography textAlign="center">Testing tools</Typography>
+                <Typography textAlign="center">Testing / Developer tools</Typography>
               </MenuItem>
               <MenuItem key="menu--sign-out" onClick={handleSignOutMenu}>
                 <Typography textAlign="center">Sign out</Typography>

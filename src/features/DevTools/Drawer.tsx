@@ -32,6 +32,11 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
     tokenizedUser
   } = useAccessToken()
 
+  const handleSelectAllOnFocus = React.useCallback(
+    (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => event.target.select(),
+    []
+  )
+
   const formik = useFormik<DevToolFormValues>({
     initialValues: {
       accessToken: 'Loading...',
@@ -55,11 +60,11 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
-  console.debug({ toolIsOpen: open, tokenizedUser, accessToken, refreshAccessToken: refreshToken })
+  console.debug({ toolIsOpen: open, tokenizedUser, accessToken, refreshToken })
 
   return (
     <Drawer {...rest} anchor={anchor} open={open} onClose={toggleDrawer(anchor, false)}>
-      <TitleTextBox>Testing Tools</TitleTextBox>
+      <TitleTextBox>Testing / Dev Tools</TitleTextBox>
       <Box
         component="form"
         noValidate
@@ -76,9 +81,9 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
           variant="outlined"
           margin="normal"
           multiline
-          value={formik.values.tokenizedUser}
-          disabled
           fullWidth
+          value={formik.values.tokenizedUser}
+          inputProps={{ readOnly: true }}
         />
 
         <TextField
@@ -86,9 +91,10 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
           variant="outlined"
           margin="normal"
           multiline
-          value={formik.values.accessToken}
-          disabled
           fullWidth
+          value={formik.values.accessToken}
+          onFocus={handleSelectAllOnFocus}
+          inputProps={{ readOnly: true }}
         />
 
         <TextField
@@ -96,9 +102,10 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
           variant="outlined"
           margin="normal"
           multiline
-          value={formik.values.refreshToken}
-          disabled
           fullWidth
+          value={formik.values.refreshToken}
+          onFocus={handleSelectAllOnFocus}
+          inputProps={{ readOnly: true }}
         />
       </Box>
     </Drawer>
