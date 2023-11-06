@@ -3,14 +3,14 @@ import jwt_decode from 'jwt-decode'
 import tokenizer from 'lib/tokenization'
 import axios from 'lib/axios'
 import useTokenHelpers from './useTokenHelpers'
-import { User } from 'lib/types'
+import { TokenizedUser } from 'lib/types'
 
 export default function useAccessToken() {
   const tokenHelpers = useTokenHelpers()
   const [loading, setLoading] = React.useState(false)
   const [accessToken, setAccessToken] = React.useState<string | null>(null)
   const [refreshToken, setRefreshToken] = React.useState<string | null>(null)
-  const [tokenizedUser, setTokenizedUser] = React.useState<User | null>(null)
+  const [tokenizedUser, setTokenizedUser] = React.useState<TokenizedUser | null>(null)
 
   const refresh = React.useCallback(async () => {
     // Retrieve the refresh token from localStorage
@@ -27,9 +27,9 @@ export default function useAccessToken() {
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
-      const user = jwt_decode(response.data.access_token) as User
       console.debug('Response @useAccessToken', { response })
 
+      const user = jwt_decode(response.data.access_token) as TokenizedUser
       // Set access token to state
       setAccessToken(response.data.access_token)
       // Set refresh token to state

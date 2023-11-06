@@ -3,7 +3,6 @@ import React, { useCallback, useContext } from 'react'
 import Grid, { GridProps } from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
@@ -12,6 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import withRoot from 'themes/onepirate/modules/withRoot'
 import Button from 'themes/onepirate/components/Button'
 import Story from './modules/views/Story'
+import StackableItem from 'components/shared/StackableItem'
 
 import { useAuth } from 'components/shared/AuthProvider'
 import { useGenerateStory, useStoryPrompt } from 'hooks'
@@ -24,18 +24,6 @@ import useRequestStoryV2 from 'features/StoryBuilder/hooks/useRequestStoryV2'
 import { FeatureFlagContext } from 'features/FeatureFlags'
 import FEATURE_FLAGS from 'lib/features'
 import Feature from 'features/FeatureFlags/Feature'
-
-function StackableItem({ children, ...otherProps }: GridProps) {
-  return (
-    <Grid item padding={1} xs={12} md={4} {...otherProps}>
-      {children && (
-        <FormControl variant="outlined" fullWidth>
-          {children}
-        </FormControl>
-      )}
-    </Grid>
-  )
-}
 
 function CenteredRowItem({ children, ...otherProps }: GridProps) {
   return (

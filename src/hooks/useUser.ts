@@ -40,6 +40,8 @@ const useUser = () => {
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
+      console.debug({ response })
+
       // Encrypt and store the new token in localStorage
       const encryptedToken = CryptoJS.AES.encrypt(
         response.data.access_token,

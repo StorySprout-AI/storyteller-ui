@@ -98,8 +98,8 @@
     "@types/crypto-js": "^4.1.1",
     "@types/humps": "^2.0.5",
     "@types/lodash": "^4.14.197",
-    "@types/prop-types": "^15.7.9",
     "@types/react-router-dom": "^5.3.3",
+    "@types/prop-types": "^15.7.9",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest-mock-axios": "^4.7.2"
