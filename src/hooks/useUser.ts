@@ -40,22 +40,24 @@ const useUser = () => {
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
+      console.debug({ response })
+
       // Encrypt and store the new token in localStorage
       const encryptedToken = CryptoJS.AES.encrypt(
-        response.data.access_token,
+        response.data.accessToken,
         process.env.REACT_APP_ENCRYPTION_KEY as string
       ).toString()
       localStorage.setItem('token', encryptedToken)
 
       // Encrypt and Store the new refresh token in localStorage
       const encryptedRefreshToken = CryptoJS.AES.encrypt(
-        response.data.refresh_token,
+        response.data.refreshToken,
         process.env.REACT_APP_ENCRYPTION_KEY as string
       ).toString()
       localStorage.setItem('refreshToken', encryptedRefreshToken)
 
       // Encrypt and store the user in localStorage
-      const user = jwt_decode(response.data.access_token)
+      const user = jwt_decode(response.data.accessToken)
       const encryptedUser = CryptoJS.AES.encrypt(
         JSON.stringify(user),
         process.env.REACT_APP_ENCRYPTION_KEY as string

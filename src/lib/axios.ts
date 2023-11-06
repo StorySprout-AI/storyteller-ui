@@ -2,13 +2,13 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import tokenizer from 'lib/tokenization'
 
-const isNativeRequest = (config: InternalAxiosRequestConfig) => {
+const isAppServiceRequest = (config: InternalAxiosRequestConfig) => {
   return /^\/api\/v1\//.test(config.url as string)
 }
 
 const shouldAuthorizeRequest = (config: InternalAxiosRequestConfig) => {
   // Skip default authorization header for non-native requests
-  if (!isNativeRequest(config)) return false
+  if (!isAppServiceRequest(config)) return false
 
   // Skip default authorization header for feature flag requests
   if (/\/api\/flipper\/features$/.test(config.url as string)) return false
@@ -50,8 +50,10 @@ axios.interceptors.request.use(async (config) => {
   return config
 })
 
-// Axios middleware to convert all API responses to camelCase
+// Axios middleware to convert all native API responses to camelCase
 axios.interceptors.response.use((response: AxiosResponse) => {
+  if (!isAppServiceRequest(response.config)) return response
+
   if (!!response.data && /^application\/json;?/.test(response.headers['content-type'])) {
     return {
       ...response,
@@ -65,9 +67,9 @@ axios.interceptors.response.use((response: AxiosResponse) => {
 // Axios middleware to convert all native API requests to snake_case
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const { headers, params, data } = config
-  let newConfig = { ...config }
+  if (headers['Content-Type'] === 'multipart/form-data' || !isAppServiceRequest(config)) return config
 
-  if (headers['Content-Type'] === 'multipart/form-data' || !isNativeRequest(config)) return config
+  let newConfig = { ...config }
   if (!!params) newConfig.params = decamelizeKeys(params)
   if (!!data) newConfig.data = decamelizeKeys(data)
 
