@@ -11,6 +11,7 @@ interface StoryParams {
 }
 
 interface Story {
+  id: number // @TODO: Refactor BE to use UUIDs
   title?: string
   description: string
 }
@@ -28,19 +29,19 @@ export default function useRequestStoryV2() {
     console.debug({ story })
     setLoading(true)
     try {
-      const response = await axios.post(
+      const response = await axios.post<Story>(
         '/api/v1/stories',
         { story },
         { headers: { 'Content-Type': 'application/json' } }
       )
 
       console.debug({ response })
-      // const generatedStory = response.data.choices[0].message.content
-      // const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
+      const generatedStory = response.data.description
+      const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
 
-      // if (!!successCallback) await successCallback()
+      if (!!successCallback) await successCallback()
 
-      // setStoryPages(pages)
+      setStoryPages(pages)
     } catch (error) {
       console.error('Error generating story:', error)
     } finally {

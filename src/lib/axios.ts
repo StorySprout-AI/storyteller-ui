@@ -1,10 +1,10 @@
 import axios, { AxiosResponse, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import tokenizer from 'lib/tokenization'
+import { isNative } from 'lodash'
 
 const isNativeRequest = (config: InternalAxiosRequestConfig) => {
-  const matchesAPIURL = new RegExp(`^${process.env.REACT_APP_API_ENDPOINT}/api/v1/`)
-  return matchesAPIURL.test(config.url as string)
+  return /^\/api\/v1\//.test(config.url as string)
 }
 
 const shouldAuthorizeRequest = (config: InternalAxiosRequestConfig) => {
@@ -46,35 +46,36 @@ axios.interceptors.request.use(async (config) => {
       config.headers.Authorization = `Bearer ${decryptedToken}`
     }
   }
-  console.debug({ headers: config.headers })
+  const { url, headers } = config
+  console.debug({ headers, url, 'authorize?': shouldAuthorizeRequest(config) })
   return config
 })
 
-// // Axios middleware to convert all api responses to camelCase
-// axios.interceptors.response.use((response: AxiosResponse) => {
-//   if (response.data && response.headers['content-type'] === 'application/json') {
-//     response.data = camelizeKeys(response.data)
-//   }
+// Axios middleware to convert all API responses to camelCase
+axios.interceptors.response.use((response: AxiosResponse) => {
+  if (!!response.data && /^application\/json;?/.test(response.headers['content-type'])) {
+    return {
+      ...response,
+      data: {
+        ...response.data,
+        ...camelizeKeys(response.data)
+      }
+    }
+  }
 
-//   return response
-// })
+  return response
+})
 
-// // Axios middleware to convert all api requests to snake_case
-// axios.interceptors.request.use((config: AxiosRequestConfig) => {
-//   const newConfig = { ...config }
-//   newConfig.url = `api/${config.url}`
+// Axios middleware to convert all native API requests to snake_case
+axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const { headers, params, data } = config
+  let newConfig = { ...config }
 
-//   if (newConfig.headers['Content-Type'] === 'multipart/form-data') return newConfig
+  if (headers['Content-Type'] === 'multipart/form-data' || !isNativeRequest(config)) return config
+  if (!!params) newConfig.params = decamelizeKeys(params)
+  if (!!data) newConfig.data = decamelizeKeys(data)
 
-//   if (config.params) {
-//     newConfig.params = decamelizeKeys(config.params)
-//   }
-
-//   if (config.data) {
-//     newConfig.data = decamelizeKeys(config.data)
-//   }
-
-//   return newConfig
-// })
+  return newConfig
+})
 
 export default axios
