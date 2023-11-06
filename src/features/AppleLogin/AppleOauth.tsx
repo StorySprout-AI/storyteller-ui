@@ -33,9 +33,10 @@ function AppleOauth({
 }: AppleLoginProps) {
   const buttonRef = React.createRef<HTMLDivElement>()
   const domainWarning = useDomainWarningCookie()
-  const [loaded, setLoaded] = React.useState(false)
-  const [initialized, setInitialized] = React.useState(false)
+  const [loaded, setLoaded] = React.useState(() => false)
+  const [initialized, setInitialized] = React.useState(() => false)
   const [libraryLastCheckTime, setLibraryLastCheckTime] = React.useState<Date>()
+  const [libraryCheckTimes, setLibraryCheckTimes] = React.useState<Date[]>([])
 
   const onLoaded = React.useCallback(() => setLoaded(true), [])
 
@@ -51,12 +52,21 @@ function AppleOauth({
   }, [])
 
   useEffect(() => {
-    const checkInterval = setInterval(() => setLibraryLastCheckTime(new Date()), 1000)
+    const checkInterval = setInterval(() => {
+      const latestCheckTime = new Date()
+      setLibraryLastCheckTime(latestCheckTime)
+      setLibraryCheckTimes([...libraryCheckTimes, latestCheckTime])
+      console.debug({ libraryCheckTimes })
+    }, 1000)
 
     console.debug({ loaded, div: buttonRef.current, typecheck: typeof AppleID, libraryLastCheckTime })
-    if (loaded && typeof AppleID !== 'undefined' && !!buttonRef.current && !initialized) {
+
+    if (initialized) {
+      console.debug('<<< AppleID JS library is already initialized >>>')
       clearInterval(checkInterval)
-      console.debug('<<< initializing AppleID auth >>>')
+    } else if (loaded && typeof AppleID !== 'undefined' && !!buttonRef.current && !initialized) {
+      clearInterval(checkInterval)
+      console.debug('<<< initializing AppleID JS library >>>')
       // eslint-disable-next-line no-undef
       AppleID.auth.init({
         clientId,
@@ -67,6 +77,11 @@ function AppleOauth({
         usePopup
       })
       setInitialized(true)
+    } else {
+      if (libraryCheckTimes.length >= 10) {
+        console.debug('<<< clearing interval to check AppleID JS library >>>')
+        clearInterval(checkInterval)
+      }
     }
 
     return () => {
