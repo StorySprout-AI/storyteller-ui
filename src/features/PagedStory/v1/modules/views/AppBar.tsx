@@ -18,6 +18,8 @@ import styled from '@mui/system/styled'
 // import styled from '@mui/material/styles/styled'
 import StoryBuilder from 'features/StoryBuilder'
 import Feature from 'features/FeatureFlags/Feature'
+import DevTools from 'features/DevTools'
+
 import { AuthStatus, useAuth } from 'components/shared/AuthProvider'
 
 import featureFlags from 'lib/features'
@@ -73,7 +75,8 @@ export function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
   const auth = useAuth()
-  const sbContext = StoryBuilder.useContext()
+  const storyBuilder = StoryBuilder.useContext()
+  const devTools = DevTools.useContext()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -90,6 +93,11 @@ export function ResponsiveAppBar() {
   }
 
   const handleCloseUserMenu = () => {
+    setAnchorElUser(null)
+  }
+
+  const handleOpenTestingTools = (event: React.MouseEvent<HTMLElement>) => {
+    devTools.toggleDrawer('bottom', true)(event)
     setAnchorElUser(null)
   }
 
@@ -186,8 +194,8 @@ export function ResponsiveAppBar() {
             <Button
               data-testid="new-story.appbar.btn"
               key="function--new-story"
-              ref={sbContext.autoClickButtonRef}
-              onClick={sbContext.toggleDrawer('bottom', true)}
+              ref={storyBuilder.autoClickButtonRef}
+              onClick={storyBuilder.toggleDrawer('bottom', true)}
               sx={{ my: 2, color: 'secondary.main', display: 'block' }}
             >
               New Story
@@ -231,6 +239,9 @@ export function ResponsiveAppBar() {
                   </MenuItem>
                 </Feature>
               ))}
+              <MenuItem key="menu--dev-tools" onClick={handleOpenTestingTools}>
+                <Typography textAlign="center">Testing / Developer tools</Typography>
+              </MenuItem>
               <MenuItem key="menu--sign-out" onClick={handleSignOutMenu}>
                 <Typography textAlign="center">Sign out</Typography>
               </MenuItem>
