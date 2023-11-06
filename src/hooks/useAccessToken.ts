@@ -27,9 +27,9 @@ export default function useAccessToken() {
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
-      const user = jwt_decode(response.data.access_token) as TokenizedUser
       console.debug('Response @useAccessToken', { response })
 
+      const user = jwt_decode(response.data.access_token) as TokenizedUser
       // Set access token to state
       setAccessToken(response.data.access_token)
       // Set refresh token to state
@@ -58,8 +58,6 @@ export default function useAccessToken() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  React.useEffect(() => {}, [tokenizedUser])
 
   return { loading, accessToken, refreshToken, tokenizedUser, refresh }
 }
