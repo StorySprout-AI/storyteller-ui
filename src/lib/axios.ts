@@ -1,7 +1,6 @@
-import axios, { AxiosResponse, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { camelizeKeys, decamelizeKeys } from 'humps'
 import tokenizer from 'lib/tokenization'
-import { isNative } from 'lodash'
 
 const isNativeRequest = (config: InternalAxiosRequestConfig) => {
   return /^\/api\/v1\//.test(config.url as string)
@@ -56,10 +55,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   if (!!response.data && /^application\/json;?/.test(response.headers['content-type'])) {
     return {
       ...response,
-      data: {
-        ...response.data,
-        ...camelizeKeys(response.data)
-      }
+      data: camelizeKeys(response.data)
     }
   }
 
