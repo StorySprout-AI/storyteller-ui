@@ -58,8 +58,9 @@ function PagedStoryV1() {
   } = useStoryPrompt()
   const { loading: loadingV1, storyPages: storyPagesV1, requestStory } = useGenerateStory()
   const { loading: loadingV2, storyPages: storyPagesV2, requestStory: requestStoryV2 } = useRequestStoryV2()
-  const sbContext = useContext(StoryBuilder.Context)
   const { isEnabled } = useContext(FeatureFlagContext)
+  const sbContext = useContext(StoryBuilder.Context)
+  const sbServiceIsEnabled = isEnabled(FEATURE_FLAGS.STORY_BUILDER_SERVICE)
 
   const hideStoryBuilderDrawerOnSuccess = async () => {
     const autoClick = new MouseEvent('click', { bubbles: true })
@@ -67,18 +68,18 @@ function PagedStoryV1() {
   }
 
   const generateStory = useCallback(async () => {
-    const prompt = composePrompt()
-    if (isEnabled(FEATURE_FLAGS.STORY_BUILDER_SERVICE)) {
+    if (sbServiceIsEnabled) {
       // Test V2
       await requestStoryV2({ hero, place, character, object, age, subject }, hideStoryBuilderDrawerOnSuccess)
     } else {
+      const prompt = composePrompt()
       await requestStory(prompt, hideStoryBuilderDrawerOnSuccess)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [composePrompt, requestStory, sbContext.toggleDrawer])
+  }, [composePrompt, requestStory, sbContext.toggleDrawer, sbServiceIsEnabled])
 
   const loading = loadingV1 || loadingV2
-  const storyPages = isEnabled(FEATURE_FLAGS.STORY_BUILDER_SERVICE) ? storyPagesV2 : storyPagesV1
+  const storyPages = sbServiceIsEnabled ? storyPagesV2 : storyPagesV1
 
   return (
     <>
