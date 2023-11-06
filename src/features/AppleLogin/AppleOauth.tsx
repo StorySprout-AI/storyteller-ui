@@ -33,8 +33,8 @@ function AppleOauth({
 }: AppleLoginProps) {
   const buttonRef = React.createRef<HTMLDivElement>()
   const domainWarning = useDomainWarningCookie()
-  const [loaded, setLoaded] = React.useState(false)
-  const [initialized, setInitialized] = React.useState(false)
+  const [loaded, setLoaded] = React.useState(() => false)
+  const [initialized, setInitialized] = React.useState(() => false)
   const [libraryLastCheckTime, setLibraryLastCheckTime] = React.useState<Date>()
   const [libraryCheckTimes, setLibraryCheckTimes] = React.useState<Date[]>([])
 
