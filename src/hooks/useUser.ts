@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import CryptoJS from 'crypto-js'
 import jwt_decode from 'jwt-decode'
-import axios from 'lib/axios'
+import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useAppDefaults from './useAppDefaults'
 import useTokenHelpers from './useTokenHelpers'
