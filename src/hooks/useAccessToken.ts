@@ -1,7 +1,7 @@
 import React from 'react'
 import jwt_decode from 'jwt-decode'
 import tokenizer from 'lib/tokenization'
-import axios from 'lib/axios'
+import axios from 'axios'
 import useTokenHelpers from './useTokenHelpers'
 import { TokenizedUser } from 'lib/types'
 
