@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useContext } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import useUser, { User } from 'hooks/useUser'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import LoadingAnimation from './LoadingAnimation'
 
@@ -53,6 +53,9 @@ export function AuthStatus() {
 export function RequireAuth({ children }: WithRequiredChildren) {
   let auth = useAuth()
   let location = useLocation()
+  const [params] = useSearchParams()
+
+  const loginPath = params.size > 0 ? `/login?${params.toString()}` : '/login'
 
   if (auth.loading) {
     return <LoadingAnimation />
@@ -63,7 +66,7 @@ export function RequireAuth({ children }: WithRequiredChildren) {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />
+    return <Navigate to={loginPath} state={{ from: location }} replace />
   }
 
   return children
