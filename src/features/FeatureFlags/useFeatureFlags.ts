@@ -1,10 +1,11 @@
 import axios from 'axios'
-import { useGetParams } from 'hooks/useGetParams'
+// import { useGetParams } from 'hooks/useGetParams'
+import { useSearchParams } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import { FeatureFlagsHook, FlipperActor, FlipperFeatureSet } from './types'
 
 export function useFeatureFlags(): FeatureFlagsHook {
-  const params = useGetParams()
+  const [params] = useSearchParams()
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<any>('')
   const [flags, setFlags] = useState<Record<string, boolean>>({})
@@ -41,19 +42,19 @@ export function useFeatureFlags(): FeatureFlagsHook {
         return { ...acc, [key]: state === 'on' }
       }, flags)
       setFlags(latestFlags)
-      setLoading(false)
       console.debug({ latestFlags })
     } catch (err) {
       console.error(err)
       setError(err)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const isEnabled = useCallback((key: string) => flags[key], [flags])
 
   useEffect(() => {
-    const { u: flipperId } = params
+    const flipperId = params.get('u')
     if (!!flipperId) {
       loadFlagsForActor(flipperId)
     } else loadFlags()

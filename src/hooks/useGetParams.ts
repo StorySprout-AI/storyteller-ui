@@ -1,5 +1,4 @@
 import queryString from 'query-string'
-import { useLocation } from 'react-router-dom'
 
 interface SupportedQueryStringParams {
   // Feature flag ID
@@ -7,8 +6,10 @@ interface SupportedQueryStringParams {
 }
 
 export function useGetParams(): SupportedQueryStringParams {
-  const location = useLocation()
-  const params = queryString.parse(location.search)
+  console.debug({ 'window.location': window.location })
+  const params = queryString.parse(window.location.search)
 
   return params
 }
+
+export default useGetParams
