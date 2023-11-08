@@ -3,12 +3,16 @@ import CryptoJS from 'crypto-js'
 import jwt_decode from 'jwt-decode'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
-import useAppDefaults from 'hooks/useAppDefaults'
+import useAppDefaults from './useAppDefaults'
+import useTokenHelpers from './useTokenHelpers'
 
 export type User = {
   name: string
 }
 
+/**
+ * @TODO: Refactor useUser to use useAccessToken hook
+ */
 const useUser = () => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(false)
@@ -16,30 +20,28 @@ const useUser = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { redirect_path } = useAppDefaults()
-
-  // Remove the token and user from localStorage
-  const clearCredentials = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-  }
+  const { isTokenValid, clearCredentials } = useTokenHelpers()
 
   // TODO: break down as useRefreshAccessToken hook
   const refreshAccessToken = async () => {
     // Retrieve the refresh token from localStorage
-    const encrypteToken = localStorage.getItem('refreshToken')
-    const token = CryptoJS.AES.decrypt(
-      encrypteToken as string,
+    const currentEncryptedRefreshToken = localStorage.getItem('refreshToken')
+    const refreshToken = CryptoJS.AES.decrypt(
+      currentEncryptedRefreshToken as string,
       process.env.REACT_APP_ENCRYPTION_KEY as string
     ).toString(CryptoJS.enc.Utf8)
 
     try {
       setLoading(true)
-      const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/oauth/token`, {
+      const response = await axios.post('/oauth/token', {
+        headers: { 'X-Skip-Authorization-Header': 'yes' },
         grant_type: 'refresh_token',
-        refresh_token: token,
+        refresh_token: refreshToken,
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
+      console.debug({ response })
+
       // Encrypt and store the new token in localStorage
       const encryptedToken = CryptoJS.AES.encrypt(
         response.data.access_token,
@@ -64,43 +66,15 @@ const useUser = () => {
 
       // Set the user and login status
       setUser(encryptedUser as unknown as User)
-      setLoading(false)
       setIsLoggedIn(true)
     } catch (error) {
       // No token found, clear user and login status
       setUser(null)
       setIsLoggedIn(false)
-      setLoading(false)
       clearCredentials()
+    } finally {
+      setLoading(false)
     }
-  }
-
-  // TODO: break down as function in useTokenHelpers hook
-  // Helper function to check if the token is valid
-  const isTokenValid = (token: string) => {
-    // Check if token is not expired
-    const decodedPayload = jwt_decode(token) as { exp: number }
-
-    if (decodedPayload.exp < Date.now() / 1000) {
-      // Check if there is a refresh token in localStorage
-      const refreshToken = localStorage.getItem('refreshToken')
-
-      if (refreshToken) {
-        /**
-         * TODO: look into the effect of calling isTokenValid in a synchronous context
-         *   with async refreshAccessToken implemented here
-         */
-        // Refresh the access token
-        refreshAccessToken()
-
-        return true
-      } else {
-        return false
-      }
-    }
-
-    // Token is valid
-    return true
   }
 
   const checkForAuth = async () => {
