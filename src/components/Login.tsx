@@ -1,5 +1,7 @@
 import React from 'react'
-import { Grid, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 import styled from '@mui/system/styled'
 import ButtonStack from 'components/shared/ButtonStack'
 import Feature from 'features/FeatureFlags/Feature'
@@ -7,10 +9,12 @@ import { AuthStatus } from './shared/AuthProvider'
 
 import featureFlags from 'lib/features'
 
+import { useAppProgress } from 'features/AppProgress'
 import GoogleLogin from 'features/GoogleLogin'
 import AppleLogin from 'features/AppleLogin'
 import withRoot from 'themes/onepirate/modules/withRoot'
 import AppFooter from './AppFooter'
+import LoadingAnimation from './shared/LoadingAnimation'
 
 const StyledContainer = styled(Grid)`
   height: 100vh;
@@ -26,6 +30,8 @@ const StyledFormContainer = styled(Grid)`
 `
 
 const Login = () => {
+  const appProgress = useAppProgress()
+
   return (
     <>
       <StyledContainer container justifyContent="center" alignItems="center">
@@ -39,17 +45,23 @@ const Login = () => {
             We use the magic of AI to whip up awesome short stories that kids of all ages will love. It&apos;s like
             having a story buddy that&apos;s always up for an adventure!
           </Typography>
-          <Typography variant="h6" align="center" gutterBottom>
+          <Box sx={{ mb: 2, mt: 2 }}>
             <AuthStatus />
-          </Typography>
-          <ButtonStack>
-            <GoogleLogin />
-          </ButtonStack>
-          <Feature flag={featureFlags.APPLE_LOGIN}>
-            <ButtonStack>
-              <AppleLogin />
-            </ButtonStack>
-          </Feature>
+          </Box>
+          {appProgress.loading ? (
+            <LoadingAnimation circular>Loading</LoadingAnimation>
+          ) : (
+            <>
+              <ButtonStack>
+                <GoogleLogin />
+              </ButtonStack>
+              <Feature flag={featureFlags.APPLE_LOGIN}>
+                <ButtonStack>
+                  <AppleLogin />
+                </ButtonStack>
+              </Feature>
+            </>
+          )}
         </StyledFormContainer>
       </StyledContainer>
       <AppFooter />

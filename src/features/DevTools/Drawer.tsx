@@ -82,16 +82,6 @@ export function DevToolsDrawer({ anchor = 'bottom', ...rest }: DevToolsDrawerPro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, expirationTime])
 
-  console.debug({
-    toolIsOpen: open,
-    'isTokenValid?': isTokenValid(),
-    expirationTime,
-    formattedExpirationTime: formik.values.tokenExpires,
-    tokenizedUser,
-    accessToken,
-    refreshToken
-  })
-
   return (
     <Drawer
       {...rest}

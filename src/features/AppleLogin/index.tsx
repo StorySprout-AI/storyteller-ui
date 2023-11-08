@@ -1,16 +1,19 @@
 import React, { useCallback } from 'react'
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
+
+import { useAppProgress } from 'features/AppProgress'
+
 import AppleOauth from './AppleOauth'
 import { SignInErrorI, SignInResponseI } from './types'
 
 export default function AppleLogin({ ...rest }) {
+  const appProgress = useAppProgress()
+
   const redirectURI = process.env.REACT_APP_APPLE_REDIRECT_URI as string
 
   const onSuccess = useCallback(async ({ detail }: CustomEvent<SignInResponseI>) => {
-    console.debug({ detail })
     const { code, id_token } = detail.authorization
-
     const data = {
       id_token,
       code,
@@ -19,9 +22,9 @@ export default function AppleLogin({ ...rest }) {
       redirect_uri: redirectURI
     }
     try {
+      appProgress.setLoading(true)
       const res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/api/oauth/apple`, data)
       const { access_token: accessToken, refresh_token: refreshToken, user } = res.data
-      console.debug({ accessToken, refreshToken, user })
       const encryptedToken = CryptoJS.AES.encrypt(
         accessToken,
         process.env.REACT_APP_ENCRYPTION_KEY as string
@@ -42,6 +45,8 @@ export default function AppleLogin({ ...rest }) {
       window.location.reload()
     } catch (err) {
       console.error(err)
+    } finally {
+      appProgress.setLoading(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

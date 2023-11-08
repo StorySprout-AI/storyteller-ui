@@ -1,7 +1,10 @@
 import React, { createContext, ReactNode, useContext } from 'react'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 import useUser, { User } from 'hooks/useUser'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import LoadingAnimation from './LoadingAnimation'
 
 // Example project: https://github.com/remix-run/react-router/blob/dev/examples/auth/src/App.tsx
 
@@ -29,8 +32,8 @@ export function AuthStatus() {
   }
 
   return (
-    <>
-      Hello {auth.user.name}!&nbsp;
+    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <Typography variant="body2">Hello {auth.user.name}!&nbsp;</Typography>
       <button
         onClick={() => {
           /**
@@ -43,20 +46,27 @@ export function AuthStatus() {
       >
         Not you? Sign out
       </button>
-    </>
+    </Box>
   )
 }
 
 export function RequireAuth({ children }: WithRequiredChildren) {
   let auth = useAuth()
   let location = useLocation()
+  const [params] = useSearchParams()
+
+  const loginPath = params.size > 0 ? `/login?${params.toString()}` : '/login'
+
+  if (auth.loading) {
+    return <LoadingAnimation />
+  }
 
   if (!auth.user) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />
+    return <Navigate to={loginPath} state={{ from: location }} replace />
   }
 
   return children

@@ -1,14 +1,10 @@
-import React from 'react'
-import useFeatureFlags, { FeatureFlagContext } from './useFeatureFlags'
+import Provider, { useFeatureFlagsContext } from './Provider'
 
 export * from './useFeatureFlags'
 
-interface FeatureFlagProviderProps {
-  children: React.ReactNode
+const FeatureFlagsAPI = {
+  Provider,
+  useContext: useFeatureFlagsContext
 }
 
-export function FeatureFlagProvider({ children }: FeatureFlagProviderProps) {
-  const featureFlags = useFeatureFlags()
-
-  return <FeatureFlagContext.Provider value={featureFlags}>{children}</FeatureFlagContext.Provider>
-}
+export default FeatureFlagsAPI
