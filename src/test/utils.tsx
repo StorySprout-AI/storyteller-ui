@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
-import { FeatureFlagProvider } from 'features/FeatureFlags'
+import FeatureFlags from 'features/FeatureFlags'
 import DevTools from 'features/DevTools'
 import AppProgress from 'features/AppProgress'
 
@@ -8,9 +8,9 @@ import AppProgress from 'features/AppProgress'
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <AppProgress.Provider>
-      <FeatureFlagProvider>
+      <FeatureFlags.Provider>
         <DevTools.Provider>{children}</DevTools.Provider>
-      </FeatureFlagProvider>
+      </FeatureFlags.Provider>
     </AppProgress.Provider>
   )
 }

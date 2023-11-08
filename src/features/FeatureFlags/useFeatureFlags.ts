@@ -1,32 +1,9 @@
 import axios from 'axios'
 import { useGetParams } from 'hooks/useGetParams'
-import { createContext, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { FeatureFlagsHook, FlipperActor, FlipperFeatureSet } from './types'
 
-interface FlipperFeature {
-  key: string
-  state: 'on' | 'off'
-}
-
-interface FlipperFeatureSet {
-  features: FlipperFeature[]
-}
-
-interface FlipperActor {
-  flipper_id: string
-  features: {
-    [key: string]: { enabled: boolean }
-  }
-}
-
-interface FeatureFlagContextType {
-  loading: boolean
-  flags: Record<string, boolean>
-  isEnabled: (key: string) => boolean
-}
-
-export const FeatureFlagContext = createContext<FeatureFlagContextType>(null!)
-
-export function useFeatureFlags() {
+export function useFeatureFlags(): FeatureFlagsHook {
   const params = useGetParams()
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<any>('')
@@ -88,6 +65,7 @@ export function useFeatureFlags() {
     error,
     flags,
     loadFlags,
+    loadFlagsForActor,
     isEnabled
   }
 }
