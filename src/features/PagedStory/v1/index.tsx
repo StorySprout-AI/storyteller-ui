@@ -21,9 +21,9 @@ import { nullSafeStringOrValue } from 'lib'
 import StoryBuilder from 'features/StoryBuilder'
 import useContactInfo from 'hooks/useContactInfo'
 import useRequestStoryV2 from 'features/StoryBuilder/hooks/useRequestStoryV2'
-import { FeatureFlagContext } from 'features/FeatureFlags'
 import FEATURE_FLAGS from 'lib/features'
 import Feature from 'features/FeatureFlags/Feature'
+import { useFeatureFlagsContext } from 'features/FeatureFlags'
 
 function CenteredRowItem({ children, ...otherProps }: GridProps) {
   return (
@@ -58,7 +58,7 @@ function PagedStoryV1() {
   } = useStoryPrompt()
   const { loading: loadingV1, storyPages: storyPagesV1, requestStory } = useGenerateStory()
   const { loading: loadingV2, storyPages: storyPagesV2, requestStory: requestStoryV2 } = useRequestStoryV2()
-  const { isEnabled } = useContext(FeatureFlagContext)
+  const { isEnabled } = useFeatureFlagsContext()
   const sbContext = useContext(StoryBuilder.Context)
   const sbServiceIsEnabled = isEnabled(FEATURE_FLAGS.STORY_BUILDER_SERVICE)
 
