@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 
+import Skeleton from '@mui/material/Skeleton'
+
 import MetaTag from 'components/shared/MetaTag'
 import ScriptTag from 'features/ScriptTag'
 import { SignInErrorI, SignInResponseI } from './types'
@@ -37,6 +39,8 @@ function AppleOauth({
   const [initialized, setInitialized] = React.useState(() => false)
   const [libraryLastCheckTime, setLibraryLastCheckTime] = React.useState<Date>()
   const [libraryCheckTimes, setLibraryCheckTimes] = React.useState<Date[]>([])
+
+  const dims = { width: 200, height: 40 }
 
   const onLoaded = React.useCallback(() => setLoaded(true), [])
 
@@ -100,14 +104,15 @@ function AppleOauth({
       <MetaTag name="appleid-signin-response-type" content={responseType} />
       <MetaTag name="appleid-signin-response-mode" content={responseMode} />
       {/* Doc on the button: https://appleid.apple.com/signinwithapple/button */}
+      {!initialized && <Skeleton width={dims.width} height={dims.height + 25} animation="wave" />}
       <div
         ref={buttonRef}
         id="appleid-signin"
         data-color="black"
         data-border="false"
         data-type="continue"
-        data-width="180"
-        data-height="40"
+        data-width={dims.width}
+        data-height={dims.height}
         data-border-radius="10"
         style={{ marginTop: 10 }}
       ></div>
