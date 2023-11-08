@@ -12,3 +12,9 @@ export function FeatureFlagProvider({ children }: FeatureFlagProviderProps) {
 
   return <FeatureFlagContext.Provider value={featureFlags}>{children}</FeatureFlagContext.Provider>
 }
+
+const FeatureFlagsAPI = {
+  Provider: FeatureFlagProvider
+}
+
+export default FeatureFlagsAPI
