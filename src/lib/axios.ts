@@ -7,7 +7,7 @@ const isAppServiceRequest = (config: InternalAxiosRequestConfig) => {
 }
 
 const shouldAuthorizeRequest = (config: InternalAxiosRequestConfig) => {
-  // Skip default authorization header for non-native requests
+  // Skip default authorization header for 3rd party requests
   if (!isAppServiceRequest(config)) return false
 
   // Skip default authorization header for feature flag requests
@@ -50,7 +50,7 @@ axios.interceptors.request.use(async (config) => {
   return config
 })
 
-// Axios middleware to convert all native API responses to camelCase
+// Axios middleware to convert all app service API responses to camelCase
 axios.interceptors.response.use((response: AxiosResponse) => {
   if (!isAppServiceRequest(response.config)) return response
 
@@ -64,7 +64,7 @@ axios.interceptors.response.use((response: AxiosResponse) => {
   return response
 })
 
-// Axios middleware to convert all native API requests to snake_case
+// Axios middleware to convert all app service API requests to snake_case
 axios.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const { headers, params, data } = config
   if (headers['Content-Type'] === 'multipart/form-data' || !isAppServiceRequest(config)) return config
