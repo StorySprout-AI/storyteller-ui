@@ -14,7 +14,7 @@ import Story from './modules/views/Story'
 import StackableItem from 'components/shared/StackableItem'
 
 import { useAuth } from 'components/shared/AuthProvider'
-import { useGenerateStory, useStoryPrompt } from 'hooks'
+import { useGenerateStory, useStoryPromptVariables } from 'hooks'
 import { heroes, places, characters, subjects, objects, ages, writingStyles } from 'lib/prompts'
 import { nullSafeStringOrValue } from 'lib'
 
@@ -55,7 +55,7 @@ function PagedStoryV1() {
     writingStyle,
     setWritingStyle,
     composePrompt
-  } = useStoryPrompt()
+  } = useStoryPromptVariables()
   const { loading: loadingV1, storyPages: storyPagesV1, requestStory } = useGenerateStory()
   const { loading: loadingV2, storyPages: storyPagesV2, requestStory: requestStoryV2 } = useRequestStoryV2()
   const { isEnabled } = useFeatureFlagsContext()

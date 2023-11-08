@@ -15,12 +15,7 @@ interface Story {
   title?: string
   description: string
 }
-/**
- * @TODO Refactor to useStoryPromptVariables and make a call to
- *   POST /api/v1/stories
- *
- * @returns
- */
+
 export default function useRequestStoryV2() {
   const [loading, setLoading] = React.useState(false)
   const [storyPages, setStoryPages] = React.useState<string[]>([])

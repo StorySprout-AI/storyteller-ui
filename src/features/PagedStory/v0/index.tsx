@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Button, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material'
 import NavBar from 'components/shared/NavBar'
 import { heroes, places, characters, subjects, objects, ages, writingStyles } from 'lib/prompts'
-import { useUser, useStoryPrompt, useGenerateStory } from 'hooks'
+import { useUser, useStoryPromptVariables, useGenerateStory } from 'hooks'
 
 const PagedStoryV0: React.FC = () => {
   const {
@@ -19,7 +19,7 @@ const PagedStoryV0: React.FC = () => {
     subject,
     setSubject,
     composePrompt
-  } = useStoryPrompt()
+  } = useStoryPromptVariables()
   const [currentStoryPage, setCurrentStoryPage] = useState(0)
   const { user } = useUser()
   const { loading, storyPages, requestStory } = useGenerateStory()
