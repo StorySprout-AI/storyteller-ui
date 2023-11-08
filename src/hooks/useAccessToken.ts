@@ -27,7 +27,6 @@ export default function useAccessToken() {
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
-      console.debug('Response @useAccessToken', { response })
 
       const user = jwt_decode(response.data.access_token) as TokenizedUser
       // Set access token to state
