@@ -4,14 +4,17 @@ import { MemoryRouter } from 'react-router-dom'
 import FeatureFlags from 'features/FeatureFlags'
 import DevTools from 'features/DevTools'
 import AppProgress from 'features/AppProgress'
+import AuthProvider from 'components/shared/AuthProvider'
 
 // For notes on updating the wrapper: https://testing-library.com/docs/react-testing-library/setup
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <AppProgress.Provider>
-      <FeatureFlags.Provider>
-        <DevTools.Provider>{children}</DevTools.Provider>
-      </FeatureFlags.Provider>
+      <AuthProvider>
+        <FeatureFlags.Provider>
+          <DevTools.Provider>{children}</DevTools.Provider>
+        </FeatureFlags.Provider>
+      </AuthProvider>
     </AppProgress.Provider>
   )
 }
@@ -20,11 +23,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 const RouterWithAllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <MemoryRouter>
-      <AppProgress.Provider>
-        <FeatureFlags.Provider>
-          <DevTools.Provider>{children}</DevTools.Provider>
-        </FeatureFlags.Provider>
-      </AppProgress.Provider>
+      <AllTheProviders>{children}</AllTheProviders>
     </MemoryRouter>
   )
 }
