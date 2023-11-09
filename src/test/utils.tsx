@@ -20,11 +20,7 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
 const RouterWithAllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <MemoryRouter>
-      <AppProgress.Provider>
-        <AuthProvider>
-          <FeatureFlags.Provider>{children}</FeatureFlags.Provider>
-        </AuthProvider>
-      </AppProgress.Provider>
+      <AllTheProviders>{children}</AllTheProviders>
     </MemoryRouter>
   )
 }
