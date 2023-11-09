@@ -29,8 +29,8 @@ function App() {
       <BrowserRouter>
         <CookiesProvider>
           <AppProgress.Provider>
-            <FeatureFlags.Provider>
-              <AuthProvider>
+            <AuthProvider>
+              <FeatureFlags.Provider>
                 <DevTools.Provider>
                   <Routes>
                     <Route element={<PageLayout />}>
@@ -64,10 +64,10 @@ function App() {
                     </Route>
                     <Route path="/" element={<Home />} />
                   </Routes>
-                  <DevTools.Drawer />
                 </DevTools.Provider>
-              </AuthProvider>
-            </FeatureFlags.Provider>
+                <DevTools.Drawer />
+              </FeatureFlags.Provider>
+            </AuthProvider>
           </AppProgress.Provider>
         </CookiesProvider>
       </BrowserRouter>
