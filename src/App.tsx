@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CookiesProvider } from 'react-cookie'
 
+import AppProgress from 'features/AppProgress'
 import { FeatureFlagProvider } from 'features/FeatureFlags'
 import StoryGenerator from 'features/PagedStory/v0'
 import StoryGeneratorV1 from 'features/PagedStory/v1'
@@ -26,42 +27,44 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <CookiesProvider>
-          <FeatureFlagProvider>
-            <AuthProvider>
-              <Routes>
-                <Route element={<PageLayout />}>
-                  <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-                  <Route path="/legal/terms" element={<TermsOfUse />} />
-                </Route>
-                <Route path="/login" element={<Login />} />
-                <Route path="/v1">
-                  <Route element={<Layout />}>
+          <AppProgress.Provider>
+            <FeatureFlagProvider>
+              <AuthProvider>
+                <Routes>
+                  <Route element={<PageLayout />}>
+                    <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+                    <Route path="/legal/terms" element={<TermsOfUse />} />
+                  </Route>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/v1">
+                    <Route element={<Layout />}>
+                      <Route
+                        path="stories/:action"
+                        element={
+                          <RequireAuth>
+                            <StoryGeneratorV1 />
+                          </RequireAuth>
+                        }
+                      />
+                      <Route index element={<Navigate to="stories/new" />} />
+                    </Route>
+                  </Route>
+                  <Route path="/v0">
                     <Route
                       path="stories/:action"
                       element={
                         <RequireAuth>
-                          <StoryGeneratorV1 />
+                          <StoryGenerator />
                         </RequireAuth>
                       }
                     />
                     <Route index element={<Navigate to="stories/new" />} />
                   </Route>
-                </Route>
-                <Route path="/v0">
-                  <Route
-                    path="stories/:action"
-                    element={
-                      <RequireAuth>
-                        <StoryGenerator />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route index element={<Navigate to="stories/new" />} />
-                </Route>
-                <Route path="/" element={<Home />} />
-              </Routes>
-            </AuthProvider>
-          </FeatureFlagProvider>
+                  <Route path="/" element={<Home />} />
+                </Routes>
+              </AuthProvider>
+            </FeatureFlagProvider>
+          </AppProgress.Provider>
         </CookiesProvider>
       </BrowserRouter>
     </div>
