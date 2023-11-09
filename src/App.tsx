@@ -64,8 +64,8 @@ function App() {
                     </Route>
                     <Route path="/" element={<Home />} />
                   </Routes>
+                  <DevTools.Drawer />
                 </DevTools.Provider>
-                <DevTools.Drawer />
               </FeatureFlags.Provider>
             </AuthProvider>
           </AppProgress.Provider>
