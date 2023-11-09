@@ -4,7 +4,7 @@ import { CookiesProvider } from 'react-cookie'
 
 import DevTools from 'features/DevTools'
 import AppProgress from 'features/AppProgress'
-import { FeatureFlagProvider } from 'features/FeatureFlags'
+import FeatureFlags from 'features/FeatureFlags'
 import StoryGenerator from 'features/PagedStory/v0'
 import StoryGeneratorV1 from 'features/PagedStory/v1'
 import Layout from 'features/PagedStory/v1/components/Layout'
@@ -29,7 +29,7 @@ function App() {
       <BrowserRouter>
         <CookiesProvider>
           <AppProgress.Provider>
-            <FeatureFlagProvider>
+            <FeatureFlags.Provider>
               <AuthProvider>
                 <DevTools.Provider>
                   <Routes>
@@ -67,7 +67,7 @@ function App() {
                   <DevTools.Drawer />
                 </DevTools.Provider>
               </AuthProvider>
-            </FeatureFlagProvider>
+            </FeatureFlags.Provider>
           </AppProgress.Provider>
         </CookiesProvider>
       </BrowserRouter>
