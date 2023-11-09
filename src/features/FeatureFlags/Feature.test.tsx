@@ -1,6 +1,6 @@
 import React from 'react'
 import mockAxios from 'jest-mock-axios'
-import { renderInMemoryRouter, screen, waitFor } from 'test/utils'
+import { renderInMemoryRouter, screen, waitFor, waitForElementToBeRemoved } from 'test/utils'
 
 import Feature from './Feature'
 
@@ -34,7 +34,7 @@ describe('<Feature />', () => {
     await screen.findByText('Hello')
   })
 
-  test('does not render when flag is disabled', async () => {
+  test('does NOT render when flag is disabled', async () => {
     mockAxios.get.mockResolvedValueOnce({ data: { features: [{ key: 'feat__hello', state: 'off' }] } })
     renderInMemoryRouter(<Feature flag="feat__hello">Hello</Feature>)
     await waitFor(() => mockAxios.get)
@@ -42,11 +42,50 @@ describe('<Feature />', () => {
     expect(screen.queryByText('Hello')).not.toBeInTheDocument()
   })
 
-  test('does not render when flag is not defined', async () => {
+  test('does NOT render when flag is not defined', async () => {
     mockAxios.get.mockResolvedValueOnce({ data: { features: [] } })
     renderInMemoryRouter(<Feature flag="feat__hello">Hello</Feature>)
     await waitFor(() => mockAxios.get)
     expect(mockAxios.get).toHaveBeenCalledTimes(1)
     expect(screen.queryByText('Hello')).not.toBeInTheDocument()
+  })
+
+  describe('with offSwitch', () => {
+    test('does NOT render when flag is enabled', async () => {
+      mockAxios.get.mockResolvedValueOnce({ data: { features: [{ key: 'feat__new_stuff', state: 'on' }] } })
+      renderInMemoryRouter(
+        <Feature flag="feat__new_stuff" offSwitch>
+          Legacy feature
+        </Feature>
+      )
+      await waitFor(() => mockAxios.get)
+      expect(mockAxios.get).toHaveBeenCalledTimes(1)
+      await waitForElementToBeRemoved(() => screen.queryByText('Legacy feature'))
+      expect(screen.queryByText('Legacy feature')).not.toBeInTheDocument()
+    })
+
+    test('renders when flag is disabled', async () => {
+      mockAxios.get.mockResolvedValueOnce({ data: { features: [{ key: 'feat__new_stuff', state: 'off' }] } })
+      renderInMemoryRouter(
+        <Feature flag="feat__new_stuff" offSwitch>
+          Legacy feature
+        </Feature>
+      )
+      await waitFor(() => mockAxios.get)
+      expect(mockAxios.get).toHaveBeenCalledTimes(1)
+      await screen.findByText('Legacy feature')
+    })
+
+    test('renders when flag is not defined', async () => {
+      mockAxios.get.mockResolvedValueOnce({ data: { features: [] } })
+      renderInMemoryRouter(
+        <Feature flag="feat__new_stuff" offSwitch>
+          Legacy feature
+        </Feature>
+      )
+      await waitFor(() => mockAxios.get)
+      expect(mockAxios.get).toHaveBeenCalledTimes(1)
+      await screen.findByText('Legacy feature')
+    })
   })
 })
