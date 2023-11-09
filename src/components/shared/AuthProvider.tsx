@@ -1,10 +1,11 @@
 import React, { createContext, ReactNode, useContext } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import useUser, { User } from 'hooks/useUser'
+import useUser from 'hooks/useUser'
 import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import LoadingAnimation from './LoadingAnimation'
+import { User } from 'lib/types'
 
 // Example project: https://github.com/remix-run/react-router/blob/dev/examples/auth/src/App.tsx
 
@@ -35,13 +36,13 @@ export function AuthStatus() {
     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <Typography variant="body2">Hello {auth.user.name}!&nbsp;</Typography>
       <button
-        onClick={() => {
+        onClick={async () => {
           /**
            * TODO: Pass a callback to do a hard sign out and clear all provider
            *   auth sessions (done if the google sign in button does not show info
            *   for any account)
            */
-          auth.signOut()
+          await auth.signOut()
         }}
       >
         Not you? Sign out
