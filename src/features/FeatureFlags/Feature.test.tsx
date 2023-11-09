@@ -26,8 +26,6 @@ describe('<Feature />', () => {
 
   test('renders when flag is enabled', async () => {
     mockAxios.get.mockResolvedValueOnce({ data: { features: [{ key: 'feat__hello', state: 'on' }] } })
-    // const { result } = renderHook(() => useGetParams())
-    // console.debug({ search: window.location.search, data: result.current })
     renderInMemoryRouter(<Feature flag="feat__hello">Hello</Feature>)
     await waitFor(() => mockAxios.get)
     expect(mockAxios.get).toHaveBeenCalledTimes(1)
