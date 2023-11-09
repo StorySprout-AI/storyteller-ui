@@ -2,9 +2,9 @@ import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CookiesProvider } from 'react-cookie'
 
-import AppProgress from 'features/AppProgress'
 import DevTools from 'features/DevTools'
-import FeatureFlag from 'features/FeatureFlags'
+import AppProgress from 'features/AppProgress'
+import FeatureFlags from 'features/FeatureFlags'
 import StoryGenerator from 'features/PagedStory/v0'
 import StoryGeneratorV1 from 'features/PagedStory/v1'
 import Layout from 'features/PagedStory/v1/components/Layout'
@@ -17,6 +17,9 @@ import Login from 'components/Login'
 import TermsOfUse from 'components/TermsOfUse'
 import PrivacyPolicy from 'components/PrivacyPolicy'
 
+// Initialize axios setup
+import 'lib/axios'
+
 import './App.css'
 
 function App() {
@@ -26,7 +29,7 @@ function App() {
       <BrowserRouter>
         <CookiesProvider>
           <AppProgress.Provider>
-            <FeatureFlag.Provider>
+            <FeatureFlags.Provider>
               <AuthProvider>
                 <DevTools.Provider>
                   <Routes>
@@ -64,7 +67,7 @@ function App() {
                   <DevTools.Drawer />
                 </DevTools.Provider>
               </AuthProvider>
-            </FeatureFlag.Provider>
+            </FeatureFlags.Provider>
           </AppProgress.Provider>
         </CookiesProvider>
       </BrowserRouter>
