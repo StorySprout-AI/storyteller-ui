@@ -1,12 +1,11 @@
 import React from 'react'
 import jwt_decode from 'jwt-decode'
-import tokenizer from 'lib/tokenization'
 import axios from 'axios'
 import useTokenHelpers from './useTokenHelpers'
 import { TokenizedUser } from 'lib/types'
 
 export default function useAccessToken() {
-  const tokenHelpers = useTokenHelpers()
+  const { encrypt, clearCredentials, readTokensFromLocalStorage } = useTokenHelpers()
   const [loading, setLoading] = React.useState(false)
   const [accessToken, setAccessToken] = React.useState<string | null>(null)
   const [refreshToken, setRefreshToken] = React.useState<string | null>(null)
@@ -14,16 +13,15 @@ export default function useAccessToken() {
 
   const refresh = React.useCallback(async () => {
     // Retrieve the refresh token from localStorage
-    const currentEncryptedRefreshToken = localStorage.getItem('refreshToken')
+    const { refreshToken: savedRefreshToken } = readTokensFromLocalStorage()
 
     try {
       setLoading(true)
-      if (!currentEncryptedRefreshToken) throw new Error('No refresh token found')
-      const refreshToken = tokenizer.decrypt(currentEncryptedRefreshToken as string)
+      if (!savedRefreshToken) throw new Error('No refresh token found')
       const response = await axios.post('/oauth/token', {
         headers: { 'X-Skip-Authorization-Header': 'yes' },
         grant_type: 'refresh_token',
-        refresh_token: refreshToken,
+        refresh_token: savedRefreshToken,
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET
       })
@@ -37,21 +35,18 @@ export default function useAccessToken() {
       setTokenizedUser(user)
 
       // Encrypt and store the new token in localStorage
-      const encryptedToken = tokenizer.encrypt(response.data.access_token)
+      const encryptedToken = encrypt(response.data.access_token)
       localStorage.setItem('token', encryptedToken)
 
       // Encrypt and Store the new refresh token in localStorage
-      const encryptedRefreshToken = tokenizer.encrypt(response.data.refresh_token)
+      const encryptedRefreshToken = encrypt(response.data.refresh_token)
       localStorage.setItem('refreshToken', encryptedRefreshToken)
 
       // Encrypt and store the user in localStorage
-      const encryptedUser = CryptoJS.AES.encrypt(
-        JSON.stringify(user),
-        process.env.REACT_APP_ENCRYPTION_KEY as string
-      ).toString()
+      const encryptedUser = encrypt(JSON.stringify(user))
       localStorage.setItem('user', encryptedUser)
     } catch (error) {
-      tokenHelpers.clearCredentials()
+      clearCredentials()
     } finally {
       setLoading(false)
     }

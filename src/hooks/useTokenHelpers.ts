@@ -1,10 +1,21 @@
+import React from 'react'
 import jwt_decode from 'jwt-decode'
+import { encrypt, decrypt } from 'lib/tokenization'
 
 export default function useTokenHelpers() {
   // Remove the token and user from localStorage
   const clearCredentials = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+  }
+
+  const readTokensFromLocalStorage = () => {
+    const encryptedToken = localStorage.getItem('token')
+    const encryptedRefreshToken = localStorage.getItem('refreshToken')
+    return {
+      accessToken: encryptedToken ? decrypt(encryptedToken as string) : null,
+      refreshToken: encryptedRefreshToken ? decrypt(encryptedRefreshToken as string) : null
+    }
   }
 
   // TODO: break down as function in useTokenHelpers hook
@@ -35,5 +46,5 @@ export default function useTokenHelpers() {
     return true
   }
 
-  return { clearCredentials, isTokenValid }
+  return { encrypt, decrypt, clearCredentials, isTokenValid, readTokensFromLocalStorage }
 }

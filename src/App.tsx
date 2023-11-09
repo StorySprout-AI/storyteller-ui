@@ -28,8 +28,8 @@ function App() {
       <BrowserRouter>
         <CookiesProvider>
           <AppProgress.Provider>
-            <FeatureFlags.Provider>
-              <AuthProvider>
+            <AuthProvider>
+              <FeatureFlags.Provider>
                 <Routes>
                   <Route element={<PageLayout />}>
                     <Route path="/legal/privacy" element={<PrivacyPolicy />} />
@@ -62,8 +62,8 @@ function App() {
                   </Route>
                   <Route path="/" element={<Home />} />
                 </Routes>
-              </AuthProvider>
-            </FeatureFlags.Provider>
+              </FeatureFlags.Provider>
+            </AuthProvider>
           </AppProgress.Provider>
         </CookiesProvider>
       </BrowserRouter>
