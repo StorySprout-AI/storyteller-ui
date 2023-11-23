@@ -1,6 +1,14 @@
 import { useCallback, useState } from 'react'
 
-export default function useStoryPrompt() {
+/**
+ * @TODO Refactor to useStoryPromptVariables which simply keeps track of
+ *   all the prompt - but unlike useStoryPrompt, it doesn't compose the prompt
+ *   and it doesn't have a composePrompt function - all of those features will
+ *   be moved to the backend and accessed via POST /api/v1/stories in useRequestStoryV2
+ *
+ * @returns
+ */
+export default function useStoryPromptVariables() {
   const [hero, setHero] = useState('')
   const [place, setPlace] = useState('')
   const [character, setCharacter] = useState('')

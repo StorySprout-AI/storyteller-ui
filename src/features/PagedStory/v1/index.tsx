@@ -14,12 +14,16 @@ import Story from './modules/views/Story'
 import StackableItem from 'components/shared/StackableItem'
 
 import { useAuth } from 'components/shared/AuthProvider'
-import { useGenerateStory, useStoryPrompt } from 'hooks'
+import { useGenerateStory, useStoryPromptVariables } from 'hooks'
 import { heroes, places, characters, subjects, objects, ages, writingStyles } from 'lib/prompts'
 import { nullSafeStringOrValue } from 'lib'
 
 import StoryBuilder from 'features/StoryBuilder'
 import useContactInfo from 'hooks/useContactInfo'
+import useRequestStoryV2 from 'features/StoryBuilder/hooks/useRequestStoryV2'
+import FEATURE_FLAGS from 'lib/features'
+import Feature from 'features/FeatureFlags/Feature'
+import { useFeatureFlagsContext } from 'features/FeatureFlags'
 
 function CenteredRowItem({ children, ...otherProps }: GridProps) {
   return (
@@ -51,18 +55,31 @@ function PagedStoryV1() {
     writingStyle,
     setWritingStyle,
     composePrompt
-  } = useStoryPrompt()
-  const { loading, storyPages, requestStory } = useGenerateStory()
+  } = useStoryPromptVariables()
+  const { loading: loadingV1, storyPages: storyPagesV1, requestStory } = useGenerateStory()
+  const { loading: loadingV2, storyPages: storyPagesV2, requestStory: requestStoryV2 } = useRequestStoryV2()
+  const { isEnabled } = useFeatureFlagsContext()
   const sbContext = useContext(StoryBuilder.Context)
+  const sbServiceIsEnabled = isEnabled(FEATURE_FLAGS.STORY_BUILDER_SERVICE)
+
+  const hideStoryBuilderDrawerOnSuccess = async () => {
+    const autoClick = new MouseEvent('click', { bubbles: true })
+    sbContext.toggleDrawer('bottom', false)(autoClick as any)
+  }
 
   const generateStory = useCallback(async () => {
-    const prompt = composePrompt()
-    await requestStory(prompt, async () => {
-      const autoClick = new MouseEvent('click', { bubbles: true })
-      sbContext.toggleDrawer('bottom', false)(autoClick as any)
-    })
+    if (sbServiceIsEnabled) {
+      // Test V2
+      await requestStoryV2({ hero, place, character, object, age, subject }, hideStoryBuilderDrawerOnSuccess)
+    } else {
+      const prompt = composePrompt()
+      await requestStory(prompt, hideStoryBuilderDrawerOnSuccess)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [composePrompt, requestStory, sbContext.toggleDrawer])
+  }, [composePrompt, requestStory, sbContext.toggleDrawer, sbServiceIsEnabled])
+
+  const loading = loadingV1 || loadingV2
+  const storyPages = sbServiceIsEnabled ? storyPagesV2 : storyPagesV1
 
   return (
     <>
@@ -203,21 +220,23 @@ function PagedStoryV1() {
                 ))}
               </Select>
             </StackableItem>
-            <CenteredRowItem>
-              <InputLabel id="writing-style-label">Writing Style</InputLabel>
-              <Select
-                labelId="writing-style-label"
-                value={writingStyle}
-                onChange={(e) => setWritingStyle(nullSafeStringOrValue(e.target.value))}
-                label="Writing Style"
-              >
-                {writingStyles.map((name, index) => (
-                  <MenuItem key={index} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </CenteredRowItem>
+            <Feature flag={FEATURE_FLAGS.STORY_BUILDER_SERVICE} offSwitch>
+              <CenteredRowItem>
+                <InputLabel id="writing-style-label">Writing Style</InputLabel>
+                <Select
+                  labelId="writing-style-label"
+                  value={writingStyle}
+                  onChange={(e) => setWritingStyle(nullSafeStringOrValue(e.target.value))}
+                  label="Writing Style"
+                >
+                  {writingStyles.map((name, index) => (
+                    <MenuItem key={index} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </CenteredRowItem>
+            </Feature>
             <CenteredRowItem>
               <Button fullWidth variant="contained" onClick={generateStory} disabled={loading}>
                 {loading ? <CircularProgress size={24} /> : 'Generate Story'}

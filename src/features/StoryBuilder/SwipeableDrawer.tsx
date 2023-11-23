@@ -47,6 +47,7 @@ function Drawer({ anchor = 'bottom', children, header, ...rest }: StoryBuilderPr
   return (
     <Root>
       <CssBaseline />
+      {/* @TODO Scope the "Global" styling for the StoryBuilder SwipeableDrawer */}
       <Global
         styles={{
           '.MuiDrawer-root > .MuiPaper-root': {

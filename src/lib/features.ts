@@ -6,7 +6,8 @@ export enum FEATURE_FLAGS {
   LIBRARY = 'feat__library',
   PROFILE = 'feat__profile',
   SITE_TRANSLATION = 'feat__site_translation',
-  SOCIAL_LINKS = 'feat__social_links'
+  SOCIAL_LINKS = 'feat__social_links',
+  STORY_BUILDER_SERVICE = 'feat__story_builder_service'
 }
 
 export default FEATURE_FLAGS
