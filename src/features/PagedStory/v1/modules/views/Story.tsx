@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import Box, { BoxProps } from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -6,7 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 
 import Button from 'themes/onepirate/components/Button'
 
-import withRoot from '../../../../../themes/onepirate/modules/withRoot'
+import withRoot from 'themes/onepirate/modules/withRoot'
 
 type StoryProps = BoxProps & {
   loading?: boolean
@@ -14,7 +14,7 @@ type StoryProps = BoxProps & {
 }
 
 function Story({ pages, loading }: StoryProps) {
-  const [currentStoryPage, setCurrentStoryPage] = useState(0)
+  const [currentStoryPage, setCurrentStoryPage] = React.useState(0)
 
   const goToNextPage = () => {
     setCurrentStoryPage((prevPage) => prevPage + 1)

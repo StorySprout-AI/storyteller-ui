@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import MetaTag from 'components/shared/MetaTag'
-import ScriptTag from 'components/shared/ScriptTag'
+import ScriptTag from 'features/ScriptTag'
 import { SignInErrorI, SignInResponseI } from './types'
 
 import useDomainWarningCookie from './useDomainWarningCookie'
