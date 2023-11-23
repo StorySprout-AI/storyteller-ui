@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import FeatureFlags from 'features/FeatureFlags'
+import DevTools from 'features/DevTools'
 import AppProgress from 'features/AppProgress'
 import AuthProvider from 'components/shared/AuthProvider'
 
@@ -10,7 +11,9 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <AppProgress.Provider>
       <AuthProvider>
-        <FeatureFlags.Provider>{children}</FeatureFlags.Provider>
+        <FeatureFlags.Provider>
+          <DevTools.Provider>{children}</DevTools.Provider>
+        </FeatureFlags.Provider>
       </AuthProvider>
     </AppProgress.Provider>
   )
