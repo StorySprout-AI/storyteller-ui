@@ -1,20 +1,23 @@
 import LinearProgress from '@mui/material/LinearProgress'
-import React, { useContext } from 'react'
-import { FeatureFlagContext } from './useFeatureFlags'
+import React from 'react'
+import { useFeatureFlagsContext } from './Provider'
 
 type FeatureProps = {
   flag: string
+  offSwitch?: boolean
   children: React.ReactNode
 }
 
-export function Feature({ flag, children }: FeatureProps) {
-  const { loading, flags, isEnabled } = useContext(FeatureFlagContext)
+export function Feature({ flag, offSwitch, children }: FeatureProps) {
+  const { loading, flags, isEnabled } = useFeatureFlagsContext()
   const flagExists = flag in flags
+  const showFeature =
+    (!flagExists && offSwitch) || (!isEnabled(flag) && offSwitch) || (flagExists && isEnabled(flag) && !offSwitch)
 
   return (
     <>
       {loading && <LinearProgress test-id={`loading_${flag}`} />}
-      {flagExists && isEnabled(flag) && children}
+      {showFeature && children}
     </>
   )
 }

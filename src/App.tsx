@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CookiesProvider } from 'react-cookie'
 
 import AppProgress from 'features/AppProgress'
-import { FeatureFlagProvider } from 'features/FeatureFlags'
+import FeatureFlags from 'features/FeatureFlags'
 import StoryGenerator from 'features/PagedStory/v0'
 import StoryGeneratorV1 from 'features/PagedStory/v1'
 import Layout from 'features/PagedStory/v1/components/Layout'
@@ -28,8 +28,8 @@ function App() {
       <BrowserRouter>
         <CookiesProvider>
           <AppProgress.Provider>
-            <FeatureFlagProvider>
-              <AuthProvider>
+            <AuthProvider>
+              <FeatureFlags.Provider>
                 <Routes>
                   <Route element={<PageLayout />}>
                     <Route path="/legal/privacy" element={<PrivacyPolicy />} />
@@ -62,8 +62,8 @@ function App() {
                   </Route>
                   <Route path="/" element={<Home />} />
                 </Routes>
-              </AuthProvider>
-            </FeatureFlagProvider>
+              </FeatureFlags.Provider>
+            </AuthProvider>
           </AppProgress.Provider>
         </CookiesProvider>
       </BrowserRouter>
