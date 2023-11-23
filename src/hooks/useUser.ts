@@ -64,7 +64,7 @@ const useUser = () => {
         !!location.state?.from.pathname &&
         location.state?.from.pathname !== location.pathname
       ) {
-        navigate(location.state.from.pathname)
+        navigate(`${location.state.from.pathname}${location.state.from.search}`)
       } else if (/^\/(?:login)?$/.test(location.pathname)) {
         console.debug('Should navigate to protected landing page...')
         navigate(redirect_path)
