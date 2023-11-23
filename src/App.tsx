@@ -15,6 +15,9 @@ import Login from 'components/Login'
 import TermsOfUse from 'components/TermsOfUse'
 import PrivacyPolicy from 'components/PrivacyPolicy'
 
+// Initialize axios setup
+import 'lib/axios'
+
 import './App.css'
 
 function App() {
