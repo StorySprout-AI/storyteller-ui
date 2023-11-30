@@ -22,7 +22,9 @@ const shouldAuthorizeRequest = (config: InternalAxiosRequestConfig) => {
   return !config.headers['X-Skip-Authorization-Header']
 }
 
-axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT
+axios.defaults.baseURL = /\.ngrok\.app$/.test(window.location.host)
+  ? process.env.REACT_APP_PROXY_ENDPOINT
+  : process.env.REACT_APP_API_ENDPOINT
 /**
  * @TODO We need to define an SLA for our service with our FE
  *   that includes the max duration of a request, as well as a
