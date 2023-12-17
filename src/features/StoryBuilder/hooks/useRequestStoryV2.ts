@@ -32,7 +32,7 @@ export default function useRequestStoryV2() {
 
       console.debug({ response })
       const generatedStory = response.data.description
-      const pages = generatedStory.split(/Page \d+:/).filter((page: string) => page.trim() !== '')
+      const pages = generatedStory.split(/Page \d+[:\n]/).filter((page: string) => page.trim() !== '')
 
       if (!!successCallback) await successCallback()
 
