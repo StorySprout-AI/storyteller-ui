@@ -22,8 +22,10 @@ const shouldAuthorizeRequest = (config: InternalAxiosRequestConfig) => {
   return !config.headers['X-Skip-Authorization-Header']
 }
 
+const proxyEndpointOrDefault = () => process.env.REACT_APP_PROXY_ENDPOINT ?? process.env.REACT_APP_API_ENDPOINT
+
 axios.defaults.baseURL = /\.ngrok\.app$/.test(window.location.host)
-  ? process.env.REACT_APP_PROXY_ENDPOINT
+  ? proxyEndpointOrDefault()
   : process.env.REACT_APP_API_ENDPOINT
 /**
  * @TODO We need to define an SLA for our service with our FE
