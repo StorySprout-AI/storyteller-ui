@@ -15,6 +15,22 @@
   - [Important Links](#important-links)
 <!-- TOC -->
 
+## Setup the app
+
+```shell
+# Install brew dependencies
+brew bundle
+
+# Install node dependencies
+npm install
+```
+
+## Running the app
+
+```shell
+npm start
+```
+
 ## Running tests
 
 To run all specs locally and review code coverage, execute the following command:

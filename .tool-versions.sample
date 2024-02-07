@@ -1,2 +1,4 @@
-nodejs 18.7.0
+nodejs 18.19.0
 java adoptopenjdk-17.0.1+12
+direnv 2.33.0
+ruby 3.2.2
