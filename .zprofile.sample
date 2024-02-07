@@ -1,0 +1,7 @@
+export STORYSPROUT_START="${HOME}/repos/@storysprout-ai"
+
+# Aliases
+alias tostories="cd ${STORYSPROUT_START}"
+alias tostory="cd ${STORYSPROUT_START}"
+alias tostoryui="cd ${STORYSPROUT_START}/ui"
+alias tostoryapi="cd ${STORYSPROUT_START}/api"
